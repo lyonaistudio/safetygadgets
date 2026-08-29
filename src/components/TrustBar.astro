@@ -1,0 +1,37 @@
+---
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "fr" } = Astro.props;
+
+const LABELS: Record<Locale, string[]> = {
+  fr: ["Expédition sous 24 à 48h", "Garantie 1 an", "Retour sous 30 jours", "Paiement sécurisé"],
+  en: ["Shipped within 24-48h", "1-year warranty", "30-day returns", "Secure payment"],
+  de: ["Versand innerhalb 24-48 Std.", "1 Jahr Garantie", "30 Tage Rückgaberecht", "Sichere Zahlung"],
+};
+
+const icons = [
+  "M3 13h13l-1 4H4l-1-4Zm0 0 2-7h9l2 7M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z",
+  "M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4",
+  "M4 4v6h6M4 10a8 8 0 1 1 2.34 5.66",
+  "M12 2 4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3ZM9 12l2 2 4-4",
+];
+
+const items = LABELS[lang].map((label, i) => ({ label, icon: icons[i] }));
+---
+
+<div class="border-y border-ink-line bg-ink-soft">
+  <div class="mx-auto grid max-w-6xl divide-y divide-ink-line sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+    {items.map((item) => (
+      <div class="flex items-center gap-3 px-6 py-5">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent">
+          <path d={item.icon} />
+        </svg>
+        <span class="text-xs uppercase tracking-[0.1em] text-paper-dim">{item.label}</span>
+      </div>
+    ))}
+  </div>
+</div>

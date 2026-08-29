@@ -1,0 +1,528 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "@fontsource/fraunces/500.css";
+@import "@fontsource/fraunces/500-italic.css";
+@import "@fontsource/fraunces/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@theme {
+  /* Identité "quiet luxury" : noir chaud (espresso) + or/laiton en accent
+     dominant + émeraude sombre réservée aux micro-indicateurs de statut.
+     Un seul accent fort (l'or) porte la marque, pas un duo néon. */
+  --color-ink: #12100d;
+  --color-ink-soft: #1c1914;
+  --color-ink-line: #322c22;
+  --color-paper: #f8f5ee;
+  --color-paper-dim: #c3b9a5;
+  --color-mist: #8c8271;
+  --color-accent: #c9a227;
+  --color-accent-soft: #e0c158;
+  --color-accent-dim: #7a5f18;
+  --color-signal: #4a7a68;
+  --color-signal-dim: #2b4a3f;
+
+  --font-display: "Fraunces", "Iowan Old Style", ui-serif, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Signature de mouvement : une seule courbe (celle déjà utilisée par .reveal
+   et .hero-letters) réappliquée à toutes les micro-interactions — boutons,
+   liens, cartes — pour que le site entier "bouge" de la même main plutôt
+   que d'accumuler des transitions par défaut de composant en composant. */
+:root {
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-interact: 220ms;
+}
+
+[class*="transition-colors"],
+[class*="transition-all"] {
+  transition-duration: var(--duration-interact);
+  transition-timing-function: var(--ease-signature);
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+}
+
+/* Fine ligne dorée : séparateur signature, discret plutôt que graphique. */
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0.7;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Contenu toujours visible sans JS/avant hydratation (SEO, accessibilité) ;
+   seule une légère translation est animée au scroll quand le JS est actif. */
+.reveal {
+  transform: translateY(16px);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.is-visible {
+  transform: translateY(0);
+}
+
+/* Halo unique et diffus : une seule tache de lumière dorée ambiante pour
+   donner de la profondeur au noir plutôt qu'une texture répétée. */
+.ambient-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 55% 65% at 82% 15%,
+    color-mix(in srgb, var(--color-accent) 12%, transparent),
+    transparent 60%
+  );
+}
+
+/* Traitement photographique sobre : léger noir & blanc + contraste, comme
+   une photo de catalogue haut de gamme, sans à-plat de couleur graphique. */
+.premium-photo {
+  filter: grayscale(0.25) contrast(1.08) brightness(0.97);
+}
+
+/* Mise en scène produit : un socle en ombre elliptique + halo doré très
+   diffus sous l'objet, pour simuler un vrai plateau de studio plutôt qu'un
+   simple détourage posé sur fond uni. */
+.product-stage {
+  position: relative;
+}
+
+.product-stage::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  width: 62%;
+  height: 14%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse closest-side,
+    color-mix(in srgb, var(--color-ink) 55%, black) 0%,
+    transparent 75%
+  );
+  filter: blur(2px);
+  z-index: 0;
+}
+
+.product-stage::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(
+    ellipse 60% 55% at 50% 40%,
+    color-mix(in srgb, var(--color-accent) 7%, transparent),
+    transparent 70%
+  );
+  z-index: 0;
+}
+
+.product-stage img {
+  position: relative;
+  z-index: 1;
+}
+
+/* Profondeur au survol pour les cartes (produits, actualités, cas d'usage) :
+   un léger soulèvement + une ombre diffuse teintée or, cohérents avec le
+   halo du hero plutôt qu'une ombre neutre générique. Les angles restent
+   droits — c'est l'identité graphique du site, pas un oubli. */
+.card-lift {
+  transition: transform var(--duration-interact) var(--ease-signature),
+    box-shadow var(--duration-interact) var(--ease-signature),
+    border-color var(--duration-interact) var(--ease-signature);
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px -20px color-mix(in srgb, var(--color-accent) 35%, transparent),
+    0 10px 20px -14px rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-lift:hover {
+    transform: none;
+  }
+}
+
+/* Cadre "instrument" autour du radar : grille fine + lunette + réticule,
+   pour donner au panneau une vraie densité d'outil de tracking plutôt
+   qu'un point isolé flottant dans du vide. */
+.hero-radar-scope {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-ink-line);
+  overflow: hidden;
+  background-image: linear-gradient(color-mix(in srgb, var(--color-accent) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: center;
+}
+
+.hero-radar-scope::before {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 24%, transparent);
+}
+
+.hero-radar-scope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(color-mix(in srgb, var(--color-accent) 22%, transparent), color-mix(in srgb, var(--color-accent) 22%, transparent))
+      center / 1px 100% no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 22%, transparent), color-mix(in srgb, var(--color-accent) 22%, transparent)) center /
+      100% 1px no-repeat;
+}
+
+/* Motif "radar" du hero : anneaux concentriques qui se propagent depuis un
+   point central doré, écho graphique de la localisation GPS. Remplace une
+   photo produit par un élément de marque abstrait — plus sobre et plus
+   "pro" qu'un flat-lay de photos à cette échelle. */
+.hero-radar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.hero-radar .radar-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  box-shadow: 0 0 18px 2px color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+.hero-radar .radar-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-accent);
+  opacity: 0;
+  animation: radar-ping 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.hero-radar .radar-ring:nth-child(2) {
+  animation-delay: 0.9s;
+}
+
+.hero-radar .radar-ring:nth-child(3) {
+  animation-delay: 1.8s;
+}
+
+.hero-radar .radar-ring:nth-child(4) {
+  animation-delay: 2.7s;
+}
+
+@keyframes radar-ping {
+  0% {
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-radar .radar-ring {
+    animation: none;
+    opacity: 0.18;
+    width: 70px;
+    height: 70px;
+    margin: -35px 0 0 -35px;
+  }
+}
+
+/* Bandeau d'actualités : défilement horizontal continu, la liste est
+   dupliquée dans le markup pour boucler sans coupure visible. Vitesse
+   lente et posée (pas un ticker d'actus qui clignote), mise en pause au
+   survol pour que les cartes restent cliquables confortablement. */
+.marquee-track {
+  width: max-content;
+  animation: marquee-scroll 38s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Bandeau d'annonce en tête de page (livraison offerte, remise quantité) :
+   même mécanique de défilement que le bandeau d'actualités, mais un texte
+   fin sur une seule ligne — la bande ne doit jamais épaissir la barre. */
+.announce-track {
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+.announce-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announce-track {
+    animation: none;
+  }
+}
+
+/* Grain très léger sur les fonds sombres : casse le "plat numérique" d'un
+   aplat de couleur uni sans être consciemment visible. SVG bruit répété en
+   tuile, superposé en mode overlay à très faible opacité. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Fond animé du hero : quelques taches de couleur floutées qui dérivent
+   lentement (transform/opacity uniquement — léger, pas de flash), dans les
+   couleurs de la marque, en remplacement du halo statique unique. */
+.mesh-glow {
+  position: absolute;
+  inset: -15%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mesh-glow span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.32;
+  will-change: transform;
+}
+
+.mesh-glow span:nth-child(1) {
+  top: 0%;
+  left: 50%;
+  width: 34%;
+  height: 55%;
+  background: var(--color-accent);
+  animation: mesh-drift-a 24s ease-in-out infinite;
+}
+
+.mesh-glow span:nth-child(2) {
+  top: 35%;
+  left: 2%;
+  width: 26%;
+  height: 42%;
+  background: var(--color-signal);
+  opacity: 0.22;
+  animation: mesh-drift-b 29s ease-in-out infinite;
+}
+
+.mesh-glow span:nth-child(3) {
+  top: -6%;
+  left: 18%;
+  width: 22%;
+  height: 36%;
+  background: var(--color-accent-soft);
+  opacity: 0.2;
+  animation: mesh-drift-c 20s ease-in-out infinite;
+}
+
+@keyframes mesh-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-6%, 8%) scale(1.12);
+  }
+}
+
+@keyframes mesh-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(9%, -6%) scale(1.16);
+  }
+}
+
+@keyframes mesh-drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5%, -9%) scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh-glow span {
+    animation: none;
+  }
+}
+
+/* Révélation du titre du hero, lettre par lettre — chaque <span data-letter>
+   est animé avec un délai croissant (voir hero-reveal.ts). Visible par
+   défaut/sans JS : seule l'apparition progressive dépend du script. */
+.hero-letters[data-hero-armed] [data-letter] {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-letters[data-hero-armed][data-hero-visible] [data-letter] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-letters[data-hero-armed] [data-letter] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Point "en direct" discret : disponibilité, statut de signal — utilisé
+   avec parcimonie, seule touche de vert de toute l'interface. */
+.live-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-signal) 55%, transparent);
+  animation: live-dot-pulse 2.4s ease-out infinite;
+}
+
+@keyframes live-dot-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-signal) 50%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
+}
+
+.prose-article {
+  --tw-prose-body: var(--color-paper-dim);
+  --tw-prose-headings: var(--color-paper);
+  --tw-prose-bold: var(--color-paper);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bullets: var(--color-accent);
+  --tw-prose-hr: var(--color-ink-line);
+  --tw-prose-quotes: var(--color-paper);
+  --tw-prose-quote-borders: var(--color-accent);
+}
+
+.prose-article :is(h2, h3) {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+/* View transitions : fondu doux, sans rebond — cohérent avec un rendu
+   posé plutôt que dynamique/gadget. */
+::view-transition-old(root) {
+  animation: page-out 0.28s ease both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.32s ease both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms;
+  }
+}

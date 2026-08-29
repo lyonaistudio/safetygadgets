@@ -1,0 +1,124 @@
+---
+import { NAV_LINKS_BY_LOCALE, LOCALES, UI, HOME_SWITCHER, type Locale, type SwitcherLinks } from "../lib/i18n";
+
+interface Props {
+  lang?: Locale;
+  switcherLinks?: SwitcherLinks;
+}
+
+const { lang = "fr", switcherLinks = HOME_SWITCHER } = Astro.props;
+const t = UI[lang];
+const navLinks = NAV_LINKS_BY_LOCALE[lang];
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-ink-line bg-ink/95 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+    <a href={switcherLinks[lang]} class="mr-6 flex shrink-0 items-center gap-3 font-display text-2xl text-paper xl:mr-12">
+      <img src="/logo/seal.png" alt="" width="48" height="48" class="h-12 w-12 shrink-0 object-contain" aria-hidden="true" />
+      <span class="whitespace-nowrap tracking-wide leading-none">Safety Gadgets</span>
+    </a>
+
+    <nav class="hidden items-center gap-4 xl:mr-8 xl:flex" aria-label="Navigation principale">
+      {navLinks.map((link) => {
+        const isActive = link.href === "/" || link.href === "/en/" || link.href === "/de/"
+          ? currentPath === link.href
+          : currentPath.startsWith(link.href);
+        return (
+          <a
+            href={link.href}
+            class={`whitespace-nowrap border-b py-1 text-xs uppercase tracking-[0.15em] transition-colors hover:text-accent ${
+              isActive ? "border-accent text-paper" : "border-transparent text-paper-dim"
+            }`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-3">
+      <div class="relative mr-2 hidden xl:block">
+        <details class="group/lang">
+          <summary
+            class="flex h-9 cursor-pointer list-none items-center gap-1 border border-ink-line px-2.5 text-xs uppercase tracking-[0.1em] text-paper-dim transition-colors hover:border-accent hover:text-accent marker:content-none"
+            aria-label={t.langAria}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M3 12h18M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9Z" />
+            </svg>
+            {lang.toUpperCase()}
+          </summary>
+          <div class="absolute right-0 top-full z-50 mt-2 w-60 border border-ink-line bg-ink-soft p-2 shadow-xl">
+            {LOCALES.map((l) => (
+              <a
+                href={switcherLinks[l.code]}
+                class="flex items-center justify-between px-3 py-2 text-xs text-paper transition-colors hover:text-accent"
+              >
+                <span>{l.flag} {l.label}</span>
+                {l.code === lang && <span class="text-accent" aria-hidden="true">✓</span>}
+              </a>
+            ))}
+          </div>
+        </details>
+      </div>
+
+      <a
+        href={lang === "fr" ? "/panier/" : switcherLinks[lang]}
+        class="relative flex h-9 w-9 items-center justify-center border border-ink-line text-paper-dim transition-colors hover:border-accent hover:text-accent"
+        aria-label={t.cartAria}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 8h12l-1 12H7L6 8Zm3-2a3 3 0 0 1 6 0v2H9V6Z" />
+        </svg>
+        <span
+          data-cart-count
+          class="hidden absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-medium text-ink"
+        >0</span>
+      </a>
+
+      <a
+        href={lang === "fr" ? "/contact/" : `/${lang}/contact/`}
+        class="hidden border border-accent px-5 py-2 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink xl:inline-block"
+      >
+        {t.contactCta}
+      </a>
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="flex flex-col gap-1.5 p-2 xl:hidden"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="h-0.5 w-6 bg-paper"></span>
+      <span class="h-0.5 w-6 bg-paper"></span>
+      <span class="h-0.5 w-6 bg-paper"></span>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-menu"
+    class="hidden flex-col gap-1 border-t border-ink-line px-6 py-4 xl:hidden"
+    aria-label="Navigation mobile"
+  >
+    {navLinks.map((link) => (
+      <a
+        href={link.href}
+        class="py-3 text-xs uppercase tracking-[0.15em] text-paper-dim transition-colors hover:text-accent"
+      >
+        {link.label}
+      </a>
+    ))}
+    <a
+      href={lang === "fr" ? "/contact/" : `/${lang}/contact/`}
+      class="mt-2 border border-accent px-4 py-3 text-center text-xs uppercase tracking-[0.15em] text-accent"
+    >
+      {t.contactCta}
+    </a>
+  </nav>
+</header>

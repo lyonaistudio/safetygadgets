@@ -1,0 +1,115 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import CTASection from "../components/CTASection.astro";
+import FAQAccordion from "../components/FAQAccordion.astro";
+import { faqSchema } from "../lib/schema";
+
+const faqItems = [
+  {
+    question: "À partir de combien d'unités le tarif dégressif s'applique-t-il ?",
+    answer: "Dès les commandes en volume — contactez-nous avec votre besoin (quantités, produits) pour recevoir un devis adapté.",
+  },
+  {
+    question: "Pouvez-vous facturer au nom de notre structure ?",
+    answer: "Oui, la facturation professionnelle est incluse, avec les mentions nécessaires à votre comptabilité.",
+  },
+  {
+    question: "La livraison peut-elle être répartie sur plusieurs sites ?",
+    answer: "Oui, nous adaptons l'expédition en une ou plusieurs fois selon vos besoins de déploiement.",
+  },
+];
+const schema = faqSchema(faqItems);
+
+const steps = [
+  {
+    title: "Décrivez votre besoin",
+    description: "Produits souhaités, quantités, délai — via le formulaire de contact ou par email.",
+  },
+  {
+    title: "Recevez un devis",
+    description: "Tarif dégressif selon le volume, facturation professionnelle, sous 24 à 48h ouvrées.",
+  },
+  {
+    title: "Livraison groupée",
+    description: "Expédition en une ou plusieurs fois selon vos besoins (déploiement par site, par équipe).",
+  },
+];
+---
+
+<BaseLayout
+  title="Professionnels — Safety Gadgets"
+  description="Entreprises, associations, collectivités : commandes en volume, tarifs dégressifs sur devis et facturation professionnelle pour équiper vos équipes ou votre flotte."
+  path="/professionnels/"
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "Professionnels", url: "/professionnels/" }]} />
+  <PageHero
+    eyebrow="PROFESSIONNELS"
+    title="Une solution pour les entreprises aussi"
+    description="Flottes de véhicules, dotation d'équipe, collaborateurs isolés : nous accompagnons les entreprises, associations et collectivités, en plus des particuliers."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Comment ça marche" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Trois étapes, un interlocuteur dédié.
+    </h2>
+    <div class="mt-10 grid gap-8 sm:grid-cols-3">
+      {steps.map((step, i) => (
+        <div class="border-t border-ink-line pt-6">
+          <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")}</span>
+          <h3 class="mt-2 font-display text-lg text-paper">{step.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-paper-dim">{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-y border-ink-line bg-ink-soft">
+    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <Eyebrow label="Ce que ça inclut" />
+      <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+        Pensé pour un achat professionnel.
+      </h2>
+      <ul class="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+        {[
+          "Tarifs dégressifs selon le volume commandé",
+          "Devis et facturation au nom de votre structure",
+          "Un interlocuteur unique pour le suivi de la commande",
+          "Livraison adaptée (site unique ou plusieurs adresses)",
+        ].map((item) => (
+          <li class="flex gap-3 text-sm text-paper-dim">
+            <span class="mt-1 h-1 w-1 shrink-0 bg-accent" aria-hidden="true"></span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Questions fréquentes" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Sur les commandes professionnelles.
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Voir toute la FAQ <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Un projet d'équipement pour votre structure ?"
+    description="Décrivez votre besoin (produits, quantités, délai) — nous revenons vers vous avec un devis adapté sous 24 à 48h."
+    buttonLabel="Demander un devis professionnel"
+    href="/contact/?type=pro"
+  />
+</BaseLayout>

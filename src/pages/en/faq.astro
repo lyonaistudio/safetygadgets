@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import CTASection from "../../components/CTASection.astro";
+import { faqSchema } from "../../lib/schema";
+import { PAGE_SWITCHERS } from "../../lib/i18n";
+
+const faqItems = [
+  {
+    question: "Does the tracker need a SIM card?",
+    answer:
+      "Yes for the GPS trackers (GF07, OBD): they communicate their position over the GSM/GPRS or 4G network, so a standard SIM card with an active data plan is required (not included). The Bluetooth tag and the SOS alarm work without any SIM card.",
+  },
+  {
+    question: "Is it compatible with all mobile carriers?",
+    answer:
+      "The GPS trackers run on 2G/GPRS or 4G networks depending on the model. Before buying your SIM card, check that your carrier still provides active coverage in your planned area of use.",
+  },
+  {
+    question: "What is the actual battery life?",
+    answer:
+      "It varies by product, generally between 12h and 24h for the GF07, up to 2h of continuous use for the SOS alarm and the OBD's backup battery. See each product's technical sheet for details.",
+  },
+  {
+    question: "How accurate is the positioning?",
+    answer:
+      "Outdoors with a good signal, GPS positioning is accurate to a few metres. Indoors or in dense urban areas, trackers fall back to AGPS/GSM/LBS, less precise but still useful to locate an area.",
+  },
+  {
+    question: "What are the shipping times?",
+    answer:
+      "Orders are prepared and shipped within 24 to 48 business hours, with a tracking number sent by email as soon as it ships.",
+  },
+  {
+    question: "Can I return a product that doesn't suit me?",
+    answer:
+      "Yes, a return is possible within 30 days of receipt, provided the product is unused and in its original packaging. Contact us to start the process.",
+  },
+  {
+    question: "What does the 1-year warranty cover?",
+    answer:
+      "The warranty covers manufacturing defects and failures occurring under normal use of the product for one year from the date of purchase. Contact us with your proof of purchase for any issue.",
+  },
+  {
+    question: "Do you offer pricing for businesses or volume orders?",
+    answer:
+      "Yes. Businesses, associations and public bodies can contact us directly (contact form, reason \"Business / volume order\") for a quote with tiered pricing and professional invoicing, tailored to the quantity needed.",
+  },
+];
+
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="FAQ — Frequently asked questions — Safety Gadgets"
+  description="Answers to the most frequent questions about our trackers: SIM card, battery life, accuracy, shipping and warranty."
+  path="/en/faq/"
+  lang="en"
+  switcherLinks={PAGE_SWITCHERS.faq}
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "FAQ", url: "/en/faq/" }]} homeLabel="Home" homeUrl="/en/" />
+  <PageHero eyebrow="FAQ" title="Frequently asked questions" />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <FAQAccordion items={faqItems} />
+  </section>
+
+  <CTASection
+    title="Can't find an answer to your question?"
+    description="Contact us directly, we reply personally to every message."
+    buttonLabel="Contact us"
+    href="/en/contact/"
+  />
+</BaseLayout>

@@ -1,0 +1,387 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import CTASection from "../components/CTASection.astro";
+import TrustBar from "../components/TrustBar.astro";
+import FAQAccordion from "../components/FAQAccordion.astro";
+import { PRODUCTS, formatPriceTTC } from "../data/products";
+import { faqSchema } from "../lib/schema";
+import { getCollection } from "astro:content";
+
+const homeFaqItems = [
+  {
+    question: "Faut-il une carte SIM pour tous les trackers ?",
+    answer: "Seuls les trackers GPS (GF07, OBD) nécessitent une carte SIM avec forfait data. Le tag Bluetooth et l'alarme SOS fonctionnent sans SIM ni abonnement.",
+  },
+  {
+    question: "Quels sont les délais de livraison ?",
+    answer: "Les commandes sont expédiées sous 24 à 48h ouvrées, avec un numéro de suivi communiqué par email.",
+  },
+  {
+    question: "Puis-je retourner un produit qui ne me convient pas ?",
+    answer: "Oui, sous 30 jours, produit non utilisé et dans son emballage d'origine.",
+  },
+];
+const homeFaqSchema = faqSchema(homeFaqItems);
+
+const latestArticles = (await getCollection("actualites"))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 8);
+
+const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
+---
+
+<BaseLayout
+  title="Safety Gadgets — Trackers GPS, Bluetooth et détecteurs anti-espionnage"
+  description="Safety Gadgets sélectionne des trackers GPS, des trackers AirTag Bluetooth et des détecteurs anti-espionnage compacts, pour localiser ce qui compte et repérer ce qui vous surveille."
+  path="/"
+  jsonLd={[homeFaqSchema]}
+>
+  <section class="relative overflow-hidden border-b border-ink-line bg-ink">
+    <div class="ambient-glow" aria-hidden="true"></div>
+    <div class="mesh-glow" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
+      <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
+      <h1 data-hero-heading class="mt-5 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
+        Protégez ce que vous aimez, où que ce soit.
+      </h1>
+      <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-paper-dim">
+        Nos trackers GPS, trackers AirTag Bluetooth et détecteurs anti-espionnage s'adaptent à toutes les
+        situations, pour toujours savoir où se trouve ce qui compte — et garder l'esprit tranquille.
+      </p>
+      <div class="reveal mt-10 flex flex-col items-center" aria-hidden="true">
+        <div class="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent">
+            <path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z" />
+            <circle cx="12" cy="9" r="2.2" />
+          </svg>
+          Localisation en temps réel
+        </div>
+        <div class="hero-radar-scope mt-5">
+          <div class="hero-radar">
+            <span class="radar-ring"></span>
+            <span class="radar-ring"></span>
+            <span class="radar-ring"></span>
+            <span class="radar-core"></span>
+          </div>
+        </div>
+        <div class="mt-5 flex items-center gap-2 text-xs uppercase tracking-[0.1em] text-paper-dim">
+          <span class="live-dot shrink-0"></span>
+          Signal actif
+        </div>
+      </div>
+      <ul class="reveal mt-8 flex flex-wrap justify-center gap-x-3 gap-y-2" aria-label="Utilisations possibles">
+        {[
+          "Proches",
+          "Véhicules",
+          "Maison",
+          "Animaux",
+          "Bagages",
+          "Valises",
+          "Sacs",
+          "Clés",
+          "Portefeuille",
+          "Objets de valeur",
+        ].map((item) => (
+          <li class="border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div class="reveal mt-8 flex justify-center">
+        <p class="flex max-w-lg items-center gap-2 border border-ink-line px-4 py-2 text-left text-xs text-paper-dim">
+          <span class="live-dot shrink-0" aria-hidden="true"></span>
+          En France, un vol est enregistré toutes les 20 secondes en moyenne — 1,6 million de vols
+          recensés en 2024, tous types confondus (SSMSI, ministère de l'Intérieur).
+        </p>
+      </div>
+      <div class="reveal mt-8 flex flex-wrap justify-center gap-4">
+        <a
+          href="#produits"
+          class="border border-accent bg-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+        >
+          Voir nos produits
+        </a>
+        <a
+          href="/contact/"
+          class="border border-ink-line px-6 py-3 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:border-accent hover:text-accent"
+        >
+          Une question ?
+        </a>
+      </div>
+      <ul
+        class="reveal mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.1em] text-paper-dim"
+        aria-label="Pourquoi Safety Gadgets"
+      >
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4" />
+          </svg>
+          Garantie 1 an
+        </li>
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M3 13h13l-1 4H4l-1-4Zm0 0 2-7h9l2 7M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+          </svg>
+          Expédition 24-48h
+        </li>
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M12 2 4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3ZM9 12l2 2 4-4" />
+          </svg>
+          Paiement sécurisé
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <TrustBar />
+
+  <section class="overflow-hidden border-b border-ink-line bg-ink">
+    <div class="mx-auto grid max-w-5xl items-center gap-6 px-6 py-12 lg:grid-cols-2 lg:gap-6 lg:py-10">
+      <div class="reveal order-2 lg:order-1">
+        <Eyebrow label="Le plus demandé" />
+        <h2 class="mt-3 font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
+          {flagship.name}
+        </h2>
+        <p class="mt-3 max-w-md text-sm leading-relaxed text-paper-dim">{flagship.tagline}</p>
+        <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
+          {formatPriceTTC(flagship.price, flagship.currency)}
+          {flagship.originalPrice && (
+            <span class="text-sm text-mist line-through">{formatPriceTTC(flagship.originalPrice, flagship.currency)}</span>
+          )}
+        </p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <button
+            type="button"
+            data-add-to-cart={flagship.slug}
+            class="border border-accent bg-accent px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+          >
+            Ajouter au panier
+          </button>
+          <a
+            href={`/traceurs-gps/${flagship.slug}/`}
+            class="border border-ink-line px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:border-accent hover:text-accent"
+          >
+            Voir la fiche
+          </a>
+        </div>
+      </div>
+      <div
+        class="product-stage order-1 lg:order-2"
+        data-product-gallery
+        data-gallery-images={JSON.stringify(flagship.gallery ?? [flagship.image])}
+      >
+        <img
+          src={flagship.image}
+          alt={flagship.name}
+          width="420"
+          height="420"
+          data-gallery-main
+          class="premium-photo mx-auto h-48 w-auto object-contain sm:h-56 lg:h-64"
+        />
+        {flagship.gallery && flagship.gallery.length > 1 && (
+          <>
+            <button
+              type="button"
+              data-gallery-prev
+              class="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
+              aria-label="Photo précédente"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <button
+              type="button"
+              data-gallery-next
+              class="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
+              aria-label="Photo suivante"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section id="produits" class="mx-auto max-w-6xl px-6 py-12 sm:py-14">
+    <Eyebrow label="Nos produits" />
+    <h2 class="mt-3 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Choisissez le produit adapté à votre besoin.
+    </h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS.map((product) => (
+        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-accent/60">
+          <a href={`/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
+            <span class="text-xs uppercase tracking-[0.15em] text-mist">{product.category}</span>
+            <div
+              class="product-stage my-3 h-32"
+              data-product-gallery
+              data-gallery-images={JSON.stringify(product.gallery ?? [product.image])}
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                width="200"
+                height="200"
+                data-gallery-main
+                class="premium-photo mx-auto h-32 w-32 object-contain"
+              />
+              {product.gallery && product.gallery.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    data-gallery-prev
+                    class="absolute left-0 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
+                    aria-label="Photo précédente"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+                  </button>
+                  <button
+                    type="button"
+                    data-gallery-next
+                    class="absolute right-0 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
+                    aria-label="Photo suivante"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                  </button>
+                </>
+              )}
+            </div>
+            <h3 class="font-display text-base text-paper group-hover:text-accent">{product.name}</h3>
+            <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-paper-dim">{product.shortDescription}</p>
+          </a>
+          <p class="mt-2 flex flex-wrap items-baseline gap-2 font-mono text-base text-accent">
+            {formatPriceTTC(product.price, product.currency)}
+            {product.originalPrice && (
+              <span class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+            )}
+          </p>
+          <div class="mt-3 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              data-add-to-cart={product.slug}
+              class="border border-accent px-3 py-1.5 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+            >
+              Ajouter au panier
+            </button>
+            <a
+              href={`/traceurs-gps/${product.slug}/`}
+              class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+            >
+              Voir la fiche <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-y border-ink-line bg-ink-soft">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[1.3fr_1fr]">
+      <div class="reveal">
+        <Eyebrow label="Particuliers & professionnels" />
+        <h2 class="mt-4 max-w-xl font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
+          Aussi équipé pour les entreprises que pour vous.
+        </h2>
+        <p class="mt-4 max-w-xl leading-relaxed text-paper-dim">
+          Flottes de véhicules, dotation d'équipe, collaborateurs isolés : nous accompagnons aussi les
+          entreprises, associations et collectivités, en plus des particuliers. Commandes en volume et
+          tarifs dégressifs sur devis, facturation professionnelle.
+        </p>
+        <a
+          href="/professionnels/"
+          class="mt-6 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+        >
+          En savoir plus
+        </a>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="border border-ink-line bg-ink p-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" />
+          </svg>
+          <p class="mt-3 text-sm text-paper">Particuliers</p>
+          <p class="mt-1 text-xs leading-relaxed text-paper-dim">Livraison rapide, paiement en ligne, SAV personnel.</p>
+        </div>
+        <div class="border border-ink-line bg-ink p-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true">
+            <path d="M4 8h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm4-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2H8V6ZM3 13h18" />
+          </svg>
+          <p class="mt-3 text-sm text-paper">Professionnels</p>
+          <p class="mt-1 text-xs leading-relaxed text-paper-dim">Devis sur volume, facturation pro, contact dédié.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <Eyebrow label="Actualités" />
+        <h2 class="mt-4 max-w-2xl font-display text-3xl font-medium text-paper sm:text-4xl">
+          Vols, cambriolages, suivi non consenti : nos articles de fond.
+        </h2>
+      </div>
+      <a
+        href="/actualites/"
+        class="inline-flex shrink-0 items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+      >
+        Toutes les actualités <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="reveal mt-10 overflow-hidden">
+      <div class="marquee-track flex gap-6">
+        {latestArticles.map((article) => (
+          <a
+            href={`/actualites/${article.id}/`}
+            class="group card-lift flex w-80 shrink-0 flex-col border border-ink-line bg-ink-soft p-6 transition-colors duration-200 hover:border-accent/60"
+          >
+            <span class="text-xs uppercase tracking-[0.15em] text-mist">{article.data.category}</span>
+            <h3 class="mt-3 font-display text-lg text-paper group-hover:text-accent">{article.data.title}</h3>
+            <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-paper-dim">{article.data.description}</p>
+          </a>
+        ))}
+        <div class="contents" aria-hidden="true">
+          {latestArticles.map((article) => (
+            <a
+              href={`/actualites/${article.id}/`}
+              tabindex="-1"
+              class="group card-lift flex w-80 shrink-0 flex-col border border-ink-line bg-ink-soft p-6 transition-colors duration-200 hover:border-accent/60"
+            >
+              <span class="text-xs uppercase tracking-[0.15em] text-mist">{article.data.category}</span>
+              <h3 class="mt-3 font-display text-lg text-paper group-hover:text-accent">{article.data.title}</h3>
+              <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-paper-dim">{article.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Questions fréquentes" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      En bref
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={homeFaqItems} />
+    </div>
+    <a
+      href="/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Voir toute la FAQ <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Une question avant de choisir ?"
+    description="Décrivez votre besoin, nous vous orientons vers le bon produit."
+    buttonLabel="Nous contacter"
+  />
+</BaseLayout>

@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import CTASection from "../../components/CTASection.astro";
+import { faqSchema } from "../../lib/schema";
+import { PAGE_SWITCHERS } from "../../lib/i18n";
+
+const faqItems = [
+  {
+    question: "Benötigt der Tracker eine SIM-Karte?",
+    answer:
+      "Ja, bei den GPS-Trackern (GF07, OBD): Sie übertragen ihre Position über das GSM/GPRS- oder 4G-Netz, daher ist eine herkömmliche SIM-Karte mit aktivem Datentarif erforderlich (nicht im Lieferumfang enthalten). Der Bluetooth-Anhänger und der SOS-Alarm funktionieren ohne SIM-Karte.",
+  },
+  {
+    question: "Ist er mit allen Mobilfunkanbietern kompatibel?",
+    answer:
+      "Die GPS-Tracker laufen je nach Modell im 2G/GPRS- oder 4G-Netz. Prüfen Sie vor dem Kauf Ihrer SIM-Karte, ob Ihr Anbieter in Ihrem geplanten Nutzungsgebiet noch aktive Netzabdeckung bietet.",
+  },
+  {
+    question: "Wie hoch ist die tatsächliche Akkulaufzeit?",
+    answer:
+      "Das variiert je nach Produkt, im Allgemeinen zwischen 12 und 24 Std. beim GF07, bis zu 2 Std. Dauerbetrieb beim SOS-Alarm und beim Reserveakku des OBD-Trackers. Details finden Sie im jeweiligen Datenblatt.",
+  },
+  {
+    question: "Wie genau ist die Ortung?",
+    answer:
+      "Im Freien mit gutem Signal ist die GPS-Ortung auf wenige Meter genau. In Innenräumen oder dicht besiedelten Stadtgebieten wechseln die Tracker auf AGPS/GSM/LBS — weniger präzise, aber weiterhin nützlich, um ein Gebiet einzugrenzen.",
+  },
+  {
+    question: "Wie lange dauert der Versand?",
+    answer:
+      "Bestellungen werden vorbereitet und innerhalb von 24 bis 48 Werktagen versandt, mit einer Sendungsverfolgungsnummer, die sofort nach Versand per E-Mail zugesandt wird.",
+  },
+  {
+    question: "Kann ich ein Produkt zurückgeben, das mir nicht passt?",
+    answer:
+      "Ja, eine Rückgabe ist innerhalb von 30 Tagen nach Erhalt möglich, sofern das Produkt unbenutzt und in der Originalverpackung ist. Kontaktieren Sie uns, um den Vorgang zu starten.",
+  },
+  {
+    question: "Was deckt die einjährige Garantie ab?",
+    answer:
+      "Die Garantie deckt Herstellungsfehler und Ausfälle bei normaler Nutzung des Produkts für ein Jahr ab Kaufdatum ab. Kontaktieren Sie uns mit Ihrem Kaufnachweis bei jedem Problem.",
+  },
+  {
+    question: "Bieten Sie Preise für Unternehmen oder Großbestellungen an?",
+    answer:
+      "Ja. Unternehmen, Vereine und öffentliche Einrichtungen können uns direkt kontaktieren (Kontaktformular, Grund „Unternehmen / Großbestellung“) für ein Angebot mit Mengenrabatt und professioneller Rechnungsstellung, angepasst an die gewünschte Menge.",
+  },
+];
+
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="FAQ — Häufig gestellte Fragen — Safety Gadgets"
+  description="Antworten auf die häufigsten Fragen zu unseren Trackern: SIM-Karte, Akkulaufzeit, Genauigkeit, Versand und Garantie."
+  path="/de/faq/"
+  lang="de"
+  switcherLinks={PAGE_SWITCHERS.faq}
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "FAQ", url: "/de/faq/" }]} homeLabel="Startseite" homeUrl="/de/" />
+  <PageHero eyebrow="FAQ" title="Häufig gestellte Fragen" />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <FAQAccordion items={faqItems} />
+  </section>
+
+  <CTASection
+    title="Keine Antwort auf Ihre Frage gefunden?"
+    description="Kontaktieren Sie uns direkt, wir antworten persönlich auf jede Nachricht."
+    buttonLabel="Kontakt aufnehmen"
+    href="/de/contact/"
+  />
+</BaseLayout>

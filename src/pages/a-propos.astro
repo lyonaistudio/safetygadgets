@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import CTASection from "../components/CTASection.astro";
+import FAQAccordion from "../components/FAQAccordion.astro";
+import { faqSchema } from "../lib/schema";
+
+const faqItems = [
+  {
+    question: "Où sont expédiées les commandes ?",
+    answer: "Depuis la France, avec un numéro de suivi communiqué par email dès l'envoi, sous 24 à 48h ouvrées.",
+  },
+  {
+    question: "Proposez-vous une garantie sur vos produits ?",
+    answer: "Oui, tous nos produits sont garantis 1 an contre les défauts de fabrication.",
+  },
+  {
+    question: "Comment vous contacter en cas de problème ?",
+    answer: "Via notre formulaire de contact — nous répondons personnellement, sans standard téléphonique.",
+  },
+];
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="À propos — Safety Gadgets"
+  description="Safety Gadgets sélectionne des trackers compacts et fiables, testés avant d'être proposés à la vente, pour une tranquillité d'esprit au quotidien."
+  path="/a-propos/"
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "À propos", url: "/a-propos/" }]} />
+  <PageHero eyebrow="À PROPOS" title="Des trackers choisis, pas empilés" />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <p class="text-lg leading-relaxed text-paper-dim">
+      Safety Gadgets est né d'un constat simple : le marché des trackers grand public est saturé de
+      références quasi identiques, vendues sans accompagnement ni garantie claire. Nous préférons une
+      sélection resserrée de produits testés, avec une fiche technique honnête et un support
+      après-vente qui répond vraiment.
+    </p>
+
+    <Eyebrow label="NOTRE APPROCHE" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Peu de références, mais bien choisies
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Plutôt que de multiplier les produits, nous nous concentrons sur des trackers dont la
+      fiabilité, l'autonomie et la simplicité d'utilisation sont vérifiées avant mise en vente. L'objectif
+      est que chaque appareil tienne ses promesses au quotidien, pas seulement sur la fiche produit.
+    </p>
+
+    <Eyebrow label="POUR QUI" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Particuliers et professionnels
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Nos trackers s'adressent à toute personne qui souhaite garder un œil discret sur un véhicule, un
+      proche ou un objet de valeur — familles, propriétaires de deux-roues, aidants, ou petites flottes
+      professionnelles.
+    </p>
+
+    <Eyebrow label="APRÈS L'ACHAT" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Un support qui répond
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Une question sur la mise en service, l'application de suivi ou la garantie ? Nous répondons
+      personnellement, sans standard téléphonique ni ticket qui s'égare.
+    </p>
+
+    <Eyebrow label="Questions fréquentes" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      En bref
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Voir toute la FAQ <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Une question sur nos produits ?"
+    description="Contactez-nous directement, nous répondons personnellement à chaque demande."
+    buttonLabel="Nous contacter"
+  />
+</BaseLayout>

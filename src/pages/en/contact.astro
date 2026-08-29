@@ -1,0 +1,158 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import { SITE, FORMSPREE_ENDPOINT } from "../../lib/site";
+import { PRODUCTS_EN } from "../../data/products.en";
+import { PAGE_SWITCHERS } from "../../lib/i18n";
+---
+
+<BaseLayout
+  title="Contact — Safety Gadgets"
+  description="A question about a product, advice before buying, or the status of an order already placed: contact Safety Gadgets, personal reply within 24h."
+  path="/en/contact/"
+  lang="en"
+  switcherLinks={PAGE_SWITCHERS.contact}
+>
+  <Breadcrumb items={[{ name: "Contact", url: "/en/contact/" }]} homeLabel="Home" homeUrl="/en/" />
+  <PageHero
+    eyebrow="CONTACT"
+    title="A question? We're here."
+    description="This form is for your questions, advice before buying, or the status of an order already placed."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+      <div>
+        <div id="success-banner" class="mb-8 hidden border border-accent bg-ink-soft p-6" role="status" aria-live="polite">
+          <p class="font-display font-semibold text-accent">Message sent.</p>
+          <p class="mt-1 text-sm text-paper-dim">Thank you, we'll get back to you shortly.</p>
+        </div>
+
+        <div id="error-banner" class="mb-8 hidden border border-ink-line bg-ink-soft p-6" role="alert" aria-live="polite">
+          <p class="font-display font-semibold text-paper">Could not send right now.</p>
+          <p class="mt-1 text-sm text-paper-dim">
+            Try again, or email us directly at{" "}
+            <a href={`mailto:${SITE.email}`} class="text-accent transition-colors hover:text-accent-soft">{SITE.email}</a>.
+          </p>
+        </div>
+
+        <form id="contact-form" action={FORMSPREE_ENDPOINT} method="POST" class="space-y-6">
+          <input type="hidden" name="_subject" value="New request — Safety Gadgets (EN)" />
+          <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="prenom" class="font-mono text-xs uppercase tracking-wide text-mist">First name</label>
+              <input
+                id="prenom"
+                name="First name"
+                type="text"
+                required
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+              />
+            </div>
+            <div>
+              <label for="nom" class="font-mono text-xs uppercase tracking-wide text-mist">Last name</label>
+              <input
+                id="nom"
+                name="Last name"
+                type="text"
+                required
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="email" class="font-mono text-xs uppercase tracking-wide text-mist">Email</label>
+            <input
+              id="email"
+              name="Email"
+              type="email"
+              required
+              class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+            />
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="type-demande" class="font-mono text-xs uppercase tracking-wide text-mist">Request type</label>
+              <select
+                id="type-demande"
+                name="Request type"
+                required
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper transition-colors focus:border-accent focus:outline-none"
+              >
+                <option value="">Select…</option>
+                <option value="Before purchase">Question before buying</option>
+                <option value="Order">Order / tracking</option>
+                <option value="Support">Support / return / warranty</option>
+                <option value="Business">Business / volume order</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="produit" class="font-mono text-xs uppercase tracking-wide text-mist">Product concerned</label>
+              <select
+                id="produit"
+                name="Product"
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper transition-colors focus:border-accent focus:outline-none"
+              >
+                <option value="">Not specified</option>
+                {PRODUCTS_EN.map((product) => <option value={product.name}>{product.name}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="font-mono text-xs uppercase tracking-wide text-mist">Your message</label>
+            <textarea
+              id="message"
+              name="Message"
+              rows="6"
+              required
+              class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+            ></textarea>
+          </div>
+
+          <button
+            id="contact-submit"
+            type="submit"
+            data-loading-label="Sending…"
+            class="border border-accent bg-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Send request
+          </button>
+        </form>
+      </div>
+
+      <aside class="space-y-8">
+        <div class="border border-ink-line bg-ink-soft p-6">
+          <Eyebrow label="CONTACT DETAILS" />
+          <ul class="mt-4 space-y-3 text-sm text-paper-dim">
+            <li>
+              <a href={`mailto:${SITE.email}`} class="transition-colors hover:text-accent">{SITE.email}</a>
+            </li>
+            <li>{SITE.city}, France — shipping across France, international on request</li>
+            <li>{SITE.hours}</li>
+          </ul>
+        </div>
+
+        <div class="border border-ink-line p-6">
+          <Eyebrow label="PERSONAL REPLY" />
+          <p class="mt-4 text-sm text-paper-dim">
+            Every message is read and handled personally — no phone menus or tickets that get
+            lost. Reply within 24h on business days.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initContactForm } from "../../scripts/contact-form";
+  document.addEventListener("astro:page-load", initContactForm);
+</script>

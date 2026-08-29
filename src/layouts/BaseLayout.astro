@@ -1,0 +1,145 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+import { SITE } from "../lib/site";
+import { organizationSchema } from "../lib/schema";
+import { UI, HOME_SWITCHER, type Locale, type SwitcherLinks } from "../lib/i18n";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  jsonLd?: Record<string, unknown>[];
+  ogImage?: string;
+  ogType?: "website" | "article";
+  lang?: Locale;
+  switcherLinks?: SwitcherLinks;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  path,
+  jsonLd = [],
+  ogImage = "/og-image.png",
+  ogType = "website",
+  lang = "fr",
+  switcherLinks = HOME_SWITCHER,
+  noindex = false,
+} = Astro.props;
+
+const t = UI[lang];
+const canonicalUrl = new URL(path, SITE.url).toString();
+const ogImageUrl = new URL(ogImage, SITE.url).toString();
+const schemas = [organizationSchema(), ...jsonLd];
+const ogLocale = { fr: "fr_FR", en: "en_US", de: "de_DE" }[lang];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="fr" href={new URL(switcherLinks.fr, SITE.url).toString()} />
+    <link rel="alternate" hreflang="en" href={new URL(switcherLinks.en, SITE.url).toString()} />
+    <link rel="alternate" hreflang="de" href={new URL(switcherLinks.de, SITE.url).toString()} />
+    <link rel="alternate" hreflang="x-default" href={new URL(switcherLinks.fr, SITE.url).toString()} />
+
+    <!--
+      Defense in depth: this <meta> CSP applies even if the real HTTP header
+      in public/_headers is ever stripped by a CDN/proxy in front of the
+      site. frame-ancestors and frame-busting headers are HTTP-only and
+      can't be set via <meta> — that's handled in public/_headers instead,
+      now that the site runs on Netlify (which supports custom response
+      headers), not GitHub Pages.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://formspree.io; frame-src 'none'; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+    />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#12100d" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Actualités`} href="/actualites/rss.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={ogLocale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {schemas.map((schema) => (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+    ))}
+
+    <ClientRouter />
+  </head>
+  <body class="flex min-h-screen flex-col antialiased">
+    <div class="grain-overlay" aria-hidden="true"></div>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-accent focus:px-4 focus:py-2 focus:text-ink"
+    >
+      {t.skipToContent}
+    </a>
+    <div class="overflow-hidden border-b border-ink-line bg-ink-soft py-2">
+      <div class="announce-track flex items-center">
+        <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim">
+          <span>{t.freeShipping}</span>
+          <span class="text-accent" aria-hidden="true">•</span>
+          <span>{t.quantityDiscount}</span>
+        </span>
+        <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim" aria-hidden="true">
+          <span>{t.freeShipping}</span>
+          <span class="text-accent">•</span>
+          <span>{t.quantityDiscount}</span>
+        </span>
+      </div>
+    </div>
+    <Header lang={lang} switcherLinks={switcherLinks} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <CookieConsent lang={lang} />
+    <script>
+      import { initRevealObserver } from "../scripts/reveal";
+      import { initMobileMenu } from "../scripts/mobile-menu";
+      import { initCartUI } from "../scripts/cart-ui";
+      import { initHeroReveal } from "../scripts/hero-reveal";
+      import { initProductGallery } from "../scripts/product-gallery";
+      import { initScrollTracking } from "../scripts/scroll-tracking";
+
+      // astro:page-load fires on the very first load AND after every
+      // client-side transition, so page-specific DOM (headlines, buttons,
+      // reveal targets, header) gets re-wired each time the router swaps content.
+      document.addEventListener("astro:page-load", () => {
+        initRevealObserver();
+        initMobileMenu();
+        initCartUI();
+        initHeroReveal();
+        initProductGallery();
+        initScrollTracking();
+      });
+    </script>
+  </body>
+</html>

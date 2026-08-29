@@ -1,0 +1,23 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  buttonLabel?: string;
+  href?: string;
+}
+
+const { title, description, buttonLabel = "Faire une demande de renseignements", href = "/contact/" } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-y border-ink-line bg-paper text-ink">
+  <div class="reveal relative mx-auto max-w-3xl px-6 py-20 text-center">
+    <h2 class="font-display text-3xl font-medium text-ink sm:text-4xl">{title}</h2>
+    <p class="mt-4 text-base leading-relaxed text-ink/70">{description}</p>
+    <a
+      href={href}
+      class="mt-8 inline-block border border-ink px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:border-accent hover:bg-ink hover:text-accent"
+    >
+      {buttonLabel}
+    </a>
+  </div>
+</section>

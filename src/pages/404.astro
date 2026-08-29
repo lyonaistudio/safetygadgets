@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+---
+
+<BaseLayout
+  title="Page introuvable — Safety Gadgets"
+  description="Cette page n'existe pas ou plus. Retrouvez l'accueil, nos trackers ou la page de contact."
+  path="/404/"
+>
+  <PageHero
+    eyebrow="404"
+    title="Cette page n'existe pas"
+    description="Le lien est peut-être obsolète ou mal orthographié. Voici où aller à la place."
+  />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <div class="flex flex-wrap gap-4">
+      <a
+        href="/"
+        class="border border-accent bg-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+      >
+        Retour à l'accueil
+      </a>
+      <a
+        href="/traceurs-gps/"
+        class="border border-ink-line px-6 py-3 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:border-accent hover:text-accent"
+      >
+        Voir les trackers
+      </a>
+      <a
+        href="/contact/"
+        class="border border-ink-line px-6 py-3 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:border-accent hover:text-accent"
+      >
+        Contact
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import CTASection from "../../../components/CTASection.astro";
+import Eyebrow from "../../../components/Eyebrow.astro";
+import FAQAccordion from "../../../components/FAQAccordion.astro";
+import { PRODUCTS_EN } from "../../../data/products.en";
+import { formatPriceTTC } from "../../../data/products";
+import { faqSchema } from "../../../lib/schema";
+import { PAGE_SWITCHERS } from "../../../lib/i18n";
+
+const faqItems = [
+  {
+    question: "Which product should I choose?",
+    answer: "For a vehicle: GF07 or OBD. For a bag or keys: the Bluetooth tag. To spot surveillance: the detector. For an emergency alert: the SOS alarm.",
+  },
+  {
+    question: "Are the displayed prices tax included?",
+    answer: "Yes, all displayed prices are tax included, with no hidden fees at checkout.",
+  },
+  {
+    question: "Do you ship outside France?",
+    answer: "Contact us with your delivery address to check availability and timelines.",
+  },
+];
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="Our products — Safety Gadgets"
+  description="Discover the Safety Gadgets range: GPS trackers, Bluetooth AirTag-style trackers and compact anti-spy detectors, tested for everyday use."
+  path="/en/traceurs-gps/"
+  lang="en"
+  switcherLinks={PAGE_SWITCHERS.products}
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "Our products", url: "/en/traceurs-gps/" }]} homeLabel="Home" homeUrl="/en/" />
+  <PageHero
+    eyebrow="SHOP"
+    title="Our products"
+    description="A tightly curated selection of trackers and compact detectors, tested for everyday reliability."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS_EN.map((product) => (
+        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink p-6 transition-colors duration-200 hover:border-accent/60">
+          <a href={`/en/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
+            <div class="product-stage h-40 border border-ink-line bg-ink-soft p-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                width="200"
+                height="200"
+                class="premium-photo mx-auto h-full w-full object-contain"
+              />
+            </div>
+            <h2 class="mt-6 font-display text-xl text-paper group-hover:text-accent">
+              {product.name}
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-paper-dim">{product.shortDescription}</p>
+          </a>
+          <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
+            {formatPriceTTC(product.price, product.currency)}
+            {product.originalPrice && (
+              <span class="text-sm text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+            )}
+          </p>
+          <a
+            href={`/en/traceurs-gps/${product.slug}/`}
+            class="mt-4 border border-accent px-4 py-2 text-center text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+          >
+            View product
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Frequently asked questions" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Before you choose
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/en/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      See the full FAQ <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Know exactly what you need?"
+    description="Tell us what you're looking to secure, and we'll point you to the right product."
+    buttonLabel="Contact us"
+    href="/en/contact/"
+  />
+</BaseLayout>

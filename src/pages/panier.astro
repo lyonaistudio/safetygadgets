@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import PaymentBadges from "../components/PaymentBadges.astro";
+---
+
+<BaseLayout
+  title="Panier — Safety Gadgets"
+  description="Vérifiez votre sélection de trackers et détecteurs, puis payez directement en ligne par carte."
+  path="/panier/"
+>
+  <Breadcrumb items={[{ name: "Panier", url: "/panier/" }]} />
+  <PageHero
+    eyebrow="Panier"
+    title="Votre panier"
+    description="Ajustez les quantités, puis réglez directement en ligne par carte — paiement sécurisé, expédition sous 24 à 48h."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
+      <div>
+        <div id="cart-empty" class="hidden border border-ink-line bg-ink-soft p-8 text-center">
+          <p class="text-paper-dim">Votre panier est vide.</p>
+          <a
+            href="/traceurs-gps/"
+            class="mt-4 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+          >
+            Voir les trackers
+          </a>
+        </div>
+        <div id="cart-lines" class="hidden divide-y divide-ink-line border-y border-ink-line"></div>
+
+        <div id="cart-suggestions-section" class="mt-16 hidden">
+          <Eyebrow label="Vous aimerez aussi" />
+          <h2 class="mt-4 font-display text-2xl font-medium text-paper">Complétez votre commande</h2>
+          <div id="cart-suggestions" class="mt-8 grid gap-4 sm:grid-cols-2"></div>
+        </div>
+      </div>
+
+      <aside class="space-y-6">
+        <div id="cart-summary" class="border border-ink-line bg-ink-soft p-6">
+          <p class="text-xs uppercase tracking-[0.1em] text-mist">Sous-total</p>
+          <p class="mt-2 font-mono text-2xl text-paper">0,00 € TTC</p>
+        </div>
+        <button
+          id="cart-checkout"
+          type="button"
+          class="block w-full border border-accent bg-accent px-6 py-3 text-center text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent disabled:pointer-events-none disabled:opacity-40"
+        >
+          Payer par carte
+        </button>
+        <p id="cart-checkout-error" class="hidden text-xs leading-relaxed text-accent" role="alert"></p>
+        <a
+          href="/contact/"
+          class="block border border-ink-line px-6 py-3 text-center text-xs uppercase tracking-[0.15em] text-paper-dim transition-colors hover:border-accent hover:text-accent"
+        >
+          Une question avant d'acheter ?
+        </a>
+        <PaymentBadges />
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initCartPage } from "../scripts/cart-page";
+  document.addEventListener("astro:page-load", initCartPage);
+</script>

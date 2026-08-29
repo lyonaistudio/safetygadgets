@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import CTASection from "../../../components/CTASection.astro";
+import Eyebrow from "../../../components/Eyebrow.astro";
+import FAQAccordion from "../../../components/FAQAccordion.astro";
+import { PRODUCTS_DE } from "../../../data/products.de";
+import { formatPriceTTC } from "../../../data/products";
+import { faqSchema } from "../../../lib/schema";
+import { PAGE_SWITCHERS } from "../../../lib/i18n";
+
+const faqItems = [
+  {
+    question: "Welches Produkt sollte ich wählen?",
+    answer: "Für ein Fahrzeug: GF07 oder OBD. Für eine Tasche oder Schlüssel: der Bluetooth-Anhänger. Um Überwachung zu erkennen: der Detektor. Für einen Notfallalarm: der SOS-Alarm.",
+  },
+  {
+    question: "Sind die angezeigten Preise inklusive MwSt.?",
+    answer: "Ja, alle angezeigten Preise verstehen sich inklusive Mehrwertsteuer, ohne versteckte Kosten an der Kasse.",
+  },
+  {
+    question: "Liefern Sie auch außerhalb Frankreichs?",
+    answer: "Kontaktieren Sie uns mit Ihrer Lieferadresse, um Verfügbarkeit und Lieferzeiten zu prüfen.",
+  },
+];
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="Unsere Produkte — Safety Gadgets"
+  description="Entdecken Sie das Safety-Gadgets-Sortiment: GPS-Tracker, Bluetooth-AirTag-Tracker und kompakte Spionage-Detektoren, getestet für den Alltag."
+  path="/de/traceurs-gps/"
+  lang="de"
+  switcherLinks={PAGE_SWITCHERS.products}
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "Unsere Produkte", url: "/de/traceurs-gps/" }]} homeLabel="Startseite" homeUrl="/de/" />
+  <PageHero
+    eyebrow="SHOP"
+    title="Unsere Produkte"
+    description="Eine sorgfältig ausgewählte Reihe von Trackern und kompakten Detektoren, getestet für zuverlässigen Alltagseinsatz."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS_DE.map((product) => (
+        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink p-6 transition-colors duration-200 hover:border-accent/60">
+          <a href={`/de/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
+            <div class="product-stage h-40 border border-ink-line bg-ink-soft p-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                width="200"
+                height="200"
+                class="premium-photo mx-auto h-full w-full object-contain"
+              />
+            </div>
+            <h2 class="mt-6 font-display text-xl text-paper group-hover:text-accent">
+              {product.name}
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-paper-dim">{product.shortDescription}</p>
+          </a>
+          <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
+            {formatPriceTTC(product.price, product.currency)}
+            {product.originalPrice && (
+              <span class="text-sm text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+            )}
+          </p>
+          <a
+            href={`/de/traceurs-gps/${product.slug}/`}
+            class="mt-4 border border-accent px-4 py-2 text-center text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+          >
+            Produkt ansehen
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Häufig gestellte Fragen" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Vor der Wahl
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/de/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Vollständige FAQ ansehen <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Wissen Sie schon genau, was Sie brauchen?"
+    description="Sagen Sie uns, was Sie sichern möchten — wir helfen Ihnen, das passende Produkt zu finden."
+    buttonLabel="Kontakt aufnehmen"
+    href="/de/contact/"
+  />
+</BaseLayout>

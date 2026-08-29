@@ -1,0 +1,266 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import CTASection from "../../components/CTASection.astro";
+import TrustBar from "../../components/TrustBar.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import { PRODUCTS_DE } from "../../data/products.de";
+import { formatPriceTTC } from "../../data/products";
+import { faqSchema } from "../../lib/schema";
+import { HOME_SWITCHER } from "../../lib/i18n";
+
+const flagship = PRODUCTS_DE.find((p) => p.slug === "alarme-sos") ?? PRODUCTS_DE[0];
+
+const faqItems = [
+  {
+    question: "Benötigen alle Tracker eine SIM-Karte?",
+    answer: "Nur die GPS-Tracker (GF07, OBD) benötigen eine SIM-Karte mit Datentarif. Der Bluetooth-Anhänger und der SOS-Alarm funktionieren ohne SIM-Karte oder Abo.",
+  },
+  {
+    question: "Wie lange dauert der Versand?",
+    answer: "Bestellungen werden innerhalb von 24 bis 48 Werktagen versandt, mit einer per E-Mail zugesandten Sendungsverfolgungsnummer.",
+  },
+  {
+    question: "Kann ich ein Produkt zurückgeben, das mir nicht passt?",
+    answer: "Ja, innerhalb von 30 Tagen, unbenutzt und in der Originalverpackung.",
+  },
+];
+const homeFaqSchema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="Safety Gadgets — GPS-Tracker, Bluetooth-Tracker & Spionage-Detektoren"
+  description="Safety Gadgets bietet GPS-Tracker, Bluetooth-AirTag-Tracker und kompakte Spionage-Detektoren, um immer zu wissen, wo sich Wichtiges befindet — und zu erkennen, was Sie überwacht."
+  path="/de/"
+  lang="de"
+  switcherLinks={HOME_SWITCHER}
+  jsonLd={[homeFaqSchema]}
+>
+  <section class="relative overflow-hidden border-b border-ink-line bg-ink">
+    <div class="ambient-glow" aria-hidden="true"></div>
+    <div class="mesh-glow" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
+      <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
+      <h1 data-hero-heading class="mt-5 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
+        Schützen Sie, was Sie lieben, wo auch immer es ist.
+      </h1>
+      <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-paper-dim">
+        Unsere GPS-Tracker, Bluetooth-AirTag-Tracker und Spionage-Detektoren passen sich jeder
+        Situation an, damit Sie immer wissen, wo sich Wichtiges befindet — und einfach ruhigen Gewissens leben können.
+      </p>
+      <div class="reveal mt-10 flex flex-col items-center" aria-hidden="true">
+        <div class="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent">
+            <path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z" />
+            <circle cx="12" cy="9" r="2.2" />
+          </svg>
+          Standort in Echtzeit
+        </div>
+        <div class="hero-radar-scope mt-5">
+          <div class="hero-radar">
+            <span class="radar-ring"></span>
+            <span class="radar-ring"></span>
+            <span class="radar-ring"></span>
+            <span class="radar-core"></span>
+          </div>
+        </div>
+        <div class="mt-5 flex items-center gap-2 text-xs uppercase tracking-[0.1em] text-paper-dim">
+          <span class="live-dot shrink-0"></span>
+          Signal aktiv
+        </div>
+      </div>
+      <ul class="reveal mt-8 flex flex-wrap justify-center gap-x-3 gap-y-2" aria-label="Anwendungsmöglichkeiten">
+        {["Angehörige", "Fahrzeuge", "Zuhause", "Haustiere", "Gepäck", "Koffer", "Taschen", "Schlüssel", "Portemonnaie", "Wertsachen"].map((item) => (
+          <li class="border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div class="reveal mt-8 flex justify-center">
+        <p class="flex max-w-lg items-center gap-2 border border-ink-line px-4 py-2 text-left text-xs text-paper-dim">
+          <span class="live-dot shrink-0" aria-hidden="true"></span>
+          In Frankreich wird im Schnitt alle 20 Sekunden ein Diebstahl registriert — 1,6 Millionen
+          erfasste Diebstähle im Jahr 2024, alle Arten zusammengenommen (SSMSI, französisches Innenministerium).
+        </p>
+      </div>
+      <div class="reveal mt-8 flex flex-wrap justify-center gap-4">
+        <a
+          href="#produits"
+          class="border border-accent bg-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+        >
+          Unsere Produkte ansehen
+        </a>
+        <a
+          href="/de/contact/"
+          class="border border-ink-line px-6 py-3 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:border-accent hover:text-accent"
+        >
+          Eine Frage?
+        </a>
+      </div>
+      <ul
+        class="reveal mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.1em] text-paper-dim"
+        aria-label="Warum Safety Gadgets"
+      >
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4" />
+          </svg>
+          1 Jahr Garantie
+        </li>
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M3 13h13l-1 4H4l-1-4Zm0 0 2-7h9l2 7M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+          </svg>
+          Versand innerhalb 24-48 Std.
+        </li>
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M12 2 4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3ZM9 12l2 2 4-4" />
+          </svg>
+          Sichere Zahlung
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <TrustBar lang="de" />
+
+  <section class="overflow-hidden border-b border-ink-line bg-ink">
+    <div class="mx-auto grid max-w-5xl items-center gap-6 px-6 py-12 lg:grid-cols-2 lg:gap-6 lg:py-10">
+      <div class="reveal order-2 lg:order-1">
+        <Eyebrow label="Bestseller" />
+        <h2 class="mt-3 font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
+          {flagship.name}
+        </h2>
+        <p class="mt-3 max-w-md text-sm leading-relaxed text-paper-dim">{flagship.tagline}</p>
+        <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
+          {formatPriceTTC(flagship.price, flagship.currency)}
+          {flagship.originalPrice && (
+            <span class="text-sm text-mist line-through">{formatPriceTTC(flagship.originalPrice, flagship.currency)}</span>
+          )}
+        </p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a
+            href={`/de/traceurs-gps/${flagship.slug}/`}
+            class="border border-accent bg-accent px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+          >
+            Produkt ansehen
+          </a>
+        </div>
+      </div>
+      <div class="product-stage order-1 lg:order-2">
+        <img
+          src={flagship.image}
+          alt={flagship.name}
+          width="420"
+          height="420"
+          class="premium-photo mx-auto h-48 w-auto object-contain sm:h-56 lg:h-64"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="produits" class="mx-auto max-w-6xl px-6 py-12 sm:py-14">
+    <Eyebrow label="Unsere Produkte" />
+    <h2 class="mt-3 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Wählen Sie das passende Produkt für Ihren Bedarf.
+    </h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS_DE.map((product) => (
+        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-accent/60">
+          <a href={`/de/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
+            <span class="text-xs uppercase tracking-[0.15em] text-mist">{product.category}</span>
+            <div class="product-stage my-3 h-32">
+              <img
+                src={product.image}
+                alt={product.name}
+                width="200"
+                height="200"
+                class="premium-photo mx-auto h-32 w-32 object-contain"
+              />
+            </div>
+            <h3 class="font-display text-base text-paper group-hover:text-accent">{product.name}</h3>
+            <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-paper-dim">{product.shortDescription}</p>
+          </a>
+          <p class="mt-2 flex flex-wrap items-baseline gap-2 font-mono text-base text-accent">
+            {formatPriceTTC(product.price, product.currency)}
+            {product.originalPrice && (
+              <span class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+            )}
+          </p>
+          <a
+            href={`/de/traceurs-gps/${product.slug}/`}
+            class="mt-3 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:text-accent-soft"
+          >
+            Produkt ansehen <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-y border-ink-line bg-ink-soft">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[1.3fr_1fr]">
+      <div class="reveal">
+        <Eyebrow label="Privat & geschäftlich" />
+        <h2 class="mt-4 max-w-xl font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
+          Genauso gut für Unternehmen wie für Sie ausgestattet.
+        </h2>
+        <p class="mt-4 max-w-xl leading-relaxed text-paper-dim">
+          Fahrzeugflotten, Team-Ausstattung, Mitarbeiter im Außendienst: Wir unterstützen auch
+          Unternehmen, Vereine und öffentliche Einrichtungen, neben Privatpersonen. Mengenrabatte
+          auf Anfrage, professionelle Rechnungsstellung.
+        </p>
+        <a
+          href="/de/contact/"
+          class="mt-6 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+        >
+          Mehr erfahren
+        </a>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="border border-ink-line bg-ink p-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" />
+          </svg>
+          <p class="mt-3 text-sm text-paper">Privatpersonen</p>
+          <p class="mt-1 text-xs leading-relaxed text-paper-dim">Schneller Versand, Online-Zahlung, persönlicher Support.</p>
+        </div>
+        <div class="border border-ink-line bg-ink p-5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true">
+            <path d="M4 8h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm4-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2H8V6ZM3 13h18" />
+          </svg>
+          <p class="mt-3 text-sm text-paper">Unternehmen</p>
+          <p class="mt-1 text-xs leading-relaxed text-paper-dim">Mengenangebote, professionelle Rechnungsstellung, fester Ansprechpartner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Häufig gestellte Fragen" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Kurz gefasst
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/de/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Vollständige FAQ ansehen <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Eine Frage vor der Wahl?"
+    description="Sagen Sie uns, was Sie brauchen — wir helfen Ihnen, das passende Produkt zu finden."
+    buttonLabel="Kontakt aufnehmen"
+    href="/de/contact/"
+  />
+</BaseLayout>

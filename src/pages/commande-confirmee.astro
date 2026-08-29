@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { SITE } from "../lib/site";
+---
+
+<BaseLayout
+  title="Commande confirmée — Safety Gadgets"
+  description="Votre commande a été confirmée."
+  path="/commande-confirmee/"
+  noindex
+>
+  <PageHero eyebrow="MERCI" title="Votre commande est confirmée" description="Un e-mail de confirmation vous a été envoyé par Stripe avec le détail de votre paiement." />
+
+  <section class="mx-auto max-w-2xl px-6 py-16 text-center sm:py-20">
+    <p class="text-paper-dim">
+      Nous préparons votre expédition sous 24 à 48h. Pour toute question sur votre commande, écrivez-nous à{" "}
+      <a href={`mailto:${SITE.email}`} class="text-accent transition-colors hover:text-accent-soft">{SITE.email}</a>.
+    </p>
+    <a
+      href="/traceurs-gps/"
+      class="mt-8 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+    >
+      Continuer mes achats
+    </a>
+  </section>
+</BaseLayout>
+
+<script>
+  import { clearCart } from "../lib/cart";
+  document.addEventListener("astro:page-load", clearCart, { once: true });
+</script>

@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import CTASection from "../../components/CTASection.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import { faqSchema } from "../../lib/schema";
+import { PAGE_SWITCHERS } from "../../lib/i18n";
+
+const faqItems = [
+  {
+    question: "Von wo werden Bestellungen versandt?",
+    answer: "Aus Frankreich, mit einer Sendungsverfolgungsnummer, die sofort nach Versand per E-Mail zugesandt wird, innerhalb von 24 bis 48 Werktagen.",
+  },
+  {
+    question: "Bieten Sie eine Garantie auf Ihre Produkte?",
+    answer: "Ja, alle unsere Produkte sind mit einer einjährigen Garantie gegen Herstellungsfehler abgesichert.",
+  },
+  {
+    question: "Wie erreiche ich Sie bei einem Problem?",
+    answer: "Über unser Kontaktformular — wir antworten persönlich, ohne Warteschleife.",
+  },
+];
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="Über uns — Safety Gadgets"
+  description="Safety Gadgets wählt kompakte, zuverlässige Tracker aus, getestet bevor sie zum Verkauf angeboten werden, für mehr Ruhe im Alltag."
+  path="/de/a-propos/"
+  lang="de"
+  switcherLinks={PAGE_SWITCHERS.about}
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "Über uns", url: "/de/a-propos/" }]} homeLabel="Startseite" homeUrl="/de/" />
+  <PageHero eyebrow="ÜBER UNS" title="Ausgewählte Tracker, nicht angehäuft" />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <p class="text-lg leading-relaxed text-paper-dim">
+      Safety Gadgets entstand aus einer einfachen Beobachtung: Der Markt für Verbraucher-Tracker
+      ist gesättigt mit nahezu identischen Produkten, die ohne echte Beratung oder klare Garantie
+      verkauft werden. Wir bevorzugen eine sorgfältig ausgewählte Palette getesteter Produkte, mit
+      einem ehrlichen Datenblatt und einem Kundendienst, der wirklich antwortet.
+    </p>
+
+    <Eyebrow label="UNSER ANSATZ" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Wenige, aber gut gewählte Produkte
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Statt die Produktpalette zu vervielfachen, konzentrieren wir uns auf Tracker, deren
+      Zuverlässigkeit, Akkulaufzeit und Bedienfreundlichkeit vor dem Verkauf geprüft werden. Ziel
+      ist, dass jedes Gerät seine Versprechen im Alltag hält — nicht nur auf dem Datenblatt.
+    </p>
+
+    <Eyebrow label="FÜR WEN" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Privatpersonen und Unternehmen
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Unsere Tracker richten sich an alle, die diskret ein Fahrzeug, einen Angehörigen oder einen
+      Wertgegenstand im Blick behalten möchten — Familien, Besitzer von Zweirädern, pflegende
+      Angehörige oder kleine Firmenflotten.
+    </p>
+
+    <Eyebrow label="NACH DEM KAUF" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Ein Support, der antwortet
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Eine Frage zur Inbetriebnahme, zur Tracking-App oder zur Garantie? Wir antworten persönlich,
+      ohne Telefonwarteschleife oder verloren gegangene Anfragen.
+    </p>
+
+    <Eyebrow label="Häufig gestellte Fragen" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Kurz gefasst
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/de/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Vollständige FAQ ansehen <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Eine Frage zu unseren Produkten?"
+    description="Kontaktieren Sie uns direkt, wir antworten persönlich auf jede Anfrage."
+    buttonLabel="Kontakt aufnehmen"
+    href="/de/contact/"
+  />
+</BaseLayout>

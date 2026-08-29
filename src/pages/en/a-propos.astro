@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import CTASection from "../../components/CTASection.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import { faqSchema } from "../../lib/schema";
+import { PAGE_SWITCHERS } from "../../lib/i18n";
+
+const faqItems = [
+  {
+    question: "Where are orders shipped from?",
+    answer: "From France, with a tracking number sent by email as soon as it ships, within 24 to 48 business hours.",
+  },
+  {
+    question: "Do you offer a warranty on your products?",
+    answer: "Yes, all our products are covered by a 1-year warranty against manufacturing defects.",
+  },
+  {
+    question: "How can I reach you if there's a problem?",
+    answer: "Through our contact form — we reply personally, with no phone menus.",
+  },
+];
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="About — Safety Gadgets"
+  description="Safety Gadgets selects compact, reliable trackers, tested before being offered for sale, for everyday peace of mind."
+  path="/en/a-propos/"
+  lang="en"
+  switcherLinks={PAGE_SWITCHERS.about}
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "About", url: "/en/a-propos/" }]} homeLabel="Home" homeUrl="/en/" />
+  <PageHero eyebrow="ABOUT" title="Trackers chosen, not stacked up" />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <p class="text-lg leading-relaxed text-paper-dim">
+      Safety Gadgets was born from a simple observation: the consumer tracker market is
+      saturated with near-identical products, sold with no real support or clear warranty. We
+      prefer a tightly curated selection of tested products, with an honest technical sheet and
+      after-sales support that actually answers.
+    </p>
+
+    <Eyebrow label="OUR APPROACH" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Few references, but well chosen
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Rather than multiplying products, we focus on trackers whose reliability, battery life and
+      ease of use are verified before going on sale. The goal is for every device to keep its
+      promises day to day, not just on the product sheet.
+    </p>
+
+    <Eyebrow label="WHO IT'S FOR" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Individuals and businesses
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      Our trackers are for anyone who wants to keep a discreet eye on a vehicle, a loved one or a
+      valuable item — families, two-wheeler owners, caregivers, or small professional fleets.
+    </p>
+
+    <Eyebrow label="AFTER YOU BUY" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      Support that actually answers
+    </h2>
+    <p class="mt-4 leading-relaxed text-paper-dim">
+      A question about setup, the tracking app or the warranty? We reply personally, with no
+      phone menus or tickets that get lost.
+    </p>
+
+    <Eyebrow label="Frequently asked questions" class="mt-16" />
+    <h2 class="mt-4 font-display text-2xl font-medium text-paper sm:text-3xl">
+      In brief
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/en/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      See the full FAQ <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="A question about our products?"
+    description="Contact us directly, we reply personally to every request."
+    buttonLabel="Contact us"
+    href="/en/contact/"
+  />
+</BaseLayout>

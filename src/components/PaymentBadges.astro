@@ -1,0 +1,31 @@
+---
+// Logos officiels des moyens de paiement réellement proposés au checkout
+// Stripe (voir src/pages/api/checkout.ts) — icônes vectorielles de la
+// bibliothèque simple-icons, jamais recréées à la main pour rester fidèles
+// aux marques.
+import { siVisa, siMastercard, siAmericanexpress, siApplepay, siGooglepay, siKlarna } from "simple-icons";
+
+const brands = [siVisa, siMastercard, siAmericanexpress, siApplepay, siGooglepay, siKlarna];
+---
+
+<div class="border border-ink-line bg-ink-soft p-6">
+  <div class="flex items-center gap-2 text-xs uppercase tracking-[0.1em] text-mist">
+    <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="5" y="11" width="14" height="9" rx="1.5" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
+    Paiement 100&nbsp;% sécurisé
+  </div>
+  <p class="mt-2 text-xs leading-relaxed text-paper-dim">
+    Paiement chiffré géré par Stripe — vos coordonnées bancaires ne transitent jamais par nos serveurs.
+  </p>
+  <ul class="mt-4 grid grid-cols-3 gap-2" aria-label="Moyens de paiement acceptés">
+    {brands.map((brand) => (
+      <li class="flex h-9 items-center justify-center rounded-md bg-paper" title={brand.title}>
+        <svg role="img" viewBox="0 0 24 24" class="h-4 w-full px-2" aria-label={brand.title}>
+          <path d={brand.path} fill={`#${brand.hex}`} />
+        </svg>
+      </li>
+    ))}
+  </ul>
+</div>

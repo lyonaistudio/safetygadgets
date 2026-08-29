@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import { faqSchema } from "../../lib/schema";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("actualites")).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+const dateFormatter = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+
+const faqItems = [
+  {
+    question: "Combien de vols sont commis chaque année en France ?",
+    answer:
+      "Selon le SSMSI (service statistique du ministère de l'Intérieur), on recense chaque année environ 622 800 vols de sacs, portefeuilles et objets personnels, 125 200 vols de véhicules et 400 000 vols de vélos. Ces chiffres, tous types confondus, expliquent pourquoi la prévention et le suivi d'objets sont devenus des réflexes courants, au-delà des seules mesures de dissuasion classiques (alarme, éclairage, vigilance).",
+    link: { href: "/actualites/vols-en-france-chiffres-ssmsi/", label: "Voir le détail des chiffres officiels" },
+  },
+  {
+    question: "Comment repérer un tracker GPS caché dans une voiture de location ?",
+    answer:
+      "Un tracker aimanté se glisse en quelques secondes sous un véhicule, le plus souvent près des passages de roue, sous le châssis ou dans le pare-chocs. Une vérification visuelle et au toucher dans ces zones suffit généralement, et un détecteur RF/magnétique dédié accélère la recherche en repérant aussi les signaux GPS, Bluetooth ou GSM émis par l'appareil.",
+    link: { href: "/actualites/reperer-tracker-cache-voiture-location/", label: "Lire le guide complet" },
+  },
+  {
+    question: "Un AirTag ou une balise Bluetooth peut-il être utilisé pour me suivre à mon insu ?",
+    answer:
+      "Oui, c'est un usage détourné identifié par Apple et Google, qui ont depuis ajouté des alertes de suivi non consenti sur iOS et Android. Ces alertes ne sont toutefois pas instantanées ni infaillibles ; un détecteur dédié qui scanne activement les signaux Bluetooth à proximité reste le moyen le plus fiable de vérifier soi-même, notamment dans un sac, un véhicule ou des affaires personnelles.",
+    link: { href: "/actualites/suivi-non-consenti-balises-bluetooth/", label: "Comprendre le sujet en détail" },
+  },
+  {
+    question: "Comment protéger ses objets de valeur en cas de cambriolage ?",
+    answer:
+      "La prévention (porte blindée, alarme, éclairage, vigilance du voisinage) reste la première ligne de défense, mais aucune protection n'est infaillible à 100 %. Associer une balise de suivi aux objets les plus exposés — sacs, bijoux de valeur, appareils électroniques — augmente les chances de localisation et de récupération après coup, en complément des mesures de dissuasion.",
+    link: { href: "/actualites/proteger-objets-de-valeur-cambriolage/", label: "Voir les objets les plus visés" },
+  },
+  {
+    question: "Quels réflexes adopter en louant une voiture à l'étranger ?",
+    answer:
+      "Avant de prendre la route, vérifiez l'état du véhicule et signalez les dommages existants, évitez de laisser des objets de valeur visibles à l'intérieur, et gardez un moyen de localisation indépendant du loueur en cas de vol ou de litige. Ces réflexes simples limitent les mauvaises surprises pendant et après la location.",
+    link: { href: "/actualites/louer-voiture-etranger-reflexes-securite/", label: "La check-list complète" },
+  },
+];
+const faqPageSchema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="Actualités & conseils — Safety Gadgets"
+  description="Vols, cambriolages, suivi non consenti : nos articles de fond sur la sécurité et la protection de ce qui compte, avec des sources vérifiées."
+  path="/actualites/"
+  jsonLd={[faqPageSchema]}
+>
+  <Breadcrumb items={[{ name: "Actualités", url: "/actualites/" }]} />
+  <PageHero
+    eyebrow="ACTUALITÉS"
+    title="Conseils & actualités sécurité"
+    description="Des articles de fond sur les vols, les cambriolages et le suivi non consenti — sourcés, sans chiffres inventés, pour comprendre avant d'agir."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {articles.map((article) => (
+        <a
+          href={`/actualites/${article.id}/`}
+          class="reveal group flex flex-col border border-ink-line bg-ink-soft p-6 transition-colors duration-200 hover:border-accent/60"
+        >
+          <span class="text-xs uppercase tracking-[0.15em] text-mist">{article.data.category}</span>
+          <h2 class="mt-3 font-display text-lg text-paper group-hover:text-accent">{article.data.title}</h2>
+          <p class="mt-2 flex-1 text-sm leading-relaxed text-paper-dim">{article.data.description}</p>
+          <p class="mt-4 font-mono text-xs text-mist">{dateFormatter.format(article.data.publishDate)}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Questions fréquentes" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Avant de lire, l'essentiel
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+  </section>
+</BaseLayout>

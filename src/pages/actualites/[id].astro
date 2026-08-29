@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import CTASection from "../../components/CTASection.astro";
+import { getCollection, render } from "astro:content";
+import { getProduct } from "../../data/products";
+import { articleSchema } from "../../lib/schema";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("actualites");
+  return articles.map((article) => ({
+    params: { id: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const relatedProduct = article.data.relatedProduct ? getProduct(article.data.relatedProduct) : undefined;
+
+const dateFormatter = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+
+const schema = articleSchema({
+  title: article.data.title,
+  description: article.data.description,
+  slug: article.id,
+  publishDate: article.data.publishDate,
+});
+---
+
+<BaseLayout
+  title={`${article.data.title} — Safety Gadgets`}
+  description={article.data.description}
+  path={`/actualites/${article.id}/`}
+  ogType="article"
+  jsonLd={[schema]}
+>
+  <Breadcrumb
+    items={[
+      { name: "Actualités", url: "/actualites/" },
+      { name: article.data.title, url: `/actualites/${article.id}/` },
+    ]}
+  />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label={article.data.category} />
+    <h1 class="mt-4 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
+      {article.data.title}
+    </h1>
+    <p class="mt-3 font-mono text-xs uppercase tracking-[0.1em] text-mist">
+      Publié le {dateFormatter.format(article.data.publishDate)}
+    </p>
+
+    <div class="prose-article prose prose-invert mt-10 max-w-none">
+      <Content />
+    </div>
+
+    {article.data.sources && article.data.sources.length > 0 && (
+      <div class="mt-10 border-t border-ink-line pt-6">
+        <p class="text-xs uppercase tracking-[0.1em] text-mist">Sources</p>
+        <ul class="mt-2 space-y-1">
+          {article.data.sources.map((source) => (
+            <li>
+              <a href={source.url} class="text-sm text-accent transition-colors hover:text-accent-soft" rel="noopener noreferrer" target="_blank">
+                {source.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {relatedProduct && (
+      <div class="mt-12 flex items-center gap-6 border border-ink-line bg-ink-soft p-6">
+        <img
+          src={relatedProduct.image}
+          alt={relatedProduct.name}
+          width="80"
+          height="80"
+          class="premium-photo h-20 w-20 shrink-0 object-contain"
+        />
+        <div class="flex-1">
+          <p class="text-xs uppercase tracking-[0.1em] text-mist">En lien avec cet article</p>
+          <h2 class="mt-1 font-display text-lg text-paper">{relatedProduct.name}</h2>
+        </div>
+        <a
+          href={`/traceurs-gps/${relatedProduct.slug}/`}
+          class="shrink-0 border border-accent px-4 py-2 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+        >
+          Voir la fiche
+        </a>
+      </div>
+    )}
+  </section>
+
+  <CTASection
+    title="Une question sur votre sécurité ?"
+    description="Décrivez votre besoin, nous vous orientons vers le bon produit."
+    buttonLabel="Nous contacter"
+  />
+</BaseLayout>

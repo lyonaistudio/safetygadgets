@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import { SITE } from "../lib/site";
+---
+
+<BaseLayout
+  title="Conditions générales de vente — Safety Gadgets"
+  description="Conditions générales de vente de Safety Gadgets : commande, paiement, livraison, droit de rétractation et garanties."
+  path="/cgv/"
+>
+  <Breadcrumb items={[{ name: "CGV", url: "/cgv/" }]} />
+  <PageHero eyebrow="LÉGAL" title="Conditions générales de vente" />
+
+  <section class="prose-article prose prose-invert mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <p class="text-sm text-mist">
+      Document de travail — à faire valider par un professionnel du droit avant mise en ligne
+      (SIRET, prestataire de paiement, transporteur et médiateur de la consommation restent à
+      compléter).
+    </p>
+
+    <p class="text-sm text-mist">
+      Les présentes conditions générales de vente (CGV) s'appliquent à toute commande passée sur le
+      site {SITE.url}, édité par {SITE.name} (SIRET : [SIRET EN ATTENTE]), ci-après « le Vendeur »,
+      au bénéfice de tout client, ci-après « le Client ».
+    </p>
+
+    <h2>1. Objet</h2>
+    <p>
+      Le Vendeur propose à la vente en ligne des traceurs GPS et accessoires associés, tels que
+      décrits sur le site {SITE.url}. Les caractéristiques essentielles des produits sont présentées
+      sur chaque fiche produit.
+    </p>
+
+    <h2>2. Prix</h2>
+    <p>
+      Les prix sont indiqués en euros, toutes taxes comprises (TTC). Les frais de livraison, le cas
+      échéant, sont précisés avant la validation définitive de la commande. Le Vendeur se réserve le
+      droit de modifier ses prix à tout moment, les produits étant facturés sur la base du tarif en
+      vigueur au moment de la validation de la commande.
+    </p>
+
+    <h2>3. Commande</h2>
+    <p>
+      Le Client sélectionne le ou les produits souhaités, renseigne ses coordonnées de livraison et de
+      facturation, puis valide sa commande après en avoir vérifié le contenu. Un email de confirmation
+      récapitulant la commande est envoyé au Client dès sa validation.
+    </p>
+
+    <h2>4. Paiement</h2>
+    <p>
+      Le paiement s'effectue en ligne, au moment de la commande, via un prestataire de paiement
+      sécurisé tiers (à préciser une fois le moyen de paiement mis en place). Le Vendeur ne stocke à
+      aucun moment les données bancaires du Client.
+    </p>
+
+    <h2>5. Livraison</h2>
+    <p>
+      Les commandes sont préparées et expédiées sous 24 à 48h ouvrées après validation du paiement,
+      vers l'adresse indiquée par le Client lors de la commande. Un numéro de suivi est communiqué par
+      email dès l'expédition. Les délais annoncés sont donnés à titre indicatif et peuvent varier selon
+      le transporteur.
+    </p>
+    <p>
+      En cas de retard de livraison significatif ou de perte du colis, le Client est invité à contacter
+      le Vendeur pour trouver une solution (renvoi ou remboursement).
+    </p>
+
+    <h2>6. Droit de rétractation</h2>
+    <p>
+      Conformément à l'article L221-18 du Code de la consommation, le Client dispose d'un délai de
+      <strong>14 jours calendaires</strong> à compter de la réception du produit pour exercer son droit
+      de rétractation, sans avoir à justifier de motif ni à payer de pénalité, à l'exception des frais
+      de retour qui restent à sa charge.
+    </p>
+    <p>
+      Pour exercer ce droit, le Client informe le Vendeur de sa décision par email à
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>, puis retourne le produit dans son emballage
+      d'origine, non utilisé et complet. Le remboursement intervient dans un délai de 14 jours à
+      compter de la réception du produit retourné, par le même moyen de paiement que celui utilisé lors
+      de l'achat.
+    </p>
+
+    <h2>7. Garanties</h2>
+    <p>
+      Tout produit vendu bénéficie de plein droit, et sans supplément de prix, de la
+      <strong>garantie légale de conformité</strong> (articles L217-3 et suivants du Code de la
+      consommation) et de la garantie relative aux <strong>vices cachés</strong> (articles 1641 et
+      suivants du Code civil).
+    </p>
+    <p>
+      Chaque produit bénéficie en complément d'une <strong>garantie commerciale d'un an</strong> à
+      compter de la date d'achat, couvrant les défauts de fabrication et pannes survenant dans un usage
+      normal. Cette garantie commerciale ne remplace pas les garanties légales mentionnées ci-dessus et
+      s'y ajoute. Pour toute mise en œuvre d'une garantie, le Client contacte le Vendeur avec sa preuve
+      d'achat.
+    </p>
+
+    <h2>8. Responsabilité</h2>
+    <p>
+      Le Vendeur ne saurait être tenu responsable des dommages résultant d'une utilisation du produit
+      non conforme à sa notice, ni des cas de force majeure ou d'événements indépendants de sa volonté
+      (panne d'un service tiers, incident de transport).
+    </p>
+
+    <h2>9. Données personnelles</h2>
+    <p>
+      Le traitement des données personnelles liées à une commande ou à une demande de contact est
+      détaillé dans les <a href="/mentions-legales/">mentions légales</a> du site.
+    </p>
+
+    <h2>10. Droit applicable et médiation</h2>
+    <p>
+      Les présentes CGV sont soumises au droit français. En cas de litige, le Client peut recourir
+      gratuitement à un médiateur de la consommation (coordonnées à préciser ici une fois le médiateur
+      désigné) avant toute action judiciaire, conformément à l'article L616-1 du Code de la
+      consommation. À défaut de résolution amiable, les tribunaux français seront seuls compétents.
+    </p>
+
+    <p class="text-sm text-mist">Dernière mise à jour : {new Date().toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}.</p>
+  </section>
+</BaseLayout>

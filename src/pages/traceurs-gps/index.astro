@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import CTASection from "../../components/CTASection.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import FAQAccordion from "../../components/FAQAccordion.astro";
+import { PRODUCTS, formatPriceTTC } from "../../data/products";
+import { faqSchema } from "../../lib/schema";
+
+const faqItems = [
+  {
+    question: "Quel produit choisir selon mon besoin ?",
+    answer: "Pour un véhicule : GF07 ou OBD. Pour un sac ou des clés : le tag Bluetooth. Pour repérer une surveillance : le détecteur. Pour une alerte d'urgence : l'alarme SOS.",
+  },
+  {
+    question: "Les prix affichés sont-ils TTC ?",
+    answer: "Oui, tous les prix affichés sont toutes taxes comprises, sans frais cachés à la commande.",
+  },
+  {
+    question: "Livrez-vous en dehors de la France ?",
+    answer: "Contactez-nous avec votre adresse de livraison pour vérifier la disponibilité et les délais.",
+  },
+];
+const schema = faqSchema(faqItems);
+---
+
+<BaseLayout
+  title="Nos produits — Safety Gadgets"
+  description="Découvrez la sélection Safety Gadgets : trackers GPS, trackers AirTag Bluetooth et détecteurs anti-espionnage compacts et fiables, testés pour leur usage au quotidien."
+  path="/traceurs-gps/"
+  jsonLd={[schema]}
+>
+  <Breadcrumb items={[{ name: "Nos produits", url: "/traceurs-gps/" }]} />
+  <PageHero
+    eyebrow="BOUTIQUE"
+    title="Nos produits"
+    description="Une sélection resserrée de trackers et de détecteurs compacts, testés pour leur fiabilité au quotidien."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS.map((product) => (
+        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink p-6 transition-colors duration-200 hover:border-accent/60">
+          <a href={`/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
+            <div class="product-stage h-40 border border-ink-line bg-ink-soft p-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                width="200"
+                height="200"
+                class="premium-photo mx-auto h-full w-full object-contain"
+              />
+            </div>
+            <h2 class="mt-6 font-display text-xl text-paper group-hover:text-accent">
+              {product.name}
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-paper-dim">{product.shortDescription}</p>
+          </a>
+          <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
+            {formatPriceTTC(product.price, product.currency)}
+            {product.originalPrice && (
+              <span class="text-sm text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+            )}
+          </p>
+          <button
+            type="button"
+            data-add-to-cart={product.slug}
+            class="mt-4 border border-accent px-4 py-2 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+          >
+            Ajouter au panier
+          </button>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <Eyebrow label="Questions fréquentes" />
+    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
+      Avant de choisir
+    </h2>
+    <div class="mt-8">
+      <FAQAccordion items={faqItems} />
+    </div>
+    <a
+      href="/faq/"
+      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+    >
+      Voir toute la FAQ <span aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <CTASection
+    title="Un besoin précis en tête ?"
+    description="Dites-nous ce que vous cherchez à sécuriser, nous vous orientons vers le bon produit."
+    buttonLabel="Nous contacter"
+  />
+</BaseLayout>

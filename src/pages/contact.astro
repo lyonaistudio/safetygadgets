@@ -1,0 +1,165 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import { SITE, FORMSPREE_ENDPOINT } from "../lib/site";
+import { PRODUCTS } from "../data/products";
+---
+
+<BaseLayout
+  title="Contact — Safety Gadgets"
+  description="Une question sur un produit, un conseil avant achat ou le suivi d'une commande déjà passée : contactez Safety Gadgets, réponse personnelle sous 24h."
+  path="/contact/"
+>
+  <Breadcrumb items={[{ name: "Contact", url: "/contact/" }]} />
+  <PageHero
+    eyebrow="CONTACT"
+    title="Une question ? Nous sommes là."
+    description="Pour commander, direction votre panier — le paiement se fait directement en ligne. Ce formulaire, c'est pour vos questions, conseils avant achat ou le suivi d'une commande déjà passée."
+  />
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+      <div>
+        <div id="success-banner" class="mb-8 hidden border border-accent bg-ink-soft p-6" role="status" aria-live="polite">
+          <p class="font-display font-semibold text-accent">Message envoyé.</p>
+          <p class="mt-1 text-sm text-paper-dim">Merci, nous revenons vers vous rapidement.</p>
+        </div>
+
+        <div id="error-banner" class="mb-8 hidden border border-ink-line bg-ink-soft p-6" role="alert" aria-live="polite">
+          <p class="font-display font-semibold text-paper">Envoi impossible pour le moment.</p>
+          <p class="mt-1 text-sm text-paper-dim">
+            Réessayez, ou écrivez-nous directement à{" "}
+            <a href={`mailto:${SITE.email}`} class="text-accent transition-colors hover:text-accent-soft">{SITE.email}</a>.
+          </p>
+        </div>
+
+        <form
+          id="contact-form"
+          action={FORMSPREE_ENDPOINT}
+          method="POST"
+          class="space-y-6"
+        >
+          <input type="hidden" name="_subject" value="Nouvelle demande — Safety Gadgets" />
+          <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="prenom" class="font-mono text-xs uppercase tracking-wide text-mist">Prénom</label>
+              <input
+                id="prenom"
+                name="Prénom"
+                type="text"
+                required
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+              />
+            </div>
+            <div>
+              <label for="nom" class="font-mono text-xs uppercase tracking-wide text-mist">Nom</label>
+              <input
+                id="nom"
+                name="Nom"
+                type="text"
+                required
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="email" class="font-mono text-xs uppercase tracking-wide text-mist">Email</label>
+            <input
+              id="email"
+              name="Email"
+              type="email"
+              required
+              class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+            />
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="type-demande" class="font-mono text-xs uppercase tracking-wide text-mist">
+                Type de demande
+              </label>
+              <select
+                id="type-demande"
+                name="TypeDemande"
+                required
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper transition-colors focus:border-accent focus:outline-none"
+              >
+                <option value="">Sélectionner…</option>
+                <option value="Avant achat">Question avant achat</option>
+                <option value="Commande">Commande / suivi</option>
+                <option value="SAV">SAV / retour / garantie</option>
+                <option value="Professionnel">Professionnel / commande en volume</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div>
+              <label for="produit" class="font-mono text-xs uppercase tracking-wide text-mist">
+                Produit concerné
+              </label>
+              <select
+                id="produit"
+                name="Produit"
+                class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper transition-colors focus:border-accent focus:outline-none"
+              >
+                <option value="">Non précisé</option>
+                {PRODUCTS.map((product) => <option value={product.name}>{product.name}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="font-mono text-xs uppercase tracking-wide text-mist">
+              Votre message
+            </label>
+            <textarea
+              id="message"
+              name="Message"
+              rows="6"
+              required
+              class="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-paper placeholder:text-mist transition-colors focus:border-accent focus:outline-none"
+            ></textarea>
+          </div>
+
+          <button
+            id="contact-submit"
+            type="submit"
+            class="border border-accent bg-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Envoyer la demande
+          </button>
+        </form>
+      </div>
+
+      <aside class="space-y-8">
+        <div class="border border-ink-line bg-ink-soft p-6">
+          <Eyebrow label="COORDONNÉES" />
+          <ul class="mt-4 space-y-3 text-sm text-paper-dim">
+            <li>
+              <a href={`mailto:${SITE.email}`} class="transition-colors hover:text-accent">{SITE.email}</a>
+            </li>
+            <li>{SITE.city}, France — expédition dans toute la France</li>
+            <li>{SITE.hours}</li>
+          </ul>
+        </div>
+
+        <div class="border border-ink-line p-6">
+          <Eyebrow label="RÉPONSE PERSONNELLE" />
+          <p class="mt-4 text-sm text-paper-dim">
+            Chaque message est lu et traité personnellement — pas de standard téléphonique ni de
+            ticket qui s'égare. Réponse sous 24h en semaine.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initContactForm } from "../scripts/contact-form";
+  document.addEventListener("astro:page-load", initContactForm);
+</script>

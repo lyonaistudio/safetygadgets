@@ -1,0 +1,76 @@
+---
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "fr" } = Astro.props;
+
+// Measurement ID de la propriété Google Analytics 4 dédiée à Safety Gadgets.
+// Placeholder — à remplacer une fois la propriété GA4 créée pour ce site
+// (ne pas réutiliser l'ID d'un autre projet, cela enverrait le trafic au
+// mauvais compte).
+const GA_MEASUREMENT_ID = "G-REPLACE_ME";
+
+const TEXT: Record<Locale, { body: string; link: string; refuse: string; accept: string }> = {
+  fr: {
+    body: "Ce site utilise Google Analytics pour mesurer l'audience de façon anonyme. Ces données ne sont utilisées qu'à cette fin et uniquement avec votre accord. Voir notre",
+    link: "politique de confidentialité",
+    refuse: "Refuser",
+    accept: "Accepter",
+  },
+  en: {
+    body: "This site uses Google Analytics to anonymously measure audience. This data is used only for that purpose and only with your consent. See our",
+    link: "privacy policy",
+    refuse: "Decline",
+    accept: "Accept",
+  },
+  de: {
+    body: "Diese Website nutzt Google Analytics, um die Nutzung anonym zu messen. Diese Daten werden ausschließlich zu diesem Zweck und nur mit Ihrer Zustimmung verwendet. Siehe unsere",
+    link: "Datenschutzerklärung",
+    refuse: "Ablehnen",
+    accept: "Akzeptieren",
+  },
+};
+const t = TEXT[lang];
+---
+
+<div
+  id="cookie-consent"
+  data-ga-id={GA_MEASUREMENT_ID}
+  hidden
+  class="fixed inset-x-0 bottom-0 z-[100] border-t border-ink-line bg-ink/97 px-6 py-5 shadow-[0_-20px_40px_-20px_rgba(0,0,0,0.6)] backdrop-blur-md"
+>
+  <div class="mx-auto flex max-w-6xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-sm leading-relaxed text-paper-dim">
+      {t.body}{" "}
+      <a href="/mentions-legales/" class="text-accent underline underline-offset-2 hover:text-accent">{t.link}</a>.
+    </p>
+    <div class="flex shrink-0 gap-3 text-xs uppercase tracking-[0.15em]">
+      <button
+        type="button"
+        id="cookie-refuse"
+        class="border border-ink-line px-4 py-2 text-paper transition-colors hover:border-accent hover:text-accent"
+      >
+        {t.refuse}
+      </button>
+      <button
+        type="button"
+        id="cookie-accept"
+        class="border border-accent bg-accent px-4 py-2 text-ink transition-colors hover:bg-ink hover:text-accent"
+      >
+        {t.accept}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initCookieConsent } from "../scripts/cookie-consent";
+
+  document.addEventListener("astro:page-load", () => {
+    const gaId = document.getElementById("cookie-consent")?.dataset.gaId;
+    if (gaId) initCookieConsent(gaId);
+  });
+</script>

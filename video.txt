@@ -1,0 +1,115 @@
+Crée une pub vidéo de 36s pour Safety Gadgets, ma marque de traceurs GPS et 
+de trackers Bluetooth pour véhicules, personnes, animaux et objets/sacs/bagages.
+Applique le skill remotion-motion-graphics.
+
+═══ VARIABLES À UTILISER TELLES QUELLES ═══
+ACCENT       = [hex accent du site]
+FOND_SITE    = [hex fond du site]
+POLICE       = [nom de la police du site]
+PORTEE       = [X] m
+AUTONOMIE    = [X] mois
+ETANCHEITE   = [IPXX]
+URL          = [url du site]
+
+═══ FORMAT ═══
+1920x1080, 30fps, 1080 frames.
+
+═══ TON ═══
+Expert, sobre, maîtrisé. Une marque de sécurité qui connaît son sujet.
+Jamais de superlatif. Jamais de promesse invérifiable. Chaque chiffre affiché
+porte sa source à l'écran, en petit, sous le chiffre.
+La confiance vient de la précision, pas de l'emphase.
+Fil rouge émotionnel : on ne protège pas des objets, on protège ce qu'on aime.
+
+═══ LOGO ═══
+Le fichier existe déjà dans public/logo.png. Charge-le avec staticFile('logo.png').
+Ne génère AUCUN logo toi-même, n'invente pas de nom de fichier.
+Si le fichier est absent, arrête-toi et signale-le-moi au lieu de fabriquer
+un placeholder.
+
+═══ DIRECTION ARTISTIQUE ═══
+- Fond #0B0F14, gradient mesh sombre qui dérive lentement
+- Accent = ACCENT, à respecter strictement, ne le modifie sous aucun prétexte
+- Alerte #EF4444, texte #F8FAFC, gris source #64748B
+- Typo = POLICE, graisses 700/900, letter-spacing serré sur les chiffres
+- Motif récurrent : point pulsant avec ondes concentriques, en ACCENT
+- Détail crédibilité : fine grille technique en fond, opacité 4%
+- À partir de la frame 1000, le fond s'éclaircit progressivement vers 
+  FOND_SITE pour raccorder visuellement avec la boutique
+- Stack complet : mesh → contenu → grade → grain + vignette
+
+═══ STORYBOARD (respecte exactement ce découpage, ne l'étends pas) ═══
+
+0-120f — LE PROBLÈME
+  Rame de métro stylisée en lignes fines, une silhouette, un sac à l'épaule.
+  Le sac disparaît. Texte : "En France, un vol toutes les 50 SECONDES."
+  "50 SECONDES" en #EF4444, scale-in agressif.
+
+120-330f — L'AMPLEUR
+  Compteurs animés depuis 0, 4 blocs en stagger de 48 frames.
+  Chiffre énorme + libellé + source en #64748B dessous :
+  "622 800 — sacs, portefeuilles, objets personnels
+   (Ministère de l'Intérieur, SSMSI 2025)"
+  "125 200 — véhicules (Ministère de l'Intérieur, SSMSI 2025)"
+  "400 000 — vélos (Académie des Mobilités Actives)"
+  "82 264 — animaux perdus (Fichier National I-CAD, 2024)"
+  Incrust discrète : "dont 13% dans les transports en commun"
+
+330-450f — LE VRAI DRAME
+  Split-screen chiffré :
+  "40% des véhicules retrouvés" (France Assureurs / Argos)
+  "7% des vélos" (ONDRP)
+  Puis : "Le problème n'est pas le vol. C'est de ne jamais savoir où."
+
+450-620f — LA GAMME
+  Le point pulsant apparaît, une carte stylisée en lignes fines se dessine,
+  un tracé suit un trajet en temps réel.
+  4 cards en stagger, pictos dessinés en code :
+  "SAC & BAGAGE — tracker Bluetooth, alerte de séparation"
+  "VÉHICULE — GPS temps réel, historique de trajets"
+  "PERSONNE — bouton SOS, géorepérage"
+  "ANIMAL — alerte de sortie de zone"
+
+620-740f — LA PREUVE TECHNIQUE
+  Fond qui s'assombrit. Fiche technique qui se dessine ligne par ligne,
+  typo monospace, alignement millimétré, rythme lent, aucun effet gratuit :
+  "Compatibilité — iOS 13+ / Android 8+"
+  "Protocole — Bluetooth Low Energy 5.0"
+  "Portée — PORTEE en champ libre"
+  "Autonomie — AUTONOMIE"
+  "Étanchéité — ETANCHEITE"
+  "Dernière position connue enregistrée automatiquement"
+
+740-880f — CE QUE ÇA CHANGE
+  Timeline horizontale graduée en heures, rythme calme.
+  Le curseur avance, 3 jalons s'allument en ACCENT :
+  "H+0 — alerte de mouvement, vous savez immédiatement"
+  "H+2 — position transmise aux forces de l'ordre"
+  "H+48 — au-delà, les chances chutent fortement"
+  Sous la timeline, en #64748B :
+  "Un traceur n'empêche pas le vol. Il transforme une disparition
+   en une position. Les 48 premières heures décident de tout."
+  Source affichée : "Société Générale — Assurance & prévention"
+
+880-1000f — LA PROMESSE
+  Tout s'apaise. Silence visuel. Le point pulsant se réduit à un point calme.
+  Deux lignes l'une après l'autre, 50 frames d'écart, fade + rise très doux :
+  "Il est important de prendre soin de ce que l'on aime."
+  "Ce qui compte pour vous ne devrait jamais disparaître."
+
+1000-1080f — CTA
+  Le fond bascule vers FOND_SITE.
+  Le logo (public/logo.png) en reveal spring au centre, largeur ~30% écran,
+  lueur douce en ACCENT derrière.
+  Sous le logo : "Ne perdez plus ce qui compte." puis URL.
+  Fin sur le logo seul, 15 dernières frames.
+
+═══ CONTRAINTES (importantes) ═══
+- Tout en 3 fichiers max : Root.tsx, Composition.tsx, theme.ts
+- Toutes les couleurs et easings centralisés dans theme.ts, zéro valeur inline
+- Seul asset externe autorisé : public/logo.png. Tout le reste dessiné 
+  en code / SVG / CSS.
+- Ne me montre PAS le code dans le chat, écris directement les fichiers
+- Boucle de vérif : render → extrais 6 frames (60, 250, 400, 550, 800, 1030) →
+  inspecte → corrige → re-render. MAXIMUM 2 passes, puis tu livres.
+- Ne me pose aucune question, prends les décisions toi-même.
