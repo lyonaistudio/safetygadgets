@@ -1,5 +1,4 @@
 import { getCart } from "../lib/cart";
-import { PRODUCTS, formatPriceTTC } from "../data/products";
 import { trackEvent } from "../lib/analytics";
 
 // Automatisation Make.com (email auto-réponse, notification Telegram, journal
@@ -13,33 +12,17 @@ const MIN_FILL_TIME_MS = 2500;
 let formRenderedAt = 0;
 
 // Si l'internaute arrive du panier (bouton "Demander la commande"), on
-// pré-remplit le message avec le récapitulatif — jamais en écrasant un
-// message déjà saisi.
+// présélectionne juste le motif et on amorce le message par une formule
+// d'accroche — jamais en écrasant un message déjà saisi. Le détail du
+// panier n'est plus recopié dans le message : trop technique à lire pour
+// le client, le panier fait déjà foi côté serveur.
 function prefillFromCart(form: HTMLFormElement) {
   const cart = getCart();
   if (cart.length === 0) return;
 
-  const lines = cart
-    .map((line) => {
-      const product = PRODUCTS.find((p) => p.slug === line.slug);
-      return product ? `- ${product.name} × ${line.qty}` : null;
-    })
-    .filter((line): line is string => Boolean(line));
-  if (lines.length === 0) return;
-
-  const subtotal = cart.reduce((sum, line) => {
-    const product = PRODUCTS.find((p) => p.slug === line.slug);
-    return product ? sum + product.price * line.qty : sum;
-  }, 0);
-
   const messageField = form.querySelector<HTMLTextAreaElement>("#message");
   if (messageField && !messageField.value.trim()) {
-    messageField.value = [
-      "Bonjour, je souhaite commander :",
-      ...lines,
-      "",
-      `Sous-total : ${formatPriceTTC(subtotal)} (hors frais de port éventuels).`,
-    ].join("\n");
+    messageField.value = "Bonjour, je vous contacte pour ";
   }
 
   const typeField = form.querySelector<HTMLSelectElement>("#type-demande");

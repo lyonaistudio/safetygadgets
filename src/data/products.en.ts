@@ -6,6 +6,7 @@ export const PRODUCTS_EN: Product[] = [
   {
     slug: "pack-decouverte",
     sku: "SG-PACK01",
+    badge: "Pack",
     category: "Discovery pack",
     name: "Safety Gadgets Discovery Pack",
     shortName: "Discovery Pack",
@@ -71,6 +72,7 @@ export const PRODUCTS_EN: Product[] = [
   {
     slug: "gf07",
     sku: "SG-GF07",
+    badge: "New",
     category: "GPS Tracker",
     name: "GF07 Tracker",
     shortName: "GF07",
@@ -137,8 +139,9 @@ export const PRODUCTS_EN: Product[] = [
   {
     slug: "tag-bluetooth",
     sku: "SG-BT01",
+    badge: "New",
     category: "Bluetooth Tracker",
-    name: "AirTag Bluetooth Find My Tracker",
+    name: "Bluetooth Find My Tracker",
     shortName: "BT Tag",
     tagline: "The tag that finds your things, wherever they are in the world",
     price: 19.9,
@@ -155,7 +158,7 @@ export const PRODUCTS_EN: Product[] = [
       "Lost Mode and automatic separation alert",
     ],
     specs: [
-      { label: "Type", value: "AirTag Bluetooth tracker" },
+      { label: "Type", value: "Bluetooth tracker" },
       { label: "Connectivity", value: "Bluetooth 5.4 (BLE)" },
       { label: "Compatibility", value: "MFi certified (Apple), Google certified" },
       { label: "Positioning mode", value: "Find My network / Google location network" },
@@ -207,6 +210,7 @@ export const PRODUCTS_EN: Product[] = [
   {
     slug: "detecteur-anti-espion",
     sku: "SG-RK021",
+    badge: "New",
     category: "Anti-spy detector",
     name: "Hidden camera, GPS and microphone detector",
     shortName: "RK-021 Detector",
@@ -272,6 +276,7 @@ export const PRODUCTS_EN: Product[] = [
   {
     slug: "obd",
     sku: "SG-OBD",
+    badge: "New",
     category: "OBD GPS Tracker",
     name: "OBD Tracker",
     shortName: "OBD",
@@ -343,6 +348,7 @@ export const PRODUCTS_EN: Product[] = [
   {
     slug: "alarme-sos",
     sku: "SG-SOS253",
+    badge: "New",
     category: "Personal alarm",
     name: "SOS GPS Keychain Alarm",
     shortName: "SOS Alarm",

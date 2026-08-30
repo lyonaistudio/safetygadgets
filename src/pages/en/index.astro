@@ -11,6 +11,20 @@ import { HOME_SWITCHER } from "../../lib/i18n";
 
 const flagship = PRODUCTS_EN.find((p) => p.slug === "alarme-sos") ?? PRODUCTS_EN[0];
 
+const CATEGORIES = [
+  "Loved ones",
+  "Vehicles",
+  "Home",
+  "Apartment",
+  "Pets",
+  "Luggage",
+  "Suitcases",
+  "Bags",
+  "Keys",
+  "Wallet",
+  "Valuables",
+];
+
 const faqItems = [
   {
     question: "Do all trackers need a SIM card?",
@@ -30,7 +44,7 @@ const homeFaqSchema = faqSchema(faqItems);
 
 <BaseLayout
   title="Safety Gadgets — GPS trackers, Bluetooth trackers & anti-spy detectors"
-  description="Safety Gadgets selects GPS trackers, Bluetooth AirTag-style trackers and compact anti-spy detectors, to always know where what matters is — and spot what's watching you."
+  description="Safety Gadgets selects GPS trackers, Bluetooth trackers and compact anti-spy detectors, to always know where what matters is — and spot what's watching you."
   path="/en/"
   lang="en"
   switcherLinks={HOME_SWITCHER}
@@ -46,11 +60,11 @@ const homeFaqSchema = faqSchema(faqItems);
     <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
       <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
       <h1 data-hero-heading class="mt-5 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
-        Protect what you love, wherever it is.
+        Keep an eye on what matters most to you.
       </h1>
       <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-paper-dim">
-        Our GPS trackers, Bluetooth AirTag-style trackers and anti-spy detectors adapt to every
-        situation, so you always know where what matters is — and enjoy true peace of mind.
+        Our GPS trackers, Bluetooth trackers, SOS GPS keychains and anti-spy detectors let you keep
+        an eye on everything that matters to you.
       </p>
       <div class="reveal mt-10 flex flex-col items-center" aria-hidden="true">
         <div class="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist">
@@ -73,13 +87,22 @@ const homeFaqSchema = faqSchema(faqItems);
           Signal active
         </div>
       </div>
-      <ul class="reveal mt-8 flex flex-wrap justify-center gap-x-3 gap-y-2" aria-label="Possible uses">
-        {["Loved ones", "Vehicles", "Home", "Pets", "Luggage", "Suitcases", "Bags", "Keys", "Wallet", "Valuables"].map((item) => (
-          <li class="border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
-            {item}
-          </li>
-        ))}
-      </ul>
+      <div class="reveal mt-8 overflow-hidden" aria-label="What you can protect">
+        <div class="categories-track flex gap-3">
+          {CATEGORIES.map((item) => (
+            <span class="shrink-0 whitespace-nowrap border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
+              {item}
+            </span>
+          ))}
+          <div class="contents" aria-hidden="true">
+            {CATEGORIES.map((item) => (
+              <span class="shrink-0 whitespace-nowrap border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
       <div class="reveal mt-8 flex justify-center">
         <p class="flex max-w-lg items-center gap-2 border border-ink-line px-4 py-2 text-left text-xs text-paper-dim">
           <span class="live-dot shrink-0" aria-hidden="true"></span>
@@ -123,11 +146,19 @@ const homeFaqSchema = faqSchema(faqItems);
           </svg>
           Secure payment
         </li>
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M4 4v6h6M4 10a8 8 0 1 1 2.34 5.66" />
+          </svg>
+          30-day returns
+        </li>
       </ul>
     </div>
   </section>
 
-  <TrustBar lang="en" />
+  <div class="hidden sm:block">
+    <TrustBar lang="en" />
+  </div>
 
   <section class="overflow-hidden border-b border-ink-line bg-ink">
     <div class="mx-auto grid max-w-5xl items-center gap-6 px-6 py-12 lg:grid-cols-2 lg:gap-6 lg:py-10">
@@ -169,9 +200,14 @@ const homeFaqSchema = faqSchema(faqItems);
     <h2 class="mt-3 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
       Choose the product that fits your need.
     </h2>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-3">
       {PRODUCTS_EN.map((product) => (
         <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-accent/60">
+          {product.badge && (
+            <span class="mb-2 inline-block w-fit border border-accent bg-ink px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-accent">
+              {product.badge}
+            </span>
+          )}
           <a href={`/en/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
             <span class="text-xs uppercase tracking-[0.15em] text-mist">{product.category}</span>
             <div class="product-stage my-3 h-32">

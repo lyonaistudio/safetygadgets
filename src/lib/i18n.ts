@@ -45,7 +45,7 @@ export const UI = {
     comingSoon: "Bientôt",
     footerNav: "Navigation",
     footerContact: "Contact",
-    footerShipping: ", France — expédition dans toute la France",
+    footerShipping: ", France — expédition dans toute l'Europe",
     footerRights: "Tous droits réservés.",
     footerCgv: "CGV",
     footerLegal: "Mentions légales & confidentialité",
@@ -54,7 +54,7 @@ export const UI = {
     viewSheet: "Voir la fiche",
     faqEyebrow: "Questions fréquentes",
     siteDescription:
-      "Safety Gadgets sélectionne et propose des trackers GPS, des trackers AirTag Bluetooth et des détecteurs anti-espionnage compacts et fiables, pour localiser ce qui compte et repérer ce qui vous surveille.",
+      "Safety Gadgets sélectionne et propose des trackers GPS, des trackers Bluetooth et des détecteurs anti-espionnage compacts et fiables, pour localiser ce qui compte et repérer ce qui vous surveille.",
   },
   en: {
     skipToContent: "Skip to content",
@@ -66,7 +66,7 @@ export const UI = {
     comingSoon: "Coming soon",
     footerNav: "Navigation",
     footerContact: "Contact",
-    footerShipping: ", France — shipping across France and abroad on request",
+    footerShipping: ", France — shipping across Europe",
     footerRights: "All rights reserved.",
     footerCgv: "Terms of sale",
     footerLegal: "Legal notice & privacy",
@@ -75,7 +75,7 @@ export const UI = {
     viewSheet: "View product",
     faqEyebrow: "Frequently asked questions",
     siteDescription:
-      "Safety Gadgets selects GPS trackers, Bluetooth AirTag-style trackers and compact, reliable anti-spy detectors, to locate what matters and spot what's watching you.",
+      "Safety Gadgets selects GPS trackers, Bluetooth trackers and compact, reliable anti-spy detectors, to locate what matters and spot what's watching you.",
   },
   de: {
     skipToContent: "Zum Inhalt springen",
@@ -87,7 +87,7 @@ export const UI = {
     comingSoon: "Demnächst",
     footerNav: "Navigation",
     footerContact: "Kontakt",
-    footerShipping: ", Frankreich — Versand in ganz Frankreich, international auf Anfrage",
+    footerShipping: ", Frankreich — Versand in ganz Europa",
     footerRights: "Alle Rechte vorbehalten.",
     footerCgv: "AGB",
     footerLegal: "Impressum & Datenschutz",
@@ -96,7 +96,7 @@ export const UI = {
     viewSheet: "Produkt ansehen",
     faqEyebrow: "Häufig gestellte Fragen",
     siteDescription:
-      "Safety Gadgets bietet GPS-Tracker, Bluetooth-AirTag-Tracker und kompakte, zuverlässige Spionage-Detektoren, um zu orten, was zählt, und zu erkennen, was Sie überwacht.",
+      "Safety Gadgets bietet GPS-Tracker, Bluetooth-Tracker und kompakte, zuverlässige Spionage-Detektoren, um zu orten, was zählt, und zu erkennen, was Sie überwacht.",
   },
 } as const;
 

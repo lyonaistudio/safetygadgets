@@ -181,8 +181,11 @@ body {
    qu'un point isolé flottant dans du vide. */
 .hero-radar-scope {
   position: relative;
-  width: 168px;
-  height: 168px;
+  /* Plus petit par défaut (mobile) pour réduire la hauteur du hero et le
+     scroll avant d'atteindre le contenu ; retrouve sa taille complète à
+     partir de sm. */
+  width: 122px;
+  height: 122px;
   border-radius: 9999px;
   border: 1px solid var(--color-ink-line);
   overflow: hidden;
@@ -190,6 +193,13 @@ body {
     linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 1px, transparent 1px);
   background-size: 16px 16px;
   background-position: center;
+}
+
+@media (min-width: 640px) {
+  .hero-radar-scope {
+    width: 168px;
+    height: 168px;
+  }
 }
 
 .hero-radar-scope::before {
@@ -329,6 +339,24 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .announce-track {
+    animation: none;
+  }
+}
+
+/* Bandeau des catégories protégées, dans le hero : même mécanique de
+   défilement, pour montrer toute la liste sans forcer un retour à la
+   ligne qui allongerait le hero sur mobile. */
+.categories-track {
+  width: max-content;
+  animation: marquee-scroll 26s linear infinite;
+}
+
+.categories-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categories-track {
     animation: none;
   }
 }

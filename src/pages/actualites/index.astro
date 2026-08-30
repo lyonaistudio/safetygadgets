@@ -27,7 +27,7 @@ const faqItems = [
     link: { href: "/actualites/reperer-tracker-cache-voiture-location/", label: "Lire le guide complet" },
   },
   {
-    question: "Un AirTag ou une balise Bluetooth peut-il être utilisé pour me suivre à mon insu ?",
+    question: "Une balise Bluetooth peut-elle être utilisée pour me suivre à mon insu ?",
     answer:
       "Oui, c'est un usage détourné identifié par Apple et Google, qui ont depuis ajouté des alertes de suivi non consenti sur iOS et Android. Ces alertes ne sont toutefois pas instantanées ni infaillibles ; un détecteur dédié qui scanne activement les signaux Bluetooth à proximité reste le moyen le plus fiable de vérifier soi-même, notamment dans un sac, un véhicule ou des affaires personnelles.",
     link: { href: "/actualites/suivi-non-consenti-balises-bluetooth/", label: "Comprendre le sujet en détail" },
@@ -62,7 +62,7 @@ const faqPageSchema = faqSchema(faqItems);
   />
 
   <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
       {articles.map((article) => (
         <a
           href={`/actualites/${article.id}/`}

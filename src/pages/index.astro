@@ -29,11 +29,25 @@ const latestArticles = (await getCollection("actualites"))
   .slice(0, 8);
 
 const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
+
+const CATEGORIES = [
+  "Proches",
+  "Véhicules",
+  "Maison",
+  "Appartement",
+  "Animaux",
+  "Bagages",
+  "Valises",
+  "Sacs",
+  "Clés",
+  "Portefeuille",
+  "Objets de valeur",
+];
 ---
 
 <BaseLayout
   title="Safety Gadgets — Trackers GPS, Bluetooth et détecteurs anti-espionnage"
-  description="Safety Gadgets sélectionne des trackers GPS, des trackers AirTag Bluetooth et des détecteurs anti-espionnage compacts, pour localiser ce qui compte et repérer ce qui vous surveille."
+  description="Safety Gadgets sélectionne des trackers GPS, des trackers Bluetooth et des détecteurs anti-espionnage compacts, pour localiser ce qui compte et repérer ce qui vous surveille."
   path="/"
   jsonLd={[homeFaqSchema]}
 >
@@ -47,11 +61,11 @@ const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
     <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
       <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
       <h1 data-hero-heading class="mt-5 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
-        Protégez ce que vous aimez, où que ce soit.
+        Gardez un œil sur ce qui vous est précieux.
       </h1>
       <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-paper-dim">
-        Nos trackers GPS, trackers AirTag Bluetooth et détecteurs anti-espionnage s'adaptent à toutes les
-        situations, pour toujours savoir où se trouve ce qui compte — et garder l'esprit tranquille.
+        Nos trackers GPS, trackers Bluetooth, porte-clefs SOS GPS et détecteurs anti-espionnage vous
+        permettent d'avoir un œil sur tout ce qui compte pour vous.
       </p>
       <div class="reveal mt-10 flex flex-col items-center" aria-hidden="true">
         <div class="flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist">
@@ -74,24 +88,22 @@ const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
           Signal actif
         </div>
       </div>
-      <ul class="reveal mt-8 flex flex-wrap justify-center gap-x-3 gap-y-2" aria-label="Utilisations possibles">
-        {[
-          "Proches",
-          "Véhicules",
-          "Maison",
-          "Animaux",
-          "Bagages",
-          "Valises",
-          "Sacs",
-          "Clés",
-          "Portefeuille",
-          "Objets de valeur",
-        ].map((item) => (
-          <li class="border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
-            {item}
-          </li>
-        ))}
-      </ul>
+      <div class="reveal mt-8 overflow-hidden" aria-label="Ce que vous pouvez protéger">
+        <div class="categories-track flex gap-3">
+          {CATEGORIES.map((item) => (
+            <span class="shrink-0 whitespace-nowrap border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
+              {item}
+            </span>
+          ))}
+          <div class="contents" aria-hidden="true">
+            {CATEGORIES.map((item) => (
+              <span class="shrink-0 whitespace-nowrap border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
       <div class="reveal mt-8 flex justify-center">
         <p class="flex max-w-lg items-center gap-2 border border-ink-line px-4 py-2 text-left text-xs text-paper-dim">
           <span class="live-dot shrink-0" aria-hidden="true"></span>
@@ -135,11 +147,19 @@ const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
           </svg>
           Paiement sécurisé
         </li>
+        <li class="flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
+            <path d="M4 4v6h6M4 10a8 8 0 1 1 2.34 5.66" />
+          </svg>
+          Retour sous 30 jours
+        </li>
       </ul>
     </div>
   </section>
 
-  <TrustBar />
+  <div class="hidden sm:block">
+    <TrustBar />
+  </div>
 
   <section class="overflow-hidden border-b border-ink-line bg-ink">
     <div class="mx-auto grid max-w-5xl items-center gap-6 px-6 py-12 lg:grid-cols-2 lg:gap-6 lg:py-10">
@@ -213,9 +233,14 @@ const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
     <h2 class="mt-3 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
       Choisissez le produit adapté à votre besoin.
     </h2>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-3">
       {PRODUCTS.map((product) => (
         <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-accent/60">
+          {product.badge && (
+            <span class="mb-2 inline-block w-fit border border-accent bg-ink px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-accent">
+              {product.badge}
+            </span>
+          )}
           <a href={`/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
             <span class="text-xs uppercase tracking-[0.15em] text-mist">{product.category}</span>
             <div
@@ -286,7 +311,7 @@ const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
       <div class="reveal">
         <Eyebrow label="Particuliers & professionnels" />
         <h2 class="mt-4 max-w-xl font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
-          Aussi équipé pour les entreprises que pour vous.
+          Autant équipé pour les entreprises que pour vous.
         </h2>
         <p class="mt-4 max-w-xl leading-relaxed text-paper-dim">
           Flottes de véhicules, dotation d'équipe, collaborateurs isolés : nous accompagnons aussi les

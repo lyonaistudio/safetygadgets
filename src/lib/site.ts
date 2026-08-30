@@ -23,7 +23,7 @@ export const SITE = {
   sameAs: [] as string[],
   tagline: "Trackers et détecteurs compacts pour sécuriser ce qui compte vraiment.",
   description:
-    "Safety Gadgets sélectionne et propose des trackers GPS, des trackers AirTag Bluetooth et des détecteurs anti-espionnage compacts et fiables, pour localiser ce qui compte et repérer ce qui vous surveille.",
+    "Safety Gadgets sélectionne et propose des trackers GPS, des trackers Bluetooth et des détecteurs anti-espionnage compacts et fiables, pour localiser ce qui compte et repérer ce qui vous surveille.",
 } as const;
 
 export const NAV_LINKS = [

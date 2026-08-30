@@ -6,6 +6,7 @@ export const PRODUCTS_DE: Product[] = [
   {
     slug: "pack-decouverte",
     sku: "SG-PACK01",
+    badge: "Paket",
     category: "Entdecker-Paket",
     name: "Safety Gadgets Entdecker-Paket",
     shortName: "Entdecker-Paket",
@@ -71,6 +72,7 @@ export const PRODUCTS_DE: Product[] = [
   {
     slug: "gf07",
     sku: "SG-GF07",
+    badge: "Neu",
     category: "GPS-Tracker",
     name: "GF07 Tracker",
     shortName: "GF07",
@@ -137,8 +139,9 @@ export const PRODUCTS_DE: Product[] = [
   {
     slug: "tag-bluetooth",
     sku: "SG-BT01",
+    badge: "Neu",
     category: "Bluetooth-Tracker",
-    name: "AirTag Bluetooth Find My Tracker",
+    name: "Bluetooth Find My Tracker",
     shortName: "BT Tag",
     tagline: "Der Anhänger, der Ihre Sachen wiederfindet, egal wo auf der Welt",
     price: 19.9,
@@ -154,7 +157,7 @@ export const PRODUCTS_DE: Product[] = [
       "Verloren-Modus und automatische Trennungswarnung",
     ],
     specs: [
-      { label: "Typ", value: "AirTag Bluetooth-Tracker" },
+      { label: "Typ", value: "Bluetooth-Tracker" },
       { label: "Konnektivität", value: "Bluetooth 5.4 (BLE)" },
       { label: "Kompatibilität", value: "MFi-zertifiziert (Apple), Google-zertifiziert" },
       { label: "Ortungsmodus", value: "Find My-Netzwerk / Google-Ortungsnetzwerk" },
@@ -206,6 +209,7 @@ export const PRODUCTS_DE: Product[] = [
   {
     slug: "detecteur-anti-espion",
     sku: "SG-RK021",
+    badge: "Neu",
     category: "Spionage-Detektor",
     name: "Detektor für versteckte Kameras, GPS-Tracker und Mikrofone",
     shortName: "Detektor RK-021",
@@ -271,6 +275,7 @@ export const PRODUCTS_DE: Product[] = [
   {
     slug: "obd",
     sku: "SG-OBD",
+    badge: "Neu",
     category: "OBD-GPS-Tracker",
     name: "OBD-Tracker",
     shortName: "OBD",
@@ -342,6 +347,7 @@ export const PRODUCTS_DE: Product[] = [
   {
     slug: "alarme-sos",
     sku: "SG-SOS253",
+    badge: "Neu",
     category: "Persönlicher Alarm",
     name: "SOS GPS-Schlüsselanhänger-Alarm",
     shortName: "SOS-Alarm",

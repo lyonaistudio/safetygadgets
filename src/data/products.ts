@@ -13,6 +13,7 @@ export interface Product {
   tagline: string;
   price: number;
   originalPrice?: number;
+  badge?: string;
   currency: string;
   image: string;
   gallery?: string[];
@@ -29,6 +30,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "pack-decouverte",
     sku: "SG-PACK01",
+    badge: "Pack",
     category: "Pack découverte",
     name: "Pack Découverte Safety Gadgets",
     shortName: "Pack Découverte",
@@ -94,6 +96,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "gf07",
     sku: "SG-GF07",
+    badge: "Nouveauté",
     category: "Tracker GPS",
     name: "Tracker GF07",
     shortName: "GF07",
@@ -161,8 +164,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "tag-bluetooth",
     sku: "SG-BT01",
+    badge: "Nouveauté",
     category: "Tracker Bluetooth",
-    name: "Tracker AirTag Bluetooth Find My",
+    name: "Tracker Bluetooth Find My",
     shortName: "Tag BT",
     tagline: "La balise qui retrouve vos affaires, où qu'elles soient dans le monde",
     price: 19.9,
@@ -179,7 +183,7 @@ export const PRODUCTS: Product[] = [
       "Mode perdu et alerte d'oubli automatique",
     ],
     specs: [
-      { label: "Type", value: "Tracker AirTag Bluetooth" },
+      { label: "Type", value: "Tracker Bluetooth" },
       { label: "Connectivité", value: "Bluetooth 5.4 (BLE)" },
       { label: "Compatibilité", value: "Certifiée MFi (Apple), certifiée Google" },
       { label: "Mode de positionnement", value: "Réseau Find My / réseau de localisation Google" },
@@ -231,6 +235,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "detecteur-anti-espion",
     sku: "SG-RK021",
+    badge: "Nouveauté",
     category: "Détecteur anti-espionnage",
     name: "Détecteur de caméras, GPS et micros espions",
     shortName: "Détecteur RK-021",
@@ -297,6 +302,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "obd",
     sku: "SG-OBD",
+    badge: "Nouveauté",
     category: "Tracker GPS OBD",
     name: "Tracker OBD",
     shortName: "OBD",
@@ -369,6 +375,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "alarme-sos",
     sku: "SG-SOS253",
+    badge: "Nouveauté",
     category: "Alarme personnelle",
     name: "Alarme Porte-clés SOS GPS",
     shortName: "Alarme SOS",
