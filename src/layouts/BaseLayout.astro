@@ -101,21 +101,23 @@ const ogLocale = { fr: "fr_FR", en: "en_US", de: "de_DE" }[lang];
     >
       {t.skipToContent}
     </a>
-    <div class="overflow-hidden border-b border-ink-line bg-ink-soft py-2">
-      <div class="announce-track flex items-center">
-        <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim">
-          <span>{t.freeShipping}</span>
-          <span class="text-accent" aria-hidden="true">•</span>
-          <span>{t.quantityDiscount}</span>
-        </span>
-        <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim" aria-hidden="true">
-          <span>{t.freeShipping}</span>
-          <span class="text-accent">•</span>
-          <span>{t.quantityDiscount}</span>
-        </span>
+    <div class="sticky top-0 z-40">
+      <div class="overflow-hidden border-b border-ink-line bg-ink-soft py-2">
+        <div class="announce-track flex items-center">
+          <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim">
+            <span>{t.freeShipping}</span>
+            <span class="text-accent" aria-hidden="true">•</span>
+            <span>{t.quantityDiscount}</span>
+          </span>
+          <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim" aria-hidden="true">
+            <span>{t.freeShipping}</span>
+            <span class="text-accent">•</span>
+            <span>{t.quantityDiscount}</span>
+          </span>
+        </div>
       </div>
+      <Header lang={lang} switcherLinks={switcherLinks} />
     </div>
-    <Header lang={lang} switcherLinks={switcherLinks} />
     <main id="main" class="flex-1">
       <slot />
     </main>
