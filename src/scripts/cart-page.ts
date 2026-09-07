@@ -108,13 +108,13 @@ function render() {
     ${nextTierLine}
     <p class="mt-4 text-xs leading-relaxed text-mist">
       5&nbsp;% de réduction par article ajouté au panier (jusqu'à 20&nbsp;% dès 5 articles). Livraison
-      offerte dès 100&nbsp;€ TTC d'achat, sinon 4,90&nbsp;€ de frais de livraison.
+      offerte dès 100&nbsp;€ TTC d'achat, sinon 7,99&nbsp;€ de frais de livraison.
     </p>
   `;
 
   if (suggestionsContainer && suggestionsSection) {
     const cartSlugs = new Set(lines.map(({ product }) => product.slug));
-    const suggestions = PRODUCTS.filter((p) => !cartSlugs.has(p.slug));
+    const suggestions = PRODUCTS.filter((p) => !cartSlugs.has(p.slug) && !p.comingSoon);
     suggestionsSection.classList.toggle("hidden", suggestions.length === 0);
     suggestionsContainer.innerHTML = suggestions
       .map(

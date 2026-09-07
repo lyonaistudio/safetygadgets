@@ -23,6 +23,13 @@ const faqItems = [
   },
 ];
 const schema = faqSchema(faqItems);
+
+// Mêmes trois groupes que sur la page d'accueil : les 2 produits phares
+// disponibles en grand format, le pack juste en dessous en rappel compact,
+// et le reste — pas encore arrivé — en retrait et flouté pour le suspense.
+const heroProducts = PRODUCTS.filter((p) => p.slug === "obd" || p.slug === "alarme-sos");
+const bundleProduct = PRODUCTS.find((p) => p.slug === "pack-decouverte");
+const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
 ---
 
 <BaseLayout
@@ -39,45 +46,117 @@ const schema = faqSchema(faqItems);
   />
 
   <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-      {PRODUCTS.map((product) => (
-        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink p-4 transition-colors duration-200 hover:border-accent/60 sm:p-6">
-          {product.badge && (
-            <span class="mb-2 inline-block w-fit border border-accent bg-ink px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-accent">
-              {product.badge}
-            </span>
-          )}
-          <a href={`/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
-            <div class="product-stage h-32 border border-ink-line bg-ink-soft p-4 sm:h-40">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {heroProducts.map((product) => (
+        <div class="reveal group card-lift relative flex flex-col overflow-hidden border border-accent/60 bg-ink-soft p-4 shadow-[0_0_0_1px_rgba(201,162,39,0.2)] sm:p-6">
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/[0.08] via-transparent to-transparent" aria-hidden="true"></div>
+          <div class="relative flex items-center justify-between gap-3">
+            {product.badge && (
+              <span class="inline-block w-fit border border-accent bg-ink px-2.5 py-1 text-[10px] uppercase tracking-[0.15em] text-accent">
+                {product.badge}
+              </span>
+            )}
+            <span class="text-[10px] uppercase tracking-[0.15em] text-mist">{product.category}</span>
+          </div>
+          <a href={`/traceurs-gps/${product.slug}/`} class="relative flex flex-1 flex-col">
+            <div class="product-stage relative my-3 h-36 sm:h-44">
               <img
                 src={product.image}
                 alt={product.name}
                 width="200"
                 height="200"
-                class="premium-photo mx-auto h-full w-full object-contain"
+                class="premium-photo mx-auto h-36 w-36 object-contain sm:h-44 sm:w-44"
               />
             </div>
-            <h2 class="mt-3 font-display text-base text-paper group-hover:text-accent sm:mt-6 sm:text-xl">
+            <h2 class="font-display text-lg text-paper group-hover:text-accent sm:text-xl">
               {product.name}
             </h2>
-            <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-paper-dim sm:mt-2 sm:text-sm">{product.shortDescription}</p>
+            <p class="mt-1.5 text-xs leading-relaxed text-paper-dim sm:text-sm">{product.tagline}</p>
           </a>
-          <p class="mt-2 flex flex-wrap items-baseline gap-2 font-mono text-base text-accent sm:mt-4 sm:text-lg">
+          <p class="relative mt-3 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
             {formatPriceTTC(product.price, product.currency)}
             {product.originalPrice && (
-              <span class="text-xs text-mist line-through sm:text-sm">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+              <span class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
             )}
           </p>
-          <button
-            type="button"
-            data-add-to-cart={product.slug}
-            class="mt-3 border border-accent px-3 py-1.5 text-[10px] uppercase tracking-[0.1em] text-accent transition-colors hover:bg-accent hover:text-ink sm:mt-4 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.15em]"
-          >
-            Ajouter au panier
-          </button>
+          <div class="relative mt-4 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              data-add-to-cart={product.slug}
+              class="border border-accent bg-accent px-4 py-2 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+            >
+              Ajouter au panier
+            </button>
+            <a
+              href={`/traceurs-gps/${product.slug}/`}
+              class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
+            >
+              Voir la fiche <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       ))}
     </div>
+
+    {bundleProduct && (
+      <a
+        href={`/traceurs-gps/${bundleProduct.slug}/`}
+        class="reveal card-lift mt-6 flex flex-col gap-4 border border-ink-line bg-ink p-5 transition-colors duration-200 hover:border-accent/60 sm:flex-row sm:items-center sm:justify-between sm:p-6"
+      >
+        <div class="flex items-center gap-4">
+          <img
+            src={bundleProduct.image}
+            alt={bundleProduct.name}
+            width="72"
+            height="72"
+            class="premium-photo h-14 w-14 shrink-0 object-contain sm:h-16 sm:w-16"
+          />
+          <div>
+            {bundleProduct.badge && (
+              <span class="text-[10px] uppercase tracking-[0.15em] text-accent">{bundleProduct.badge}</span>
+            )}
+            <h2 class="font-display text-base text-paper">{bundleProduct.name}</h2>
+            <p class="mt-0.5 text-xs leading-relaxed text-paper-dim">{bundleProduct.tagline}</p>
+          </div>
+        </div>
+        <p class="flex shrink-0 items-baseline gap-2 font-mono text-base text-accent">
+          {formatPriceTTC(bundleProduct.price, bundleProduct.currency)}
+          {bundleProduct.originalPrice && (
+            <span class="text-xs text-mist line-through">{formatPriceTTC(bundleProduct.originalPrice, bundleProduct.currency)}</span>
+          )}
+        </p>
+      </a>
+    )}
+
+    {comingSoonProducts.length > 0 && (
+      <div class="mt-16 border-t border-ink-line pt-10 sm:mt-20">
+        <Eyebrow label="Bientôt disponible" />
+        <h2 class="mt-3 max-w-xl font-display text-lg font-medium text-paper sm:text-xl">
+          D'autres protections arrivent bientôt.
+        </h2>
+        <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
+          {comingSoonProducts.map((product) => (
+            <div class="reveal relative flex flex-col items-center border border-ink-line/60 bg-ink-soft/50 p-3 text-center sm:p-5">
+              <div class="product-stage relative my-2 h-20 w-20 sm:h-28 sm:w-28">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  width="140"
+                  height="140"
+                  class="premium-photo h-20 w-20 object-contain opacity-20 blur-md grayscale sm:h-28 sm:w-28"
+                />
+                <span class="absolute inset-0 flex items-center justify-center">
+                  <span class="border border-accent/70 bg-ink/90 px-2 py-1 text-[9px] uppercase tracking-[0.15em] text-accent sm:px-2.5 sm:text-[10px]">
+                    Bientôt révélé
+                  </span>
+                </span>
+              </div>
+              <p class="text-[10px] uppercase tracking-[0.1em] text-mist sm:text-[11px]">{product.category}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
   </section>
 
   <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">

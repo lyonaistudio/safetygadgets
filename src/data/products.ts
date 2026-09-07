@@ -17,6 +17,8 @@ export interface Product {
   currency: string;
   image: string;
   gallery?: string[];
+  comingSoon?: boolean;
+  featured?: boolean;
   shortDescription: string;
   description: string;
   highlights: string[];
@@ -28,281 +30,10 @@ export interface Product {
 // Prix indicatif — à confirmer par le client avant mise en ligne.
 export const PRODUCTS: Product[] = [
   {
-    slug: "pack-decouverte",
-    sku: "SG-PACK01",
-    badge: "Pack",
-    category: "Pack découverte",
-    name: "Pack Découverte Safety Gadgets",
-    shortName: "Pack Découverte",
-    tagline: "3 façons de protéger ce qui compte, réunies dans un seul pack",
-    price: 64.7,
-    originalPrice: 79.7,
-    currency: "EUR",
-    image: "/images/products/pack-decouverte-1.webp",
-    shortDescription:
-      "Le tracker GF07, la balise Bluetooth et l'alarme SOS réunis pour découvrir toute la gamme, avec 15 € d'économie.",
-    description:
-      "Pensé pour découvrir l'essentiel de la gamme Safety Gadgets sans avoir à choisir : un tracker GPS polyvalent pour une voiture, un proche ou un animal, une balise Bluetooth pour ne plus jamais perdre ses clés ou son sac, et une alarme personnelle pour être secouru en un geste. Trois usages différents, trois produits complémentaires, réunis au prix le plus bas de la boutique.",
-    highlights: [
-      "3 produits phares réunis : GF07, balise Bluetooth, alarme SOS",
-      "15 € d'économie par rapport à l'achat séparé",
-      "Trois usages complémentaires : véhicule/proche, objets du quotidien, urgence",
-      "Chaque produit garanti 1 an individuellement",
-    ],
-    specs: [
-      { label: "Tracker GPS", value: "GF07 — suivi temps réel (34,90 € à l'unité)" },
-      { label: "Tracker Bluetooth", value: "Balise Find My (19,90 € à l'unité)" },
-      { label: "Alarme personnelle", value: "Bouton SOS 130 dB (24,90 € à l'unité)" },
-      { label: "Prix du pack", value: "64,70 € TTC au lieu de 79,70 €" },
-      { label: "Garantie", value: "1 an sur chaque produit" },
-    ],
-    useCases: [
-      {
-        title: "Premier achat",
-        icon: "key",
-        description: "Idéal pour découvrir la gamme sans avoir à choisir un seul produit.",
-      },
-      {
-        title: "Cadeau complet",
-        icon: "wallet",
-        description: "Un cadeau utile qui couvre plusieurs besoins de sécurité à la fois.",
-      },
-      {
-        title: "Famille",
-        icon: "child",
-        description: "De quoi équiper un proche, une voiture et un trousseau de clés d'un coup.",
-      },
-      {
-        title: "Meilleur prix",
-        icon: "bag",
-        description: "La façon la moins chère d'essayer trois produits Safety Gadgets.",
-      },
-    ],
-    faq: [
-      {
-        question: "Le pack inclut-il vraiment 3 produits distincts ?",
-        answer: "Oui : un tracker GF07, une balise Bluetooth Find My et une alarme porte-clés SOS GPS, chacun avec sa propre garantie 1 an.",
-      },
-      {
-        question: "Puis-je choisir d'autres produits pour composer mon pack ?",
-        answer: "Ce pack est proposé avec cette sélection fixe pour garantir le meilleur prix ; pour une combinaison différente, commandez les produits séparément.",
-      },
-      {
-        question: "La remise s'applique-t-elle en plus de la livraison offerte dès 100 € ?",
-        answer: "Le pack est déjà au prix le plus avantageux ; associé à un autre produit, il compte normalement dans le total pour la livraison offerte dès 100 € TTC.",
-      },
-    ],
-  },
-  {
-    slug: "gf07",
-    sku: "SG-GF07",
-    badge: "Nouveauté",
-    category: "Tracker GPS",
-    name: "Tracker GF07",
-    shortName: "GF07",
-    tagline: "Le mini tracker qui garde un œil sur l'essentiel",
-    price: 34.9,
-    currency: "EUR",
-    image: "/images/products/gf07-1.webp",
-    shortDescription:
-      "Mini tracker portable, suivi en temps réel via application mobile, autonomie jusqu'à 24h.",
-    description:
-      "Glissé dans une voiture, une moto, un sac ou attaché au collier d'un animal, le GF07 suit en temps réel ce qui compte pour vous. Localisation précise (GPS, AGPS, GSM, GPRS, LBS), détection de mouvement, alerte de survitesse et relecture du parcours sont consultables à tout moment depuis l'application mobile. Compact, rechargeable et garanti un an, c'est la solution simple pour garder l'esprit tranquille au quotidien.",
-    highlights: [
-      "Suivi en temps réel via l'application mobile",
-      "Positionnement GPS, AGPS, GSM et LBS combinés",
-      "Autonomie de 12 à 24h sur batterie rechargeable",
-      "Format compact et discret, garantie 1 an",
-    ],
-    specs: [
-      { label: "Type", value: "Mini tracker portable" },
-      { label: "Positionnement", value: "AGPS, GPS, GSM, GPRS, LBS (position d'urgence)" },
-      { label: "Réseau", value: "2G / GSM / GPRS" },
-      { label: "Batterie", value: "Rechargeable — autonomie 12 à 24h" },
-      { label: "Stockage local", value: "Carte SD" },
-      { label: "Fonctions", value: "Détection de mouvement (ACC), alerte de survitesse, relecture de trajet" },
-      { label: "Suivi", value: "Coordonnées par SMS et vue en direct sur l'application" },
-      { label: "Garantie", value: "1 an" },
-    ],
-    useCases: [
-      {
-        title: "Véhicules & deux-roues",
-        icon: "car",
-        description: "Fixé dans une voiture ou une moto, il alerte en cas de mouvement suspect et permet de suivre un trajet en temps réel.",
-      },
-      {
-        title: "Enfants",
-        icon: "child",
-        description: "Glissé dans un sac ou un manteau, il permet de savoir où se trouve un enfant sans avoir à l'appeler.",
-      },
-      {
-        title: "Proches âgés",
-        icon: "senior",
-        description: "Discret et léger, il rassure sur les déplacements d'un proche tout en respectant son autonomie.",
-      },
-      {
-        title: "Animaux de compagnie",
-        icon: "paw",
-        description: "Attaché au collier, il aide à retrouver rapidement un animal qui se serait échappé ou perdu.",
-      },
-    ],
-    faq: [
-      {
-        question: "Faut-il une carte SIM pour ce tracker ?",
-        answer: "Oui, une carte SIM classique avec un forfait data actif est nécessaire (non fournie) pour transmettre la position par réseau GSM/GPRS.",
-      },
-      {
-        question: "Quelle est l'autonomie de la batterie ?",
-        answer: "Entre 12 et 24h selon la fréquence de mise à jour de la position et la qualité du signal.",
-      },
-      {
-        question: "Peut-on le fixer discrètement sur un véhicule ?",
-        answer: "Oui, son format compact permet de le glisser dans la boîte à gants, sous un siège ou dans le coffre sans installation apparente.",
-      },
-    ],
-  },
-  {
-    slug: "tag-bluetooth",
-    sku: "SG-BT01",
-    badge: "Nouveauté",
-    category: "Tracker Bluetooth",
-    name: "Tracker Bluetooth Find My",
-    shortName: "Tag BT",
-    tagline: "La balise qui retrouve vos affaires, où qu'elles soient dans le monde",
-    price: 19.9,
-    currency: "EUR",
-    image: "/images/products/bt-tag-1.webp",
-    shortDescription:
-      "Petite balise Bluetooth compatible avec le réseau Find My d'Apple et le réseau de localisation Google, pour ne plus perdre un sac, des clés ou une valise.",
-    description:
-      "Accrochée à un trousseau de clés, glissée dans un sac, un portefeuille ou une valise, cette balise Bluetooth s'appuie sur le réseau Find My d'Apple (certifiée MFi) et sur le réseau de localisation Google (Bluetooth 5.4) pour retrouver un objet égaré, partout dans le monde. Un son permet de le localiser à proximité, une alerte prévient en cas d'oubli, et le mode perdu partage sa position dès qu'un appareil du réseau repasse à sa portée.",
-    highlights: [
-      "Compatible réseau Find My d'Apple (certifiée MFi) et réseau Google",
-      "Connexion Bluetooth 5.4 rapide et fiable",
-      "Suivi longue distance, partout dans le monde",
-      "Mode perdu et alerte d'oubli automatique",
-    ],
-    specs: [
-      { label: "Type", value: "Tracker Bluetooth" },
-      { label: "Connectivité", value: "Bluetooth 5.4 (BLE)" },
-      { label: "Compatibilité", value: "Certifiée MFi (Apple), certifiée Google" },
-      { label: "Mode de positionnement", value: "Réseau Find My / réseau de localisation Google" },
-      { label: "Batterie", value: "Lithium" },
-      { label: "Matériau", value: "Boîtier ABS" },
-      {
-        label: "Fonctions",
-        value: "Lecture sonore, alerte d'oubli, mode perdu, recherche de précision, partage, nom personnalisé, suivi mondial, itinéraire",
-      },
-      { label: "Garantie", value: "1 an" },
-    ],
-    useCases: [
-      {
-        title: "Sacs",
-        icon: "bag",
-        description: "Glissée dans une poche intérieure, elle permet de retrouver un sac oublié ou égaré.",
-      },
-      {
-        title: "Clés",
-        icon: "key",
-        description: "Accrochée au trousseau, elle évite les recherches sous les coussins ou dans les poches.",
-      },
-      {
-        title: "Portefeuille",
-        icon: "wallet",
-        description: "Compacte et discrète, elle se glisse dans un portefeuille sans le déformer.",
-      },
-      {
-        title: "Bagages",
-        icon: "luggage",
-        description: "Suivez votre valise pendant un voyage et retrouvez-la facilement à l'arrivée.",
-      },
-    ],
-    faq: [
-      {
-        question: "Faut-il une carte SIM ou un abonnement ?",
-        answer: "Non. La balise utilise uniquement le Bluetooth et s'appuie sur les réseaux Find My d'Apple et de localisation Google, sans carte SIM ni abonnement.",
-      },
-      {
-        question: "Fonctionne-t-elle avec un téléphone Android ?",
-        answer: "Oui, elle est certifiée pour le réseau de localisation Google en plus du réseau Find My d'Apple (certifiée MFi).",
-      },
-      {
-        question: "Que se passe-t-il si la pile est vide ?",
-        answer: "La balise fonctionne sur pile lithium remplaçable ; une notification prévient avant que la batterie ne soit épuisée.",
-      },
-    ],
-  },
-  {
-    slug: "detecteur-anti-espion",
-    sku: "SG-RK021",
-    badge: "Nouveauté",
-    category: "Détecteur anti-espionnage",
-    name: "Détecteur de caméras, GPS et micros espions",
-    shortName: "Détecteur RK-021",
-    tagline: "Repérez ce qui vous surveille avant que ça ne soit trop tard",
-    price: 39.9,
-    currency: "EUR",
-    image: "/images/products/detector-wand-1.webp",
-    shortDescription:
-      "Détecteur multi-fonctions RF, magnétique et optique : trackers, micros et caméras espions, signaux Bluetooth/WiFi/4G.",
-    description:
-      "Utilisé en hôtel, en location de vacances, dans une voiture de location ou en réunion, ce détecteur repère les dispositifs de surveillance cachés : il capte les signaux radio (GPS, Bluetooth, WiFi, réseaux 2G/3G/4G) et les champs magnétiques des trackers aimantés, avec une molette de réglage de la sensibilité. Sa sonde LED déportée permet en complément de repérer visuellement le reflet d'un objectif de caméra cachée, même éteinte.",
-    highlights: [
-      "Détection RF combinée : GPS, Bluetooth, WiFi, 2G/3G/4G",
-      "Détecteur de champ magnétique pour trackers aimantés",
-      "Sonde LED déportée pour repérer les objectifs de caméras cachées",
-      "Sensibilité réglable, garantie 1 an",
-    ],
-    specs: [
-      { label: "Type", value: "Détecteur multi-fonctions RF / magnétique / optique" },
-      { label: "Signaux détectés", value: "GPS, Bluetooth, WiFi, réseaux 2G/3G/4G" },
-      { label: "Détection magnétique", value: "Oui — trackers et dispositifs aimantés" },
-      { label: "Détecteur de caméras", value: "Sonde LED déportée, repérage par reflet d'objectif" },
-      { label: "Réglage", value: "Molette de sensibilité manuelle" },
-      { label: "Alimentation", value: "Batterie rechargeable" },
-      { label: "Garantie", value: "1 an" },
-    ],
-    useCases: [
-      {
-        title: "Chambres d'hôtel & locations",
-        icon: "bed",
-        description: "Vérifiez une chambre d'hôtel ou une location de vacances à l'arrivée, en quelques minutes.",
-      },
-      {
-        title: "Voitures de location",
-        icon: "car",
-        description: "Repérez un tracker aimanté éventuellement dissimulé dans un véhicule de location.",
-      },
-      {
-        title: "Réunions confidentielles",
-        icon: "briefcase",
-        description: "Détectez un micro espion avant un échange professionnel sensible.",
-      },
-      {
-        title: "Cabines & vestiaires",
-        icon: "camera",
-        description: "Repérez visuellement l'objectif d'une caméra cachée grâce à la sonde LED déportée.",
-      },
-    ],
-    faq: [
-      {
-        question: "Le détecteur repère-t-il les caméras éteintes ?",
-        answer: "La sonde LED déportée repère le reflet de l'objectif même hors tension ; la détection RF, elle, ne capte que les appareils actifs qui émettent un signal.",
-      },
-      {
-        question: "Peut-il déclencher de fausses alertes ?",
-        answer: "Oui, en environnement urbain dense (Wi-Fi, Bluetooth ambiant) ; la molette de sensibilité permet d'ajuster la détection selon le contexte.",
-      },
-      {
-        question: "Comment est-il alimenté ?",
-        answer: "Par batterie rechargeable intégrée, via câble USB fourni.",
-      },
-    ],
-  },
-  {
     slug: "obd",
     sku: "SG-OBD",
     badge: "Nouveauté",
+    featured: true,
     category: "Tracker GPS OBD",
     name: "Tracker OBD",
     shortName: "OBD",
@@ -376,13 +107,14 @@ export const PRODUCTS: Product[] = [
     slug: "alarme-sos",
     sku: "SG-SOS253",
     badge: "Nouveauté",
+    featured: true,
     category: "Alarme personnelle",
     name: "Alarme Porte-clés SOS GPS",
     shortName: "Alarme SOS",
     tagline: "Le geste qui alerte tout le monde en une seconde",
     price: 24.9,
     currency: "EUR",
-    image: "/images/products/alarme-porteclef-1.webp",
+    image: "/images/products/alarme-porteclef-2.webp",
     shortDescription:
       "Alarme personnelle 130 dB avec bouton SOS, partage de position par SMS et appel, et lampe torche LED — sans fil, sans application.",
     description:
@@ -439,6 +171,282 @@ export const PRODUCTS: Product[] = [
       {
         question: "Comment se recharge-t-elle ?",
         answer: "Par câble USB (non fourni détaillé dans la fiche), pour une autonomie allant jusqu'à 2h d'utilisation continue.",
+      },
+    ],
+  },
+  {
+    slug: "pack-decouverte",
+    sku: "SG-PACK02",
+    badge: "Offre promotionnelle",
+    featured: true,
+    category: "Pack Véhicule & Urgence",
+    name: "Pack Tracker OBD + Alarme SOS",
+    shortName: "Pack OBD + Alarme",
+    tagline: "Protégez votre véhicule et gardez un contact d'urgence sur vous, en un seul pack",
+    price: 54.9,
+    originalPrice: 64.8,
+    currency: "EUR",
+    image: "/images/products/pack-obd-alarme.webp",
+    gallery: ["/images/products/pack-obd-alarme.webp", "/images/products/obd-1.webp", "/images/products/alarme-porteclef-2.webp"],
+    shortDescription:
+      "Le tracker GPS OBD et l'alarme porte-clés SOS réunis : la voiture sous surveillance, vous à portée d'un geste — avec 10 € d'économie.",
+    description:
+      "Le duo pensé pour ce qui compte le plus au quotidien : la voiture et la sécurité personnelle. Le tracker OBD se branche en 3 secondes sur la prise de votre véhicule et transmet sa position en temps réel via 4G, sans câblage. L'alarme porte-clés SOS, elle, reste sur vous en permanence : une pression déclenche une sirène de 130 dB et alerte vos proches par SMS avec votre position GPS. Deux produits, deux usages complémentaires, réunis au meilleur prix.",
+    highlights: [
+      "2 produits phares réunis : Tracker OBD et Alarme porte-clés SOS",
+      "10 € d'économie par rapport à l'achat séparé",
+      "Deux usages complémentaires : véhicule et sécurité personnelle",
+      "Chaque produit garanti 1 an individuellement",
+    ],
+    specs: [
+      { label: "Tracker GPS OBD", value: "Suivi temps réel 4G, installation sans câblage (39,90 € à l'unité)" },
+      { label: "Alarme SOS", value: "Sirène 130 dB, alerte SMS + position GPS (24,90 € à l'unité)" },
+      { label: "Prix du pack", value: "54,90 € TTC au lieu de 64,80 €" },
+      { label: "Garantie", value: "1 an sur chaque produit" },
+    ],
+    useCases: [
+      {
+        title: "Conducteurs",
+        icon: "car",
+        description: "Le véhicule tracé en temps réel, et une alarme à portée de main en cas d'imprévu sur la route.",
+      },
+      {
+        title: "Cadeau complet",
+        icon: "wallet",
+        description: "Un cadeau utile qui couvre à la fois la sécurité du véhicule et la sécurité personnelle.",
+      },
+      {
+        title: "Proches qui conduisent",
+        icon: "senior",
+        description: "De quoi surveiller discrètement un véhicule prêté et garder un contact d'urgence avec son conducteur.",
+      },
+      {
+        title: "Meilleur prix",
+        icon: "bag",
+        description: "La façon la plus économique d'équiper à la fois une voiture et une personne.",
+      },
+    ],
+    faq: [
+      {
+        question: "Le pack inclut-il vraiment 2 produits distincts ?",
+        answer: "Oui : un tracker GPS OBD et une alarme porte-clés SOS GPS, chacun avec sa propre garantie 1 an.",
+      },
+      {
+        question: "Puis-je choisir d'autres produits pour composer mon pack ?",
+        answer: "Ce pack est proposé avec cette sélection fixe pour garantir le meilleur prix ; pour une combinaison différente, commandez les produits séparément.",
+      },
+      {
+        question: "La remise s'applique-t-elle en plus de la livraison offerte dès 100 € ?",
+        answer: "Le pack est déjà au prix le plus avantageux ; associé à un autre produit, il compte normalement dans le total pour la livraison offerte dès 100 € TTC.",
+      },
+    ],
+  },
+  {
+    slug: "gf07",
+    sku: "SG-GF07",
+    badge: "Nouveauté",
+    comingSoon: true,
+    category: "Tracker GPS",
+    name: "Tracker GF07",
+    shortName: "GF07",
+    tagline: "Le mini tracker qui garde un œil sur l'essentiel",
+    price: 34.9,
+    currency: "EUR",
+    image: "/images/products/gf07-1.webp",
+    shortDescription:
+      "Mini tracker portable, suivi en temps réel via application mobile, autonomie jusqu'à 24h.",
+    description:
+      "Glissé dans une voiture, une moto, un sac ou attaché au collier d'un animal, le GF07 suit en temps réel ce qui compte pour vous. Localisation précise (GPS, AGPS, GSM, GPRS, LBS), détection de mouvement, alerte de survitesse et relecture du parcours sont consultables à tout moment depuis l'application mobile. Compact, rechargeable et garanti un an, c'est la solution simple pour garder l'esprit tranquille au quotidien.",
+    highlights: [
+      "Suivi en temps réel via l'application mobile",
+      "Positionnement GPS, AGPS, GSM et LBS combinés",
+      "Autonomie de 12 à 24h sur batterie rechargeable",
+      "Format compact et discret, garantie 1 an",
+    ],
+    specs: [
+      { label: "Type", value: "Mini tracker portable" },
+      { label: "Positionnement", value: "AGPS, GPS, GSM, GPRS, LBS (position d'urgence)" },
+      { label: "Réseau", value: "2G / GSM / GPRS" },
+      { label: "Batterie", value: "Rechargeable — autonomie 12 à 24h" },
+      { label: "Stockage local", value: "Carte SD" },
+      { label: "Fonctions", value: "Détection de mouvement (ACC), alerte de survitesse, relecture de trajet" },
+      { label: "Suivi", value: "Coordonnées par SMS et vue en direct sur l'application" },
+      { label: "Garantie", value: "1 an" },
+    ],
+    useCases: [
+      {
+        title: "Véhicules & deux-roues",
+        icon: "car",
+        description: "Fixé dans une voiture ou une moto, il alerte en cas de mouvement suspect et permet de suivre un trajet en temps réel.",
+      },
+      {
+        title: "Enfants",
+        icon: "child",
+        description: "Glissé dans un sac ou un manteau, il permet de savoir où se trouve un enfant sans avoir à l'appeler.",
+      },
+      {
+        title: "Proches âgés",
+        icon: "senior",
+        description: "Discret et léger, il rassure sur les déplacements d'un proche tout en respectant son autonomie.",
+      },
+      {
+        title: "Animaux de compagnie",
+        icon: "paw",
+        description: "Attaché au collier, il aide à retrouver rapidement un animal qui se serait échappé ou perdu.",
+      },
+    ],
+    faq: [
+      {
+        question: "Faut-il une carte SIM pour ce tracker ?",
+        answer: "Oui, une carte SIM classique avec un forfait data actif est nécessaire (non fournie) pour transmettre la position par réseau GSM/GPRS.",
+      },
+      {
+        question: "Quelle est l'autonomie de la batterie ?",
+        answer: "Entre 12 et 24h selon la fréquence de mise à jour de la position et la qualité du signal.",
+      },
+      {
+        question: "Peut-on le fixer discrètement sur un véhicule ?",
+        answer: "Oui, son format compact permet de le glisser dans la boîte à gants, sous un siège ou dans le coffre sans installation apparente.",
+      },
+    ],
+  },
+  {
+    slug: "tag-bluetooth",
+    sku: "SG-BT01",
+    badge: "Nouveauté",
+    comingSoon: true,
+    category: "Tracker Bluetooth",
+    name: "Tracker Bluetooth Find My",
+    shortName: "Tag BT",
+    tagline: "La balise qui retrouve vos affaires, où qu'elles soient dans le monde",
+    price: 19.9,
+    currency: "EUR",
+    image: "/images/products/bt-tag-1.webp",
+    shortDescription:
+      "Petite balise Bluetooth compatible avec le réseau Find My d'Apple et le réseau de localisation Google, pour ne plus perdre un sac, des clés ou une valise.",
+    description:
+      "Accrochée à un trousseau de clés, glissée dans un sac, un portefeuille ou une valise, cette balise Bluetooth s'appuie sur le réseau Find My d'Apple (certifiée MFi) et sur le réseau de localisation Google (Bluetooth 5.4) pour retrouver un objet égaré, partout dans le monde. Un son permet de le localiser à proximité, une alerte prévient en cas d'oubli, et le mode perdu partage sa position dès qu'un appareil du réseau repasse à sa portée.",
+    highlights: [
+      "Compatible réseau Find My d'Apple (certifiée MFi) et réseau Google",
+      "Connexion Bluetooth 5.4 rapide et fiable",
+      "Suivi longue distance, partout dans le monde",
+      "Mode perdu et alerte d'oubli automatique",
+    ],
+    specs: [
+      { label: "Type", value: "Tracker Bluetooth" },
+      { label: "Connectivité", value: "Bluetooth 5.4 (BLE)" },
+      { label: "Compatibilité", value: "Certifiée MFi (Apple), certifiée Google" },
+      { label: "Mode de positionnement", value: "Réseau Find My / réseau de localisation Google" },
+      { label: "Batterie", value: "Lithium" },
+      { label: "Matériau", value: "Boîtier ABS" },
+      {
+        label: "Fonctions",
+        value: "Lecture sonore, alerte d'oubli, mode perdu, recherche de précision, partage, nom personnalisé, suivi mondial, itinéraire",
+      },
+      { label: "Garantie", value: "1 an" },
+    ],
+    useCases: [
+      {
+        title: "Sacs",
+        icon: "bag",
+        description: "Glissée dans une poche intérieure, elle permet de retrouver un sac oublié ou égaré.",
+      },
+      {
+        title: "Clés",
+        icon: "key",
+        description: "Accrochée au trousseau, elle évite les recherches sous les coussins ou dans les poches.",
+      },
+      {
+        title: "Portefeuille",
+        icon: "wallet",
+        description: "Compacte et discrète, elle se glisse dans un portefeuille sans le déformer.",
+      },
+      {
+        title: "Bagages",
+        icon: "luggage",
+        description: "Suivez votre valise pendant un voyage et retrouvez-la facilement à l'arrivée.",
+      },
+    ],
+    faq: [
+      {
+        question: "Faut-il une carte SIM ou un abonnement ?",
+        answer: "Non. La balise utilise uniquement le Bluetooth et s'appuie sur les réseaux Find My d'Apple et de localisation Google, sans carte SIM ni abonnement.",
+      },
+      {
+        question: "Fonctionne-t-elle avec un téléphone Android ?",
+        answer: "Oui, elle est certifiée pour le réseau de localisation Google en plus du réseau Find My d'Apple (certifiée MFi).",
+      },
+      {
+        question: "Que se passe-t-il si la pile est vide ?",
+        answer: "La balise fonctionne sur pile lithium remplaçable ; une notification prévient avant que la batterie ne soit épuisée.",
+      },
+    ],
+  },
+  {
+    slug: "detecteur-anti-espion",
+    sku: "SG-RK021",
+    badge: "Nouveauté",
+    comingSoon: true,
+    category: "Détecteur anti-espionnage",
+    name: "Détecteur de caméras, GPS et micros espions",
+    shortName: "Détecteur RK-021",
+    tagline: "Repérez ce qui vous surveille avant que ça ne soit trop tard",
+    price: 39.9,
+    currency: "EUR",
+    image: "/images/products/detector-wand-1.webp",
+    shortDescription:
+      "Détecteur multi-fonctions RF, magnétique et optique : trackers, micros et caméras espions, signaux Bluetooth/WiFi/4G.",
+    description:
+      "Utilisé en hôtel, en location de vacances, dans une voiture de location ou en réunion, ce détecteur repère les dispositifs de surveillance cachés : il capte les signaux radio (GPS, Bluetooth, WiFi, réseaux 2G/3G/4G) et les champs magnétiques des trackers aimantés, avec une molette de réglage de la sensibilité. Sa sonde LED déportée permet en complément de repérer visuellement le reflet d'un objectif de caméra cachée, même éteinte.",
+    highlights: [
+      "Détection RF combinée : GPS, Bluetooth, WiFi, 2G/3G/4G",
+      "Détecteur de champ magnétique pour trackers aimantés",
+      "Sonde LED déportée pour repérer les objectifs de caméras cachées",
+      "Sensibilité réglable, garantie 1 an",
+    ],
+    specs: [
+      { label: "Type", value: "Détecteur multi-fonctions RF / magnétique / optique" },
+      { label: "Signaux détectés", value: "GPS, Bluetooth, WiFi, réseaux 2G/3G/4G" },
+      { label: "Détection magnétique", value: "Oui — trackers et dispositifs aimantés" },
+      { label: "Détecteur de caméras", value: "Sonde LED déportée, repérage par reflet d'objectif" },
+      { label: "Réglage", value: "Molette de sensibilité manuelle" },
+      { label: "Alimentation", value: "Batterie rechargeable" },
+      { label: "Garantie", value: "1 an" },
+    ],
+    useCases: [
+      {
+        title: "Chambres d'hôtel & locations",
+        icon: "bed",
+        description: "Vérifiez une chambre d'hôtel ou une location de vacances à l'arrivée, en quelques minutes.",
+      },
+      {
+        title: "Voitures de location",
+        icon: "car",
+        description: "Repérez un tracker aimanté éventuellement dissimulé dans un véhicule de location.",
+      },
+      {
+        title: "Réunions confidentielles",
+        icon: "briefcase",
+        description: "Détectez un micro espion avant un échange professionnel sensible.",
+      },
+      {
+        title: "Cabines & vestiaires",
+        icon: "camera",
+        description: "Repérez visuellement l'objectif d'une caméra cachée grâce à la sonde LED déportée.",
+      },
+    ],
+    faq: [
+      {
+        question: "Le détecteur repère-t-il les caméras éteintes ?",
+        answer: "La sonde LED déportée repère le reflet de l'objectif même hors tension ; la détection RF, elle, ne capte que les appareils actifs qui émettent un signal.",
+      },
+      {
+        question: "Peut-il déclencher de fausses alertes ?",
+        answer: "Oui, en environnement urbain dense (Wi-Fi, Bluetooth ambiant) ; la molette de sensibilité permet d'ajuster la détection selon le contexte.",
+      },
+      {
+        question: "Comment est-il alimenté ?",
+        answer: "Par batterie rechargeable intégrée, via câble USB fourni.",
       },
     ],
   },

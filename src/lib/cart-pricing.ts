@@ -8,7 +8,7 @@ const DISCOUNT_PER_EXTRA_ITEM = 0.05;
 const MAX_DISCOUNT_RATE = 0.2;
 
 export const FREE_SHIPPING_THRESHOLD = 100;
-export const SHIPPING_FEE = 4.9;
+export const SHIPPING_FEE = 7.99;
 
 export function totalQty(lines: { qty: number }[]): number {
   return lines.reduce((sum, l) => sum + l.qty, 0);

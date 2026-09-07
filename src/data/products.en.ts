@@ -355,7 +355,7 @@ export const PRODUCTS_EN: Product[] = [
     tagline: "The gesture that alerts everyone in a second",
     price: 24.9,
     currency: "EUR",
-    image: "/images/products/alarme-porteclef-1.webp",
+    image: "/images/products/alarme-porteclef-2.webp",
     shortDescription: "130 dB personal alarm with SOS button, SMS and call position sharing, and LED torch — wireless, no app required.",
     description:
       "Press the SOS button and it triggers a 130 dB siren with strobe light to draw attention immediately, while sending an SMS alert and calling pre-saved emergency contacts with your GPS position. Its 25-lux LED torch rounds out the set for dark environments. No app to install: everything works wirelessly straight out of the box. Compact (94 x 30 x 13 mm) and light (26 g), it clips onto a keyring, bag or belt with its built-in carabiner.",

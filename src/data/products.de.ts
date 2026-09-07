@@ -354,7 +354,7 @@ export const PRODUCTS_DE: Product[] = [
     tagline: "Die Geste, die in einer Sekunde alle alarmiert",
     price: 24.9,
     currency: "EUR",
-    image: "/images/products/alarme-porteclef-1.webp",
+    image: "/images/products/alarme-porteclef-2.webp",
     shortDescription: "130-dB-Personenalarm mit SOS-Knopf, Positionsfreigabe per SMS und Anruf sowie LED-Taschenlampe — kabellos, ohne App.",
     description:
       "Ein Druck auf den SOS-Knopf löst eine 130-dB-Sirene mit Stroboskoplicht aus, um sofort Aufmerksamkeit zu erregen, während gleichzeitig eine SMS-Benachrichtigung gesendet und voreingestellte Notfallkontakte mit GPS-Position angerufen werden. Die 25-Lux-LED-Taschenlampe rundet das Gerät für dunkle Umgebungen ab. Keine App nötig: Alles funktioniert kabellos, direkt nach dem Auspacken. Kompakt (94 x 30 x 13 mm) und leicht (26 g), wird sie dank integriertem Karabiner an Schlüsselbund, Tasche oder Gürtel befestigt.",

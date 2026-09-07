@@ -10,7 +10,12 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
   site: 'https://safety-gadgets.fr',
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      watch: {
+        ignored: ['**/.astro/dev.log']
+      }
+    }
   },
 
   // Le site reste statique par défaut (toutes les pages sont pré-générées) ;
