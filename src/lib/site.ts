@@ -35,6 +35,6 @@ export const NAV_LINKS = [
   { href: "/professionnels/", label: "Professionnels" },
 ] as const;
 
-// Formulaire Formspree dédié à créer pour Safety Gadgets — ne pas réutiliser
-// celui d'un autre projet/client. Placeholder à remplacer avant mise en ligne.
-export const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";
+// Formulaire Formspree dédié à Safety Gadgets — ne pas réutiliser celui
+// d'un autre projet/client.
+export const FORMSPREE_ENDPOINT = "https://formspree.io/f/xoeqkppe";

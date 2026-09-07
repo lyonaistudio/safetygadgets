@@ -318,11 +318,8 @@ const CATEGORIES = [
     </div>
 
     {bundleProduct && (
-      <a
-        href={`/traceurs-gps/${bundleProduct.slug}/`}
-        class="reveal card-lift mt-5 flex flex-col gap-4 border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-accent/60 sm:flex-row sm:items-center sm:justify-between"
-      >
-        <div class="flex items-center gap-4">
+      <div class="reveal card-lift mt-5 flex flex-col gap-4 border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-accent/60 sm:flex-row sm:items-center sm:justify-between">
+        <a href={`/traceurs-gps/${bundleProduct.slug}/`} class="flex items-center gap-4">
           <img
             src={bundleProduct.image}
             alt={bundleProduct.name}
@@ -337,14 +334,23 @@ const CATEGORIES = [
             <h3 class="font-display text-base text-paper">{bundleProduct.name}</h3>
             <p class="mt-0.5 text-xs leading-relaxed text-paper-dim">{bundleProduct.tagline}</p>
           </div>
+        </a>
+        <div class="flex shrink-0 flex-wrap items-center gap-4 sm:justify-end">
+          <p class="flex items-baseline gap-2 font-mono text-base text-accent">
+            {formatPriceTTC(bundleProduct.price, bundleProduct.currency)}
+            {bundleProduct.originalPrice && (
+              <span class="text-xs text-mist line-through">{formatPriceTTC(bundleProduct.originalPrice, bundleProduct.currency)}</span>
+            )}
+          </p>
+          <button
+            type="button"
+            data-add-to-cart={bundleProduct.slug}
+            class="border border-accent bg-accent px-4 py-2 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+          >
+            Ajouter au panier
+          </button>
         </div>
-        <p class="flex shrink-0 items-baseline gap-2 font-mono text-base text-accent">
-          {formatPriceTTC(bundleProduct.price, bundleProduct.currency)}
-          {bundleProduct.originalPrice && (
-            <span class="text-xs text-mist line-through">{formatPriceTTC(bundleProduct.originalPrice, bundleProduct.currency)}</span>
-          )}
-        </p>
-      </a>
+      </div>
     )}
 
     {comingSoonProducts.length > 0 && (
