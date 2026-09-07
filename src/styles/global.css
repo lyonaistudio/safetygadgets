@@ -94,6 +94,29 @@ body {
   transform: translateY(0);
 }
 
+/* Fond du hero : illustration abstraite (radar, épingles GPS, tracé de
+   carte) en or sur noir, cohérente avec l'identité de la marque. L'image
+   est en 900x1600 (portrait) avec ses motifs concentrés dans les 4 coins
+   et un centre vide — `top center` garde le bandeau de motifs du haut
+   visible même quand `cover` rogne fortement la hauteur sur un écran
+   large et bas (desktop), tout en affichant l'image quasi entière sur
+   mobile (viewport plus proche du ratio portrait d'origine). */
+.hero-map-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--color-ink) 60%, transparent) 55%,
+      var(--color-ink) 85%
+    ),
+    url("/images/backgrounds/hero-map-gold.webp");
+  background-size: cover, cover;
+  background-position: top center, top center;
+  background-repeat: no-repeat, no-repeat;
+  opacity: 0.55;
+}
+
 /* Halo unique et diffus : une seule tache de lumière dorée ambiante pour
    donner de la profondeur au noir plutôt qu'une texture répétée. */
 .ambient-glow {
