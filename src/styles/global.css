@@ -96,9 +96,9 @@ body {
 
 /* Fond du hero : illustration abstraite (radar, épingles GPS, tracé de
    carte) en or sur noir, cohérente avec l'identité de la marque. L'image
-   est en 900x1600 (portrait) avec ses motifs concentrés dans les 4 coins
-   et un centre vide — `top center` garde le bandeau de motifs du haut
-   visible même quand `cover` rogne fortement la hauteur sur un écran
+   source est en 900x1600 (portrait) avec ses motifs concentrés dans les 4
+   coins et un centre vide — `top center` garde le bandeau de motifs du
+   haut visible même quand `cover` rogne fortement la hauteur sur un écran
    large et bas (desktop), tout en affichant l'image quasi entière sur
    mobile (viewport plus proche du ratio portrait d'origine). */
 .hero-map-bg {
@@ -115,6 +115,26 @@ body {
   background-position: top center, top center;
   background-repeat: no-repeat, no-repeat;
   opacity: 0.55;
+}
+
+/* À partir de sm (tablette/desktop), le viewport devient beaucoup plus
+   large que haut : `cover` sur l'image portrait 900x1600 doit alors
+   l'agrandir (>1x, donc perdre en netteté) et n'affiche plus qu'une
+   mince bande du haut. On bascule sur une version doublée en largeur
+   (original + son symétrique accolé, 1800x1600) : le ratio est plus
+   proche de celui de l'écran, donc moins d'agrandissement (plus net) et
+   davantage de hauteur de motif visible (haut ET bas), avec une
+   composition en miroir volontairement symétrique. */
+@media (min-width: 640px) {
+  .hero-map-bg {
+    background-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        color-mix(in srgb, var(--color-ink) 55%, transparent) 60%,
+        var(--color-ink) 88%
+      ),
+      url("/images/backgrounds/hero-map-gold-wide.webp");
+  }
 }
 
 /* Halo unique et diffus : une seule tache de lumière dorée ambiante pour

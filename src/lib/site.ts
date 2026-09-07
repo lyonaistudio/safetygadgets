@@ -1,7 +1,7 @@
 export const SITE = {
   name: "Safety Gadgets",
   url: "https://safety-gadgets.fr",
-  email: "contact@safety-gadgets.fr",
+  email: "contact@safety-gadgets.com",
   city: "Lyon",
   region: "Auvergne-Rhône-Alpes",
   country: "FR",
