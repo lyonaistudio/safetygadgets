@@ -54,7 +54,7 @@ export const UI = {
     viewSheet: "Voir la fiche",
     faqEyebrow: "Questions fréquentes",
     siteDescription:
-      "Safety Gadgets sélectionne et propose des trackers GPS, des trackers Bluetooth et des détecteurs anti-espionnage compacts et fiables, pour localiser ce qui compte et repérer ce qui vous surveille.",
+      "Safety Gadgets propose un tracker GPS pour véhicule et une alarme porte-clés SOS pour vos proches — deux produits testés et garantis un an.",
   },
   en: {
     skipToContent: "Skip to content",

@@ -8,24 +8,29 @@ import { faqSchema } from "../lib/schema";
 
 const faqItems = [
   {
-    question: "Le tracker a-t-il besoin d'une carte SIM ?",
+    question: "Le tracker GPS OBD a-t-il besoin d'une carte SIM ?",
     answer:
-      "Oui. Le tracker communique sa position par réseau GSM/GPRS, il faut donc y insérer une carte SIM classique avec un forfait data actif (non fournie). Sans carte SIM, seule la fonction GPS locale reste disponible.",
+      "Oui. Il transmet sa position via le réseau 4G, il faut donc y insérer une carte SIM avec un forfait data actif (non fournie).",
   },
   {
-    question: "Est-il compatible avec tous les opérateurs mobiles ?",
+    question: "Comment installe-t-on le tracker OBD ?",
     answer:
-      "Le tracker fonctionne sur les réseaux 2G/GPRS. Vérifiez avant l'achat de votre carte SIM que votre opérateur maintient une couverture 2G active dans la zone d'utilisation prévue, certains opérateurs réduisent progressivement ce réseau.",
+      "Il se branche directement sur la prise OBD du véhicule, sans câblage ni outil — en quelques secondes. Compatible avec la plupart des véhicules (12-36V).",
   },
   {
-    question: "Quelle est l'autonomie réelle de la batterie ?",
+    question: "Que se passe-t-il si quelqu'un débranche le tracker ?",
     answer:
-      "Entre 12 et 24h selon la fréquence de mise à jour de la position et la qualité du signal GSM/GPS. Un usage avec des envois de position espacés prolonge l'autonomie.",
+      "Sa batterie de secours prend le relais jusqu'à 2h, le temps de réagir, et une alerte de débranchement peut être configurée.",
   },
   {
-    question: "Quelle est la précision de la localisation ?",
+    question: "L'alarme porte-clés SOS a-t-elle besoin d'une carte SIM ou d'une application ?",
     answer:
-      "En extérieur avec un bon signal, le positionnement GPS est précis à quelques mètres. En intérieur ou en zone urbaine dense, le tracker bascule sur AGPS/GSM/LBS, moins précis mais toujours utile pour situer une zone.",
+      "Non. Elle fonctionne en sans-fil dès la sortie de la boîte : une pression sur le bouton déclenche une sirène de 130 dB, envoie un SMS et appelle vos contacts d'urgence avec votre position GPS.",
+  },
+  {
+    question: "Quelle est l'autonomie de l'alarme SOS ?",
+    answer:
+      "Jusqu'à 2h d'utilisation continue sur sa batterie rechargeable — largement suffisant pour un usage ponctuel d'urgence.",
   },
   {
     question: "Quels sont les délais de livraison ?",
@@ -33,7 +38,7 @@ const faqItems = [
       "Les commandes sont préparées et expédiées sous 24 à 48h ouvrées, avec un numéro de suivi communiqué par email dès l'envoi.",
   },
   {
-    question: "Puis-je retourner le produit s'il ne me convient pas ?",
+    question: "Puis-je retourner un produit s'il ne me convient pas ?",
     answer:
       "Oui, un retour est possible dans les 30 jours suivant la réception, produit non utilisé et dans son emballage d'origine. Contactez-nous pour lancer la procédure.",
   },
@@ -54,7 +59,7 @@ const schema = faqSchema(faqItems);
 
 <BaseLayout
   title="FAQ — Questions fréquentes — Safety Gadgets"
-  description="Réponses aux questions les plus fréquentes sur nos trackers : carte SIM, autonomie, précision, livraison et garantie."
+  description="Réponses aux questions les plus fréquentes sur notre tracker GPS OBD et notre alarme porte-clés SOS : installation, autonomie, livraison et garantie."
   path="/faq/"
   jsonLd={[schema]}
 >

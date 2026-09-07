@@ -11,7 +11,7 @@ import { faqSchema } from "../../lib/schema";
 const faqItems = [
   {
     question: "Quel produit choisir selon mon besoin ?",
-    answer: "Pour un véhicule : GF07 ou OBD. Pour un sac ou des clés : le tag Bluetooth. Pour repérer une surveillance : le détecteur. Pour une alerte d'urgence : l'alarme SOS.",
+    answer: "Pour surveiller un véhicule : le tracker GPS OBD. Pour vous ou un proche, en cas d'urgence : l'alarme porte-clés SOS. Besoin des deux ? Le pack réunit les deux produits avec 10 € d'économie.",
   },
   {
     question: "Les prix affichés sont-ils TTC ?",
@@ -34,7 +34,7 @@ const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
 
 <BaseLayout
   title="Nos produits — Safety Gadgets"
-  description="Découvrez la sélection Safety Gadgets : trackers GPS, trackers Bluetooth et détecteurs anti-espionnage compacts et fiables, testés pour leur usage au quotidien."
+  description="Le tracker GPS OBD et l'alarme porte-clés SOS de Safety Gadgets, seuls ou en pack au meilleur prix — deux produits testés et garantis un an."
   path="/traceurs-gps/"
   jsonLd={[schema]}
 >
@@ -42,7 +42,7 @@ const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
   <PageHero
     eyebrow="BOUTIQUE"
     title="Nos produits"
-    description="Une sélection resserrée de trackers et de détecteurs compacts, testés pour leur fiabilité au quotidien."
+    description="Un tracker GPS pour votre véhicule, une alarme SOS pour vous — deux produits essentiels, testés pour leur fiabilité au quotidien."
   />
 
   <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">

@@ -10,8 +10,8 @@ import { getCollection } from "astro:content";
 
 const homeFaqItems = [
   {
-    question: "Faut-il une carte SIM pour tous les trackers ?",
-    answer: "Seuls les trackers GPS (GF07, OBD) nécessitent une carte SIM avec forfait data. Le tag Bluetooth et l'alarme SOS fonctionnent sans SIM ni abonnement.",
+    question: "Faut-il une carte SIM pour le tracker GPS OBD ?",
+    answer: "Oui, une carte SIM 4G avec forfait data actif est nécessaire (non fournie) pour transmettre sa position en temps réel. L'alarme porte-clés SOS, elle, fonctionne sans SIM ni abonnement.",
   },
   {
     question: "Quels sont les délais de livraison ?",
@@ -39,23 +39,20 @@ const bundleProduct = PRODUCTS.find((p) => p.slug === "pack-decouverte");
 const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
 
 const CATEGORIES = [
-  "Proches",
   "Véhicules",
-  "Maison",
-  "Appartement",
-  "Animaux",
-  "Bagages",
-  "Valises",
-  "Sacs",
-  "Clés",
-  "Portefeuille",
-  "Objets de valeur",
+  "Deux-roues",
+  "Proches",
+  "Seniors",
+  "Jeunes conducteurs",
+  "Trajets seuls",
+  "Flottes pro",
+  "Randonnée",
 ];
 ---
 
 <BaseLayout
-  title="Safety Gadgets — Trackers GPS, Bluetooth et détecteurs anti-espionnage"
-  description="Safety Gadgets sélectionne des trackers GPS, des trackers Bluetooth et des détecteurs anti-espionnage compacts, pour localiser ce qui compte et repérer ce qui vous surveille."
+  title="Safety Gadgets — Tracker GPS voiture & alarme SOS personnelle"
+  description="Un tracker GPS qui se branche en 3 secondes sur votre véhicule, une alarme porte-clés qui alerte vos proches d'une pression — deux produits testés, garantis 1 an."
   path="/"
   jsonLd={[homeFaqSchema]}
 >
@@ -70,11 +67,11 @@ const CATEGORIES = [
     <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
       <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
       <h1 data-hero-heading class="mt-5 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
-        Gardez un œil sur ce qui vous est précieux.
+        Trois secondes pour équiper votre voiture. Une seconde pour alerter vos proches.
       </h1>
       <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-paper-dim">
-        Nos trackers GPS, trackers Bluetooth, porte-clefs SOS GPS et détecteurs anti-espionnage vous
-        permettent d'avoir un œil sur tout ce qui compte pour vous.
+        Un tracker GPS qui se branche directement sur votre véhicule, et une alarme porte-clés qui
+        prévient vos proches d'une simple pression. Deux produits testés, garantis un an.
       </p>
       <div class="reveal mt-10 overflow-hidden" aria-label="Ce que vous pouvez protéger">
         <div class="categories-track flex gap-3">
