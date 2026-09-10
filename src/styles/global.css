@@ -150,15 +150,69 @@ body {
   );
 }
 
-/* Radar de fond du hero : version agrandie et très sobre du motif radar
-   (voir .hero-radar plus bas), en couche d'ambiance qui se propage depuis
-   le même point que le halo ci-dessus — un seul foyer lumineux cohérent,
-   pas un second visuel qui concurrence l'image de carte. */
+/* Radar de fond du hero : un vrai cadran d'instrument (grille + réticule +
+   anneau intérieur), planté dans l'angle et partiellement hors cadre, dont
+   le centre pulse avec le motif radar-ping — le tout depuis le même point
+   que le halo ci-dessus, pour un seul foyer lumineux cohérent plutôt qu'un
+   second visuel qui concurrence l'image de carte. Réservé au desktop : sur
+   un hero mobile étroit, ce même point (15%/82%) tombe en plein milieu du
+   texte plutôt que dans un angle dégagé — masqué sous sm pour un hero
+   mobile épuré plutôt qu'un point doré qui flotte sur le titre. */
 .hero-radar-bg {
+  display: none;
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .hero-radar-bg {
+    display: block;
+  }
+}
+
+.hero-radar-bg .scope {
+  position: absolute;
+  top: 15%;
+  left: 82%;
+  width: 340px;
+  height: 340px;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+  background-image: linear-gradient(color-mix(in srgb, var(--color-accent) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 10%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(circle, black 58%, transparent 100%);
+  mask-image: radial-gradient(circle, black 58%, transparent 100%);
+}
+
+@media (min-width: 640px) {
+  .hero-radar-bg .scope {
+    width: 480px;
+    height: 480px;
+  }
+}
+
+.hero-radar-bg .scope::before {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.hero-radar-bg .scope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(color-mix(in srgb, var(--color-accent) 16%, transparent), color-mix(in srgb, var(--color-accent) 16%, transparent))
+      center / 1px 100% no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 16%, transparent), color-mix(in srgb, var(--color-accent) 16%, transparent)) center /
+      100% 1px no-repeat;
 }
 
 .hero-radar-bg .radar-core,
