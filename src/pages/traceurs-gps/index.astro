@@ -11,7 +11,7 @@ import { faqSchema } from "../../lib/schema";
 const faqItems = [
   {
     question: "Quel produit choisir selon mon besoin ?",
-    answer: "Pour surveiller un véhicule : le tracker GPS OBD. Pour vous ou un proche, en cas d'urgence : l'alarme porte-clés SOS. Besoin des deux ? Le pack réunit les deux produits avec 10 € d'économie.",
+    answer: "Pour surveiller un véhicule : le tracker GPS OBD. Pour vous ou un proche, en cas d'urgence : l'alarme porte-clés SOS.",
   },
   {
     question: "Les prix affichés sont-ils TTC ?",
@@ -24,17 +24,16 @@ const faqItems = [
 ];
 const schema = faqSchema(faqItems);
 
-// Mêmes trois groupes que sur la page d'accueil : les 2 produits phares
-// disponibles en grand format, le pack juste en dessous en rappel compact,
-// et le reste — pas encore arrivé — en retrait et flouté pour le suspense.
+// Mêmes deux groupes que sur la page d'accueil : les 2 produits phares
+// disponibles en grand format, et le reste — pas encore arrivé — en
+// retrait et flouté pour le suspense.
 const heroProducts = PRODUCTS.filter((p) => p.slug === "obd" || p.slug === "alarme-sos");
-const bundleProduct = PRODUCTS.find((p) => p.slug === "pack-decouverte");
 const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
 ---
 
 <BaseLayout
   title="Nos produits — Safety Gadgets"
-  description="Le tracker GPS OBD et l'alarme porte-clés SOS de Safety Gadgets, seuls ou en pack au meilleur prix — deux produits testés et garantis un an."
+  description="Le tracker GPS OBD et l'alarme porte-clés SOS de Safety Gadgets — deux produits testés et garantis un an."
   path="/traceurs-gps/"
   jsonLd={[schema]}
 >
@@ -97,42 +96,6 @@ const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
         </div>
       ))}
     </div>
-
-    {bundleProduct && (
-      <div class="reveal card-lift mt-6 flex flex-col gap-4 border border-ink-line bg-ink p-5 transition-colors duration-200 hover:border-accent/60 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <a href={`/traceurs-gps/${bundleProduct.slug}/`} class="flex items-center gap-4">
-          <img
-            src={bundleProduct.image}
-            alt={bundleProduct.name}
-            width="72"
-            height="72"
-            class="premium-photo h-14 w-14 shrink-0 object-contain sm:h-16 sm:w-16"
-          />
-          <div>
-            {bundleProduct.badge && (
-              <span class="text-[10px] uppercase tracking-[0.15em] text-accent">{bundleProduct.badge}</span>
-            )}
-            <h2 class="font-display text-base text-paper">{bundleProduct.name}</h2>
-            <p class="mt-0.5 text-xs leading-relaxed text-paper-dim">{bundleProduct.tagline}</p>
-          </div>
-        </a>
-        <div class="flex shrink-0 flex-wrap items-center gap-4 sm:justify-end">
-          <p class="flex items-baseline gap-2 font-mono text-base text-accent">
-            {formatPriceTTC(bundleProduct.price, bundleProduct.currency)}
-            {bundleProduct.originalPrice && (
-              <span class="text-xs text-mist line-through">{formatPriceTTC(bundleProduct.originalPrice, bundleProduct.currency)}</span>
-            )}
-          </p>
-          <button
-            type="button"
-            data-add-to-cart={bundleProduct.slug}
-            class="border border-accent bg-accent px-4 py-2 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
-          >
-            Ajouter au panier
-          </button>
-        </div>
-      </div>
-    )}
 
     {comingSoonProducts.length > 0 && (
       <div class="mt-16 border-t border-ink-line pt-10 sm:mt-20">
