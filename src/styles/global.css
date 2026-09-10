@@ -518,7 +518,7 @@ body {
    ligne qui allongerait le hero sur mobile. */
 .categories-track {
   width: max-content;
-  animation: marquee-scroll 26s linear infinite;
+  animation: marquee-scroll 12s linear infinite;
 }
 
 .categories-track:hover {
