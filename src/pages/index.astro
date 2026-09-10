@@ -66,14 +66,32 @@ const CATEGORIES = [
     </div>
     <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
       <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
-      <h1 data-hero-heading class="mt-5 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
-        Un vol a lieu toutes les 20 secondes en France. Le vôtre pourrait être le prochain.
+      <h1 data-hero-heading class="mt-6 font-display text-3xl font-medium leading-tight text-paper sm:text-4xl">
+        Un vol a lieu toutes les 20 secondes en France
       </h1>
-      <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-paper-dim">
-        1,6 million de vols recensés en 2024 (SSMSI) — sacs, véhicules, deux-roues. Sans traceur,
-        une disparition reste une disparition pour toujours. Équipez ce qui compte, avant qu'il ne
-        soit trop tard.
+      <p class="reveal mx-auto mt-4 max-w-2xl text-sm text-paper-dim">
+        1,6 million de vols recensés en 2024 (SSMSI) — sacs, véhicules, deux-roues.
       </p>
+
+      <div class="reveal mt-12">
+        <p class="font-display text-2xl font-medium uppercase tracking-[0.04em] text-accent sm:text-3xl">
+          Protégez ce qui compte le plus
+        </p>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-paper-dim">
+          Vos proches, vos biens, vos véhicules, ou votre maison méritent une protection à la
+          hauteur de leur importance. Grâce à nos solutions de géolocalisation et de gadgets de
+          sécurité, gardez un œil sur ce qui vous est précieux, où que vous soyez.
+        </p>
+      </div>
+
+      <p class="reveal mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs uppercase tracking-[0.15em] text-paper-dim sm:text-sm">
+        <span>📍 Localisez</span>
+        <span class="text-accent" aria-hidden="true">•</span>
+        <span>🚨 Alertez</span>
+        <span class="text-accent" aria-hidden="true">•</span>
+        <span>🛡️ Protégez</span>
+      </p>
+
       <div class="reveal mt-10 overflow-hidden" aria-label="Ce que vous pouvez protéger">
         <div class="categories-track flex gap-3">
           {CATEGORIES.map((item) => (
@@ -90,13 +108,12 @@ const CATEGORIES = [
           </div>
         </div>
       </div>
-      <div class="reveal mt-8 flex justify-center">
-        <p class="flex max-w-lg items-center gap-2 border border-ink-line px-4 py-2 text-left text-xs text-paper-dim">
-          <span class="live-dot shrink-0" aria-hidden="true"></span>
-          En France, un vol est enregistré toutes les 20 secondes en moyenne — 1,6 million de vols
-          recensés en 2024, tous types confondus (SSMSI, ministère de l'Intérieur).
-        </p>
-      </div>
+
+      <p class="reveal mx-auto mt-8 max-w-xl text-sm leading-relaxed text-paper-dim">
+        Protégez-vous avant qu'il ne soit trop tard — 90 % des gens attendent d'être victimes
+        avant d'agir. C'est maintenant.
+      </p>
+
       <div class="reveal mt-8 flex flex-wrap justify-center gap-3 sm:gap-4">
         <a
           href="#produits"
@@ -350,7 +367,7 @@ const CATEGORIES = [
                 />
                 <span class="absolute inset-0 flex items-center justify-center">
                   <span class="border border-accent/70 bg-ink/90 px-2 py-1 text-[9px] uppercase tracking-[0.15em] text-accent sm:px-2.5">
-                    Bientôt révélé
+                    Prochainement
                   </span>
                 </span>
               </div>
