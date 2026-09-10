@@ -150,6 +150,79 @@ body {
   );
 }
 
+/* Radar de fond du hero : version agrandie et très sobre du motif radar
+   (voir .hero-radar plus bas), en couche d'ambiance qui se propage depuis
+   le même point que le halo ci-dessus — un seul foyer lumineux cohérent,
+   pas un second visuel qui concurrence l'image de carte. */
+.hero-radar-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-radar-bg .radar-core,
+.hero-radar-bg .radar-ring {
+  position: absolute;
+  top: 15%;
+  left: 82%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 9999px;
+}
+
+.hero-radar-bg .radar-core {
+  background: var(--color-accent);
+  box-shadow: 0 0 26px 4px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+.hero-radar-bg .radar-ring {
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  opacity: 0;
+  animation: radar-ping-bg 6.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.hero-radar-bg .radar-ring:nth-child(2) {
+  animation-delay: 1.6s;
+}
+
+.hero-radar-bg .radar-ring:nth-child(3) {
+  animation-delay: 3.2s;
+}
+
+.hero-radar-bg .radar-ring:nth-child(4) {
+  animation-delay: 4.8s;
+}
+
+@keyframes radar-ping-bg {
+  0% {
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    opacity: 0.4;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    width: 820px;
+    height: 820px;
+    margin: -410px 0 0 -410px;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-radar-bg .radar-ring {
+    animation: none;
+    opacity: 0.06;
+    width: 500px;
+    height: 500px;
+    margin: -250px 0 0 -250px;
+  }
+}
+
 /* Traitement photographique sobre : léger noir & blanc + contraste, comme
    une photo de catalogue haut de gamme, sans à-plat de couleur graphique. */
 .premium-photo {
