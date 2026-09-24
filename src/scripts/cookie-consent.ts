@@ -32,16 +32,38 @@ function trackPageview(gaId: string) {
   });
 }
 
-export function initCookieConsent(gaId: string) {
+// Pixel Meta (Facebook/Instagram), chargé seulement après consentement.
+function loadMetaPixel(pixelId: string) {
+  const win = window as typeof window & { fbq?: ((...args: unknown[]) => void) & { queue?: unknown[]; loaded?: boolean } };
+  if (!win.fbq) {
+    const fbq = function (...args: unknown[]) {
+      (fbq.queue = fbq.queue || []).push(args);
+    } as ((...args: unknown[]) => void) & { queue?: unknown[]; loaded?: boolean; push?: unknown; version?: string; callMethod?: unknown };
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = "2.0";
+    win.fbq = fbq;
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://connect.facebook.net/en_US/fbevents.js";
+    document.head.appendChild(script);
+    win.fbq("init", pixelId);
+  }
+  win.fbq("track", "PageView");
+}
+
+function startTracking(gaId: string, pixelId: string) {
+  if (gaId) {
+    if (document.getElementById("ga-gtag-script")) trackPageview(gaId);
+    else loadGoogleAnalytics(gaId);
+  }
+  if (pixelId) loadMetaPixel(pixelId);
+}
+
+export function initCookieConsent(gaId: string, pixelId = "") {
   const consent = localStorage.getItem(STORAGE_KEY) as Consent | null;
 
-  if (consent === "granted") {
-    if (document.getElementById("ga-gtag-script")) {
-      trackPageview(gaId);
-    } else {
-      loadGoogleAnalytics(gaId);
-    }
-  }
+  if (consent === "granted") startTracking(gaId, pixelId);
 
   const banner = document.getElementById("cookie-consent");
   const acceptBtn = document.getElementById("cookie-accept");
@@ -58,7 +80,7 @@ export function initCookieConsent(gaId: string) {
   acceptBtn.addEventListener("click", () => {
     localStorage.setItem(STORAGE_KEY, "granted");
     banner.hidden = true;
-    loadGoogleAnalytics(gaId);
+    startTracking(gaId, pixelId);
   });
 
   refuseBtn.addEventListener("click", () => {

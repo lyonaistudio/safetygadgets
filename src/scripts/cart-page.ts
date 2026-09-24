@@ -1,3 +1,4 @@
+import { trackEvent } from "../lib/analytics";
 import { PRODUCTS, formatPriceTTC, type Product } from "../data/products";
 import { getCart, setQty, removeFromCart, addToCart } from "../lib/cart";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../lib/cart-pricing";
@@ -172,6 +173,10 @@ async function handleCheckout() {
   button.textContent = "Redirection vers le paiement…";
 
   try {
+    trackEvent("begin_checkout", {
+      currency: "EUR",
+      value: getCart().reduce((sum, l) => sum + (findProduct(l.slug)?.price ?? 0) * l.qty, 0),
+    });
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
