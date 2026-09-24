@@ -125,7 +125,7 @@ function render() {
             <h4 class="font-display text-base text-paper">${product.name}</h4>
             <p class="mt-1 font-mono text-sm text-accent">${formatPriceTTC(product.price, product.currency)}</p>
           </div>
-          <button type="button" data-quick-add="${product.slug}" class="flex h-9 w-9 shrink-0 items-center justify-center border border-accent text-lg leading-none text-accent transition-colors hover:bg-accent hover:text-ink" aria-label="Ajouter ${product.name} au panier">
+          <button type="button" data-quick-add="${product.slug}" class="flex h-9 w-9 shrink-0 items-center justify-center border border-accent text-lg leading-none text-accent transition-colors hover:bg-gold hover:text-night" aria-label="Ajouter ${product.name} au panier">
             +
           </button>
         </div>
@@ -165,8 +165,8 @@ function wireLineEvents() {
       addToCart(btn.dataset.quickAdd!, 1);
       btn.disabled = true;
       btn.textContent = "✓";
-      btn.classList.remove("border-accent", "text-accent", "hover:bg-accent", "hover:text-ink");
-      btn.classList.add("border-signal", "bg-signal", "text-ink");
+      btn.classList.remove("border-accent", "text-accent", "hover:bg-gold", "hover:text-night");
+      btn.classList.add("border-signal", "bg-signal", "text-night");
       window.setTimeout(render, 500);
     };
   });

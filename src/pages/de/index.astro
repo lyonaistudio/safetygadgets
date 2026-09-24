@@ -113,7 +113,7 @@ const homeFaqSchema = faqSchema(faqItems);
       <div class="reveal mt-8 flex flex-wrap justify-center gap-4">
         <a
           href="#produits"
-          class="border border-accent bg-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+          class="border border-gold bg-gold px-6 py-3 text-xs uppercase tracking-[0.15em] text-night transition-colors hover:bg-ink hover:text-accent"
         >
           Unsere Produkte ansehen
         </a>
@@ -169,15 +169,15 @@ const homeFaqSchema = faqSchema(faqItems);
         </h2>
         <p class="mt-3 max-w-md text-sm leading-relaxed text-paper-dim">{flagship.tagline}</p>
         <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
-          {formatPriceTTC(flagship.price, flagship.currency)}
+          <span data-price-regular={flagship.originalPrice && formatPriceTTC(flagship.originalPrice, flagship.currency)}>{formatPriceTTC(flagship.price, flagship.currency)}</span>
           {flagship.originalPrice && (
-            <span class="text-sm text-mist line-through">{formatPriceTTC(flagship.originalPrice, flagship.currency)}</span>
+            <span data-promo class="text-sm text-mist line-through">{formatPriceTTC(flagship.originalPrice, flagship.currency)}</span>
           )}
         </p>
         <div class="mt-5 flex flex-wrap gap-3">
           <a
             href={`/de/traceurs-gps/${flagship.slug}/`}
-            class="border border-accent bg-accent px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
+            class="border border-gold bg-gold px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-night transition-colors hover:bg-ink hover:text-accent"
           >
             Produkt ansehen
           </a>
@@ -223,9 +223,9 @@ const homeFaqSchema = faqSchema(faqItems);
             <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-paper-dim">{product.shortDescription}</p>
           </a>
           <p class="mt-2 flex flex-wrap items-baseline gap-2 font-mono text-base text-accent">
-            {formatPriceTTC(product.price, product.currency)}
+            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)}>{formatPriceTTC(product.price, product.currency)}</span>
             {product.originalPrice && (
-              <span class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+              <span data-promo class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
             )}
           </p>
           <a
@@ -253,7 +253,7 @@ const homeFaqSchema = faqSchema(faqItems);
         </p>
         <a
           href="/de/contact/"
-          class="mt-6 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
+          class="mt-6 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-gold hover:text-night"
         >
           Mehr erfahren
         </a>

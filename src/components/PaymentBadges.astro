@@ -21,7 +21,7 @@ const brands = [siVisa, siMastercard, siAmericanexpress, siApplepay, siGooglepay
   </p>
   <ul class="mt-4 grid grid-cols-3 gap-2" aria-label="Moyens de paiement acceptés">
     {brands.map((brand) => (
-      <li class="flex h-9 items-center justify-center rounded-md bg-paper" title={brand.title}>
+      <li class="flex h-9 items-center justify-center rounded-md border border-ink-line bg-white" title={brand.title}>
         <svg role="img" viewBox="0 0 24 24" class="h-4 w-full px-2" aria-label={brand.title}>
           <path d={brand.path} fill={`#${brand.hex}`} />
         </svg>

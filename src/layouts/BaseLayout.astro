@@ -66,7 +66,7 @@ const ogLocale = { fr: "fr_FR", en: "en_US", de: "de_DE" }[lang];
       content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; media-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://formspree.io; frame-src 'none'; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
     />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-    <meta name="theme-color" content="#12100d" />
+    <meta name="theme-color" content="#0f1e33" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -97,23 +97,22 @@ const ogLocale = { fr: "fr_FR", en: "en_US", de: "de_DE" }[lang];
     <div class="grain-overlay" aria-hidden="true"></div>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-accent focus:px-4 focus:py-2 focus:text-ink"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:text-night"
     >
       {t.skipToContent}
     </a>
     <div class="sticky top-0 z-40">
-      <div class="overflow-hidden border-b border-ink-line bg-ink-soft py-2">
-        <div class="announce-track flex items-center">
-          <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim">
-            <span>{t.freeShipping}</span>
-            <span class="text-accent" aria-hidden="true">•</span>
-            <span>{t.quantityDiscount}</span>
+      <div class="bg-night text-[11px] text-white/80 sm:text-xs">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6">
+          <span class="hidden lg:inline">✓ {t.stockSav}</span>
+          <span class="mx-auto lg:mx-0">
+            <span data-promo>
+              <span class="font-semibold text-gold">{t.promoBar}</span>
+              · {t.promoEndsIn} <span data-countdown-inline class="font-mono">…</span>
+            </span>
+            <span data-promo-fallback hidden>{t.freeShipping}</span>
           </span>
-          <span class="flex shrink-0 items-center gap-3 whitespace-nowrap px-6 text-[11px] uppercase tracking-[0.15em] text-paper-dim" aria-hidden="true">
-            <span>{t.freeShipping}</span>
-            <span class="text-accent">•</span>
-            <span>{t.quantityDiscount}</span>
-          </span>
+          <span class="hidden lg:inline">{t.freeShipping}</span>
         </div>
       </div>
       <Header lang={lang} switcherLinks={switcherLinks} />
@@ -130,11 +129,16 @@ const ogLocale = { fr: "fr_FR", en: "en_US", de: "de_DE" }[lang];
       import { initHeroReveal } from "../scripts/hero-reveal";
       import { initProductGallery } from "../scripts/product-gallery";
       import { initScrollTracking } from "../scripts/scroll-tracking";
+      import { initPromoCountdown } from "../scripts/promo-countdown";
 
       // astro:page-load fires on the very first load AND after every
       // client-side transition, so page-specific DOM (headlines, buttons,
       // reveal targets, header) gets re-wired each time the router swaps content.
+      // Lancé aussi immédiatement : si le module arrive après le premier
+      // astro:page-load, le compte à rebours ne resterait pas vide.
+      initPromoCountdown();
       document.addEventListener("astro:page-load", () => {
+        initPromoCountdown();
         initRevealObserver();
         initMobileMenu();
         initCartUI();

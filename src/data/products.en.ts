@@ -1,8 +1,9 @@
+import { applyPromo } from "../lib/promo";
 import type { Product } from "./products";
 
 // English translations of the product catalogue. Same slugs/sku/price/images
 // as the French source (src/data/products.ts) — only text fields differ.
-export const PRODUCTS_EN: Product[] = [
+export const REGULAR_PRODUCTS_EN: Product[] = [
   {
     slug: "pack-decouverte",
     sku: "SG-PACK01",
@@ -415,3 +416,6 @@ export const PRODUCTS_EN: Product[] = [
     ],
   },
 ];
+
+// Prix affichés et facturés : catalogue avec l'offre de lancement appliquée.
+export const PRODUCTS_EN: Product[] = applyPromo(REGULAR_PRODUCTS_EN);

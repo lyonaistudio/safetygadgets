@@ -1,3 +1,4 @@
+import { applyPromo } from "../lib/promo";
 export interface UseCase {
   title: string;
   icon: "car" | "child" | "senior" | "paw" | "bag" | "key" | "wallet" | "luggage" | "camera" | "bed" | "briefcase";
@@ -28,7 +29,7 @@ export interface Product {
 }
 
 // Prix indicatif — à confirmer par le client avant mise en ligne.
-export const PRODUCTS: Product[] = [
+export const REGULAR_PRODUCTS: Product[] = [
   {
     slug: "obd",
     sku: "SG-OBD",
@@ -384,6 +385,9 @@ export const PRODUCTS: Product[] = [
     ],
   },
 ];
+
+// Prix affichés et facturés : catalogue avec l'offre de lancement appliquée.
+export const PRODUCTS: Product[] = applyPromo(REGULAR_PRODUCTS);
 
 export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);

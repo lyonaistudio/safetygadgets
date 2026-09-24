@@ -2,7 +2,8 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
-import { PRODUCTS } from "../../data/products";
+import { REGULAR_PRODUCTS } from "../../data/products";
+import { applyPromo, PROMO } from "../../lib/promo";
 import { totalQty, quantityDiscountRate, FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../../lib/cart-pricing";
 
 export const POST: APIRoute = async ({ request, url }) => {
@@ -34,6 +35,9 @@ export const POST: APIRoute = async ({ request, url }) => {
 
   // Les prix viennent uniquement de PRODUCTS (source serveur), jamais du
   // client, pour qu'un panier manipulé ne puisse pas changer les montants.
+  // Promo recalculée à chaque requête : la fin de l'offre s'applique à
+  // l'heure exacte, même si le serveur tourne depuis avant la date.
+  const PRODUCTS = applyPromo(REGULAR_PRODUCTS);
   const validatedLines: { product: (typeof PRODUCTS)[number]; quantity: number }[] = [];
   for (const { slug, qty } of lines) {
     const product = PRODUCTS.find((p) => p.slug === slug);
@@ -63,7 +67,15 @@ export const POST: APIRoute = async ({ request, url }) => {
     price_data: {
       currency: product.currency.toLowerCase(),
       unit_amount: Math.round(product.price * (1 - discountRate) * 100),
-      product_data: { name: discountRate > 0 ? `${product.name} (remise quantité ${Math.round(discountRate * 100)} %)` : product.name },
+      product_data: {
+        name: [
+          product.name,
+          product.originalPrice ? `offre de lancement −${Math.round(PROMO.rate * 100)} %` : "",
+          discountRate > 0 ? `remise quantité ${Math.round(discountRate * 100)} %` : "",
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      },
     },
   }));
 

@@ -37,6 +37,9 @@ export const NAV_LINKS_BY_LOCALE: Record<Locale, { href: string; label: string }
 export const UI = {
   fr: {
     skipToContent: "Aller au contenu",
+    stockSav: "Stock en France · SAV en France",
+    promoBar: "Offre de lancement −20 %",
+    promoEndsIn: "fin dans",
     freeShipping: "Livraison offerte dès 100 € TTC d'achat",
     quantityDiscount: "5 % de réduction par article ajouté au panier — jusqu'à 20 %",
     contactCta: "Nous contacter",
@@ -58,6 +61,9 @@ export const UI = {
   },
   en: {
     skipToContent: "Skip to content",
+    stockSav: "Stock in France · French customer service",
+    promoBar: "Launch offer −20%",
+    promoEndsIn: "ends in",
     freeShipping: "Free shipping from €100 incl. VAT",
     quantityDiscount: "5% off for each item added to your cart — up to 20%",
     contactCta: "Contact us",
@@ -79,6 +85,9 @@ export const UI = {
   },
   de: {
     skipToContent: "Zum Inhalt springen",
+    stockSav: "Lager in Frankreich · Kundenservice in Frankreich",
+    promoBar: "Einführungsangebot −20 %",
+    promoEndsIn: "endet in",
     freeShipping: "Kostenloser Versand ab 100 € inkl. MwSt.",
     quantityDiscount: "5 % Rabatt pro Artikel im Warenkorb — bis zu 20 %",
     contactCta: "Kontakt aufnehmen",

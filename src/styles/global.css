@@ -14,17 +14,26 @@
   /* Identité "quiet luxury" : noir chaud (espresso) + or/laiton en accent
      dominant + émeraude sombre réservée aux micro-indicateurs de statut.
      Un seul accent fort (l'or) porte la marque, pas un duo néon. */
-  --color-ink: #12100d;
-  --color-ink-soft: #1c1914;
-  --color-ink-line: #322c22;
-  --color-paper: #f8f5ee;
-  --color-paper-dim: #c3b9a5;
-  --color-mist: #8c8271;
-  --color-accent: #c9a227;
-  --color-accent-soft: #e0c158;
-  --color-accent-dim: #7a5f18;
-  --color-signal: #4a7a68;
-  --color-signal-dim: #2b4a3f;
+  /* Thème clair premium : fond blanc, texte et bannières bleu nuit,
+     or champagne en accent (plus doux qu'un jaune, s'accorde au logo).
+     Les noms historiques sont conservés (ink = fond, paper = texte) pour
+     ne pas réécrire chaque page ; "night"/"gold" servent aux bannières. */
+  --color-ink: #ffffff;
+  --color-ink-soft: #f4f6f9;
+  --color-ink-line: #e2e6ee;
+  --color-paper: #0f1b2d;
+  --color-paper-dim: #4b5567;
+  --color-mist: #6b7488;
+  --color-accent: #8f6b3a;
+  --color-accent-soft: #b8925a;
+  --color-accent-dim: #7a5a2e;
+  --color-signal: #2f6b55;
+  --color-signal-dim: #d3e6de;
+  --color-night: #0f1e33;
+  --color-night-soft: #172a45;
+  --color-gold: #c6a26b;
+  --color-gold-soft: #d8bb8c;
+  --color-promo: #b83a2e;
 
   --font-display: "Fraunces", "Iowan Old Style", ui-serif, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -48,7 +57,7 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -65,8 +74,8 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-accent);
-  color: var(--color-ink);
+  background-color: var(--color-gold);
+  color: var(--color-night);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -280,7 +289,7 @@ body {
 /* Traitement photographique sobre : léger noir & blanc + contraste, comme
    une photo de catalogue haut de gamme, sans à-plat de couleur graphique. */
 .premium-photo {
-  filter: grayscale(0.25) contrast(1.08) brightness(0.97);
+  filter: contrast(1.03);
 }
 
 /* Mise en scène produit : un socle en ombre elliptique + halo doré très
@@ -300,7 +309,7 @@ body {
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse closest-side,
-    color-mix(in srgb, var(--color-ink) 55%, black) 0%,
+    rgba(15, 30, 51, 0.18) 0%,
     transparent 75%
   );
   filter: blur(2px);
@@ -337,7 +346,7 @@ body {
 .card-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 18px 34px -20px color-mix(in srgb, var(--color-accent) 35%, transparent),
-    0 10px 20px -14px rgba(0, 0, 0, 0.55);
+    0 10px 20px -14px rgba(15, 30, 51, 0.18);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -539,7 +548,7 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -723,4 +732,53 @@ body {
   ::view-transition-new(root) {
     animation-duration: 0.01ms;
   }
+}
+
+/* Bannière sombre (espresso + or) posée en carte sur le fond blanc :
+   le produit phare y est mis en scène avec un halo et des ondes. */
+.hero-banner {
+  background:
+    radial-gradient(ellipse 60% 80% at 75% 50%, rgba(198, 162, 107, 0.22), transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 0%, rgba(198, 162, 107, 0.08), transparent 70%),
+    linear-gradient(135deg, #1a2e4c 0%, #0f1e33 55%, #0a1526 100%);
+}
+.hero-banner .halo {
+  position: absolute;
+  inset: 10% 15%;
+  background: radial-gradient(circle, rgba(236, 226, 206, 0.30), transparent 65%);
+  filter: blur(10px);
+}
+.hero-banner .rings {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.hero-banner .rings span {
+  grid-area: 1 / 1;
+  border-radius: 9999px;
+  border: 1px solid rgba(198, 162, 107, 0.35);
+  width: 16rem;
+  height: 16rem;
+  animation: banner-ring 3.6s var(--ease-signature) infinite;
+}
+.hero-banner .rings span:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.hero-banner .rings span:nth-child(3) {
+  animation-delay: 2.4s;
+}
+@keyframes banner-ring {
+  from {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.hero-product {
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55));
+  transform: rotate(-8deg);
 }

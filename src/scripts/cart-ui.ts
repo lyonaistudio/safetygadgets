@@ -66,14 +66,14 @@ export function initCartUI() {
         // keeps these utilities present in the compiled stylesheet.
         btn.classList.remove(
           "border-accent",
-          "bg-accent",
+          "bg-gold",
           "text-accent",
-          "hover:bg-accent",
+          "hover:bg-gold",
           "hover:text-accent",
           "hover:bg-ink",
-          "hover:text-ink"
+          "hover:text-night"
         );
-        btn.classList.add("border-signal", "bg-signal", "text-ink");
+        btn.classList.add("border-signal", "bg-signal", "text-night");
         window.setTimeout(() => {
           btn.textContent = btn.dataset.defaultLabel ?? originalLabel;
           btn.className = btn.dataset.defaultClass ?? originalClass;

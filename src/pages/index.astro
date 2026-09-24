@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Eyebrow from "../components/Eyebrow.astro";
 import CTASection from "../components/CTASection.astro";
-import TrustBar from "../components/TrustBar.astro";
 import FAQAccordion from "../components/FAQAccordion.astro";
 import { PRODUCTS, formatPriceTTC } from "../data/products";
 import { faqSchema } from "../lib/schema";
+import { PROMO } from "../lib/promo";
 import { getCollection } from "astro:content";
 
 const homeFaqItems = [
@@ -29,23 +28,30 @@ const latestArticles = (await getCollection("actualites"))
   .slice(0, 8);
 
 const flagship = PRODUCTS.find((p) => p.slug === "alarme-sos") ?? PRODUCTS[0];
-
-// Les deux produits phares actuellement disponibles sont mis en avant en
-// grand format ; le reste, pas encore arrivé, reste en retrait et flouté
-// pour ménager le suspense.
-const heroProducts = PRODUCTS.filter((p) => p.slug === "obd" || p.slug === "alarme-sos");
+const obd = PRODUCTS.find((p) => p.slug === "obd") ?? PRODUCTS[0];
+const available = PRODUCTS.filter((p) => !p.comingSoon);
 const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
+const promoOn = Boolean(flagship.originalPrice);
+const promoPct = `−${Math.round(PROMO.rate * 100)} %`;
+const guides = latestArticles.slice(0, 3);
 
-const CATEGORIES = [
-  "Véhicules",
-  "Deux-roues",
-  "Proches",
-  "Seniors",
-  "Jeunes conducteurs",
-  "Trajets seuls",
-  "Flottes pro",
-  "Randonnée",
+const UNIVERS = [
+  { label: "Alarmes personnelles", img: "/images/products/alarme-porteclef-2.webp", href: `/traceurs-gps/${flagship.slug}/` },
+  { label: "Traceurs GPS véhicule", img: "/images/products/obd-1.webp", href: `/traceurs-gps/${obd.slug}/` },
+  { label: "Mini traceurs GPS", img: "/images/products/gf07-1.webp" },
+  { label: "Balises Bluetooth", img: "/images/products/bt-tag-1.webp" },
+  { label: "Détecteurs", img: "/images/products/detector-wand-1.webp" },
+  { label: "Packs", img: "/images/products/pack-decouverte-1.webp" },
 ];
+
+const REASSURANCE = [
+  ["Stock en France", "Expédié sous 24/48h, suivi", "M3 13h13l-1 4H4l-1-4Zm0 0 2-7h9l2 7"],
+  ["SAV en France", "Support & échange, réponse 24h", "M4 13v-1a8 8 0 0 1 16 0v1M4 13h3v6H5a1 1 0 0 1-1-1v-5Zm16 0h-3v6h2a1 1 0 0 0 1-1v-5Z"],
+  ["Paiement sécurisé", "Stripe · 3D Secure", "M3 7h18v11H3zM3 11h18"],
+  ["Garantie 1 an", "Retour sous 30 jours", "M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4"],
+];
+
+const CATEGORIES = ["Véhicules", "Deux-roues", "Seniors", "Trajets seuls", "Jeunes conducteurs", "Flottes pro"];
 ---
 
 <BaseLayout
@@ -54,386 +60,252 @@ const CATEGORIES = [
   path="/"
   jsonLd={[homeFaqSchema]}
 >
-  <section class="relative overflow-hidden border-b border-ink-line bg-ink">
-    <div class="hero-map-bg" aria-hidden="true"></div>
-    <div class="ambient-glow" aria-hidden="true"></div>
-    <div class="hero-radar-bg" aria-hidden="true">
-      <span class="scope"></span>
-      <span class="radar-ring"></span>
-      <span class="radar-ring"></span>
-      <span class="radar-ring"></span>
-      <span class="radar-ring"></span>
-      <span class="radar-core"></span>
-    </div>
-    <div class="mesh-glow" aria-hidden="true">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="relative mx-auto max-w-4xl px-6 py-20 text-center sm:py-28">
-      <Eyebrow label="Safety Gadgets" class="mx-auto w-fit" />
-      <h1 data-hero-heading class="mt-6 font-display text-3xl font-medium uppercase tracking-[0.04em] leading-tight text-accent sm:text-4xl">
-        Protégez ce qui compte le plus
-      </h1>
-      <p class="reveal mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-paper-dim">
-        Avec Safety Gadgets, vous pouvez localiser ce qui compte, prévenir vos proches en cas
-        de problème et garder l'esprit tranquille au quotidien.
-      </p>
 
-      <div class="reveal mt-6 flex justify-center">
-        <p class="flex items-center gap-2 border border-ink-line px-4 py-2 text-xs text-paper-dim">
-          <span class="live-dot shrink-0" aria-hidden="true"></span>
-          Un vol a lieu toutes les 20 secondes en France — 1,6 million en 2024 (SSMSI)
-        </p>
-      </div>
-
-      <p class="reveal mt-6 whitespace-nowrap font-display text-[15px] font-medium uppercase tracking-[0.04em] text-paper sm:text-lg sm:tracking-[0.3em]">
-        Localisez <span class="text-accent">·</span> Alertez <span class="text-accent">·</span> Protégez
-      </p>
-
-      <div class="reveal mt-10 overflow-hidden" aria-label="Ce que vous pouvez protéger">
-        <div class="categories-track flex gap-3">
-          {CATEGORIES.map((item) => (
-            <span class="shrink-0 whitespace-nowrap border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
-              {item}
-            </span>
-          ))}
-          <div class="contents" aria-hidden="true">
-            {CATEGORIES.map((item) => (
-              <span class="shrink-0 whitespace-nowrap border border-ink-line px-3 py-1 text-xs uppercase tracking-[0.1em] text-paper-dim">
-                {item}
+      <!-- HERO : bannière produit phare -->
+      <section class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 sm:pt-6">
+        <div class="hero-banner relative overflow-hidden rounded-2xl">
+          <div class="relative grid items-center gap-6 px-6 py-10 sm:px-12 sm:py-14 lg:grid-cols-[1.1fr_1fr]">
+            <div class="relative z-10">
+              <p class="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.3em] text-gold">
+                <span class="h-1.5 w-1.5 rounded-full bg-gold"></span> À la une
+              </p>
+              {promoOn && (
+                <span data-promo class="mt-4 inline-block rounded-full border border-white/25 px-3 py-1 text-xs text-white/80">
+                  {PROMO.label} · {promoPct} jusqu'au 12 octobre
+                </span>
+              )}
+              <h1 class="mt-4 font-display text-3xl font-medium leading-[1.1] text-white sm:text-5xl">
+                Un geste, et vos proches <br class="hidden sm:block" />
+                savent <span class="text-gold">où vous êtes.</span>
+              </h1>
+              <span class="mt-5 block h-0.5 w-10 bg-gold"></span>
+              <p class="mt-5 max-w-md text-sm leading-relaxed text-white/75 sm:text-base">
+                L'alarme porte-clés SOS : sirène 130 dB, alerte SMS et appel avec position GPS.
+                Sans application, prête à l'emploi. <span class="text-gold">Disponible dès maintenant.</span>
+              </p>
+              <div class="mt-6 flex flex-wrap items-end gap-3">
+                <span data-price-regular={flagship.originalPrice && formatPriceTTC(flagship.originalPrice)} class="font-display text-4xl font-semibold text-white">{formatPriceTTC(flagship.price)}</span>
+                {promoOn && (
+                  <>
+                    <span data-promo class="pb-1 text-lg text-white/50 line-through">{formatPriceTTC(flagship.originalPrice!)}</span>
+                    <span data-promo class="mb-1.5 rounded bg-promo px-2 py-0.5 text-xs font-bold text-white">{promoPct}</span>
+                  </>
+                )}
+              </div>
+              <div class="mt-5 flex flex-wrap items-center gap-3">
+                <button type="button" data-add-to-cart={flagship.slug} class="inline-flex items-center gap-3 rounded-lg bg-gold px-6 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">
+                  {promoOn ? "J'en profite" : "Ajouter au panier"}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+                </button>
+                <a href={`/traceurs-gps/${flagship.slug}/`} class="rounded-lg border border-white/25 px-5 py-3 text-sm text-white transition-colors hover:border-gold hover:text-gold">Voir la fiche</a>
+              </div>
+              {promoOn && <div data-promo class="mt-6 flex items-center gap-2 text-white">
+                <span class="text-[11px] uppercase tracking-[0.15em] text-white/60">Fin de l'offre</span>
+                <div data-countdown class="flex gap-1.5 font-mono">
+                  {["j", "h", "min", "s"].map((u) => (
+                    <span class="flex min-w-11 flex-col items-center rounded-md bg-white/10 px-2 py-1">
+                      <span data-unit={u} class="text-base font-medium">--</span>
+                      <span class="text-[9px] uppercase text-white/50">{u}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>}
+            </div>
+            <div class="relative flex min-h-64 items-center justify-center sm:min-h-80">
+              <div class="halo" aria-hidden="true"></div>
+              <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
+              <img src={flagship.image} alt={flagship.name} width="260" height="438" class="hero-product relative h-64 w-auto sm:h-96" />
+              {promoOn && <span data-promo class="absolute right-2 top-4 flex h-20 w-20 rotate-12 flex-col items-center justify-center rounded-full bg-promo text-white shadow-lg sm:right-10 sm:h-24 sm:w-24">
+                <span class="text-[10px] font-semibold uppercase">Offre</span>
+                <span class="font-display text-2xl font-bold leading-none sm:text-3xl">{promoPct.replace(" ", "")}</span>
+              </span>}
+              <span class="absolute bottom-4 left-0 rounded-lg bg-white/95 px-3 py-2 text-xs text-paper shadow-lg sm:left-6">
+                <span class="block font-semibold">Sirène 130 dB</span>
+                <span class="text-paper-dim">+ SMS &amp; appel GPS</span>
               </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Réassurance -->
+      <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+        <div class="grid grid-cols-2 gap-3 rounded-2xl border border-ink-line bg-ink-soft/60 p-3 lg:grid-cols-4">
+          {[
+            ["Stock en France", "Expédié sous 24/48h, suivi", "M3 13h13l-1 4H4l-1-4Zm0 0 2-7h9l2 7"],
+            ["SAV en France", "Support & échange, réponse 24h", "M4 13v-1a8 8 0 0 1 16 0v1M4 13h3v6H5a1 1 0 0 1-1-1v-5Zm16 0h-3v6h2a1 1 0 0 0 1-1v-5Z"],
+            ["Paiement sécurisé", "Stripe · 3D Secure", "M3 7h18v11H3zM3 11h18"],
+            ["Garantie 1 an", "Retour sous 30 jours", "M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4"],
+          ].map(([t, s, d]) => (
+            <div class="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm">
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-dim">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d={d} /></svg>
+              </span>
+              <span>
+                <span class="block text-sm font-semibold text-paper">{t}</span>
+                <span class="block text-xs text-paper-dim">{s}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Univers -->
+      <section id="univers" class="mx-auto max-w-7xl px-4 pt-16 text-center sm:px-6">
+        <h2 class="font-display text-2xl font-semibold text-paper sm:text-3xl">Nos univers</h2>
+        <p class="mt-2 text-sm text-paper-dim">Localisez, alertez, protégez — pour vos proches, vos biens et vos véhicules.</p>
+        <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {UNIVERS.map((u) => (
+            <a href={u.href ?? "#nouveautes"} class="group relative flex flex-col items-center rounded-xl bg-ink-soft px-3 pb-4 pt-6 transition-shadow hover:shadow-md">
+              {!u.href && <span class="absolute left-2 top-2 rounded bg-white px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent-dim">Bientôt</span>}
+              <img src={u.img} alt="" width="96" height="96" class={`h-24 w-24 object-contain transition-transform group-hover:scale-105 ${!u.href ? "opacity-40 grayscale" : ""}`} />
+              <span class="mt-3 text-sm text-paper">{u.label}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Bandeau expertise -->
+      <section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+        <div class="rounded-2xl border border-ink-line bg-white px-6 py-8 text-center shadow-sm">
+          <h2 class="font-display text-xl font-semibold text-paper sm:text-2xl">Des gadgets de sécurité pour particuliers et professionnels</h2>
+          <p class="mx-auto mt-2 max-w-2xl text-sm text-paper-dim">Un vol a lieu toutes les 20 secondes en France — 1,6 million en 2024 (SSMSI). Stock en France, expédition rapide, SAV en France réactif — des produits testés et garantis 1 an.</p>
+          <div class="mt-5 flex flex-wrap justify-center gap-2">
+            {CATEGORIES.map((c) => (
+              <span class="rounded-full border border-ink-line px-4 py-1.5 text-xs font-medium text-paper">{c}</span>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="reveal mt-8 flex flex-wrap justify-center gap-3 sm:gap-4">
-        <a
-          href="#produits"
-          class="border border-accent bg-accent px-4 py-2.5 text-[11px] uppercase tracking-[0.1em] text-ink transition-colors hover:bg-ink hover:text-accent sm:px-6 sm:py-3 sm:text-xs sm:tracking-[0.15em]"
-        >
-          Voir nos produits
-        </a>
-        <a
-          href="/contact/"
-          class="border border-ink-line px-4 py-2.5 text-[11px] uppercase tracking-[0.1em] text-paper transition-colors hover:border-accent hover:text-accent sm:px-6 sm:py-3 sm:text-xs sm:tracking-[0.15em]"
-        >
-          Une question ?
-        </a>
-      </div>
-      <ul
-        class="reveal mx-auto mt-10 flex w-full max-w-md flex-row flex-wrap items-center justify-center gap-x-4 gap-y-3 text-[10px] uppercase tracking-[0.1em] text-paper-dim sm:max-w-none sm:gap-x-8 sm:text-xs"
-        aria-label="Pourquoi Safety Gadgets"
-      >
-        <li class="flex items-center gap-2">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
-            <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4" />
-          </svg>
-          Garantie 1 an
-        </li>
-        <li class="flex items-center gap-2">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
-            <path d="M3 13h13l-1 4H4l-1-4Zm0 0 2-7h9l2 7M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
-          </svg>
-          Expédition 24-48h
-        </li>
-        <li class="flex items-center gap-2">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
-            <path d="M12 2 4 5v6c0 5 3.4 8.7 8 9 4.6-.3 8-4 8-9V5l-8-3ZM9 12l2 2 4-4" />
-          </svg>
-          Paiement sécurisé
-        </li>
-        <li class="flex items-center gap-2">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true">
-            <path d="M4 4v6h6M4 10a8 8 0 1 1 2.34 5.66" />
-          </svg>
-          Retour sous 30 jours
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <div class="hidden sm:block">
-    <TrustBar />
-  </div>
-
-  <section class="overflow-hidden border-b border-ink-line bg-ink">
-    <div class="mx-auto grid max-w-5xl items-center gap-6 px-6 py-12 lg:grid-cols-2 lg:gap-6 lg:py-10">
-      <div class="reveal order-1">
-        <Eyebrow label="Le plus demandé" />
-        <h2 class="mt-3 font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
-          {flagship.name}
-        </h2>
-        <p class="mt-3 max-w-md text-sm leading-relaxed text-paper-dim">{flagship.tagline}</p>
-        <p class="mt-4 flex flex-wrap items-baseline gap-2 font-mono text-lg text-accent">
-          {formatPriceTTC(flagship.price, flagship.currency)}
-          {flagship.originalPrice && (
-            <span class="text-sm text-mist line-through">{formatPriceTTC(flagship.originalPrice, flagship.currency)}</span>
-          )}
-        </p>
-        <div class="mt-5 flex flex-wrap gap-3">
-          <button
-            type="button"
-            data-add-to-cart={flagship.slug}
-            class="border border-accent bg-accent px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-ink transition-colors hover:bg-ink hover:text-accent"
-          >
-            Ajouter au panier
-          </button>
-          <a
-            href={`/traceurs-gps/${flagship.slug}/`}
-            class="border border-ink-line px-5 py-2.5 text-xs uppercase tracking-[0.15em] text-paper transition-colors hover:border-accent hover:text-accent"
-          >
-            Voir la fiche
-          </a>
-        </div>
-      </div>
-      <div
-        class="product-stage order-2"
-        data-product-gallery
-        data-gallery-images={JSON.stringify(flagship.gallery ?? [flagship.image])}
-      >
-        <img
-          src={flagship.image}
-          alt={flagship.name}
-          width="420"
-          height="420"
-          data-gallery-main
-          class="premium-photo mx-auto h-32 w-auto object-contain sm:h-56 lg:h-64"
-        />
-        {flagship.gallery && flagship.gallery.length > 1 && (
-          <>
-            <button
-              type="button"
-              data-gallery-prev
-              class="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
-              aria-label="Photo précédente"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
-            </button>
-            <button
-              type="button"
-              data-gallery-next
-              class="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
-              aria-label="Photo suivante"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-  </section>
-
-  <section id="produits" class="mx-auto max-w-6xl px-6 py-12 sm:py-14">
-    <Eyebrow label="Nos produits" />
-    <h2 class="mt-3 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
-      Choisissez le produit adapté à votre besoin.
-    </h2>
-
-    <div class="mt-8 grid grid-cols-2 gap-2.5 sm:gap-5">
-      {heroProducts.map((product) => (
-        <div class="reveal group card-lift relative flex flex-col overflow-hidden border border-accent/60 bg-ink-soft p-2.5 shadow-[0_0_0_1px_rgba(201,162,39,0.2)] sm:p-6">
-          <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/[0.08] via-transparent to-transparent" aria-hidden="true"></div>
-          <div class="relative flex items-center justify-between gap-2">
-            {product.badge && (
-              <span class="inline-block w-fit border border-accent bg-ink px-1.5 py-0.5 text-[8px] uppercase tracking-[0.1em] text-accent sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.15em]">
-                {product.badge}
+      <!-- Mosaïque produits -->
+      <section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+        <div class="grid gap-4 lg:grid-cols-[1fr_2fr_1fr]">
+          <div class="grid gap-4">
+            <a href={`/traceurs-gps/${obd.slug}/`} class="group flex flex-col items-center rounded-2xl bg-ink-soft p-6 text-center">
+              <img src={obd.image} alt="" width="140" height="140" class="h-32 w-32 object-contain transition-transform group-hover:scale-105" />
+              <span class="mt-3 text-sm font-semibold text-paper">Tracker GPS OBD</span>
+              <span class="text-xs text-paper-dim">Branché en 3 secondes</span>
+            </a>
+            <div class="flex flex-col items-center justify-center rounded-2xl bg-ink-soft p-6 text-center">
+              <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white text-accent-dim shadow-sm">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v11H3zM3 9l2-5h14l2 5M12 9v11" /></svg>
               </span>
-            )}
-            <span class="hidden text-[10px] uppercase tracking-[0.15em] text-mist sm:inline">{product.category}</span>
-          </div>
-          <a href={`/traceurs-gps/${product.slug}/`} class="relative flex flex-1 flex-col">
-            <div
-              class="product-stage relative my-2 h-20 sm:my-3 sm:h-40"
-              data-product-gallery
-              data-gallery-images={JSON.stringify(product.gallery ?? [product.image])}
-            >
-              <img
-                src={product.image}
-                alt={product.name}
-                width="200"
-                height="200"
-                data-gallery-main
-                class="premium-photo mx-auto h-20 w-20 object-contain sm:h-40 sm:w-40"
-              />
-              {product.gallery && product.gallery.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    data-gallery-prev
-                    class="absolute left-0 top-1/2 z-10 flex h-5 w-5 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent sm:h-7 sm:w-7"
-                    aria-label="Photo précédente"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
-                  </button>
-                  <button
-                    type="button"
-                    data-gallery-next
-                    class="absolute right-0 top-1/2 z-10 flex h-5 w-5 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent sm:h-7 sm:w-7"
-                    aria-label="Photo suivante"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-                  </button>
-                </>
-              )}
+              <span class="mt-3 text-sm font-semibold text-paper">Stock en France</span>
+              <span class="text-xs text-paper-dim">Expédié sous 24/48h</span>
             </div>
-            <h3 class="font-display text-sm text-paper group-hover:text-accent sm:text-xl">{product.name}</h3>
-            <p class="mt-1 line-clamp-2 text-[11px] leading-snug text-paper-dim sm:mt-1.5 sm:text-sm sm:leading-relaxed">{product.tagline}</p>
-          </a>
-          <p class="relative mt-2 flex flex-wrap items-baseline gap-1.5 font-mono text-sm text-accent sm:mt-3 sm:gap-2 sm:text-lg">
-            {formatPriceTTC(product.price, product.currency)}
-            {product.originalPrice && (
-              <span class="text-[10px] text-mist line-through sm:text-xs">{formatPriceTTC(product.originalPrice, product.currency)}</span>
-            )}
-          </p>
-          <div class="relative mt-3 flex flex-col items-start gap-2 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-            <button
-              type="button"
-              data-add-to-cart={product.slug}
-              class="w-full border border-accent bg-accent px-2 py-1.5 text-center text-[9px] uppercase tracking-normal text-ink transition-colors hover:bg-ink hover:text-accent sm:w-auto sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.15em]"
-            >
-              Ajouter au panier
-            </button>
-            <a
-              href={`/traceurs-gps/${product.slug}/`}
-              class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-mist transition-colors hover:text-accent sm:text-xs sm:tracking-[0.15em]"
-            >
-              Voir la fiche <span aria-hidden="true">→</span>
-            </a>
           </div>
-        </div>
-      ))}
-    </div>
-
-    {comingSoonProducts.length > 0 && (
-      <div class="mt-16 border-t border-ink-line pt-10">
-        <Eyebrow label="Bientôt disponible" />
-        <h3 class="mt-3 max-w-xl font-display text-lg font-medium text-paper sm:text-xl">
-          D'autres protections arrivent bientôt.
-        </h3>
-        <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
-          {comingSoonProducts.map((product) => (
-            <div class="reveal relative flex flex-col items-center border border-ink-line/60 bg-ink-soft/50 p-3 text-center sm:p-4">
-              <div class="product-stage relative my-2 h-20 w-20 sm:h-24 sm:w-24">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  width="140"
-                  height="140"
-                  class="premium-photo h-20 w-20 object-contain opacity-20 blur-md grayscale sm:h-24 sm:w-24"
-                />
-                <span class="absolute inset-0 flex items-center justify-center">
-                  <span class="border border-accent/70 bg-ink/90 px-2 py-1 text-[9px] uppercase tracking-[0.15em] text-accent sm:px-2.5">
-                    Prochainement
-                  </span>
+          <div class="hero-banner relative flex min-h-[26rem] flex-col items-center justify-start overflow-hidden rounded-2xl p-6">
+            <div class="halo" aria-hidden="true"></div>
+            <img src="/images/products/alarme-porteclef-2.webp" alt="" width="200" height="337" class="hero-product relative mt-2 h-48 w-auto sm:h-52" />
+            <span class="absolute right-0 top-0 bg-night px-4 py-3 text-[10px] uppercase leading-tight tracking-[0.15em] text-gold">Nouveauté<br />2026</span>
+            <div class="absolute bottom-4 left-1/2 w-[85%] -translate-x-1/2 rounded-xl bg-white/95 p-4 text-center shadow-lg">
+              <p class="font-display text-lg font-semibold text-paper sm:text-xl">Alarme porte-clés SOS</p>
+              <p class="mt-1 text-xs text-paper-dim">Sirène 130 dB, lampe LED, alerte SMS et appel GPS — sans application.</p>
+              <a href={`/traceurs-gps/${flagship.slug}/`} class="mt-3 inline-block rounded-lg bg-gold px-5 py-2 text-xs font-semibold text-night hover:bg-gold-soft">Découvrir</a>
+            </div>
+          </div>
+          <div class="grid gap-4">
+            <div class="flex flex-col items-center justify-center rounded-2xl bg-ink-soft p-6 text-center">
+              <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white text-accent-dim shadow-sm">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1M4 13h3v6H5a1 1 0 0 1-1-1v-5Zm16 0h-3v6h2a1 1 0 0 0 1-1v-5Z" /></svg>
+              </span>
+              <span class="mt-3 text-sm font-semibold text-paper">SAV en France</span>
+              <span class="text-xs text-paper-dim">Un interlocuteur, en français</span>
+            </div>
+            {promoOn && (
+              <a href="#promos" data-promo class="relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gold p-6 text-night">
+                <span class="font-display text-lg font-semibold leading-tight">Offre de<br />lancement</span>
+                <span class="flex items-end justify-between">
+                  <span class="font-display text-7xl font-bold leading-none">%</span>
+                  <span class="text-right text-xs font-medium">{promoPct} jusqu'au<br />12 octobre</span>
                 </span>
+              </a>
+            )}
+            <a href="/professionnels/" data-promo-fallback hidden={promoOn} class="relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gold p-6 text-night">
+              <span class="font-display text-lg font-semibold leading-tight">Espace<br />professionnels</span>
+              <span class="text-xs font-medium">Flottes, équipes, devis sur volume →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Promotions -->
+      <section id="promos" class="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 class={`border-l-4 pl-3 font-display text-2xl font-semibold text-paper sm:text-3xl ${promoOn ? "border-promo" : "border-accent"}`}>
+              {promoOn ? "En promotion" : "Nos produits"}
+            </h2>
+            {promoOn && <p data-promo class="mt-2 pl-4 text-sm text-paper-dim">{PROMO.label} valable jusqu'au {PROMO.endLabel}.</p>}
+          </div>
+          <p data-promo hidden={!promoOn} class="rounded-full bg-promo/10 px-4 py-2 text-sm font-medium text-promo">
+            Plus que <span data-countdown-inline class="font-mono">…</span>
+          </p>
+        </div>
+        <div class="mt-6 grid gap-5 sm:grid-cols-2">
+          {available.map((p) => (
+            <article class="group relative flex gap-4 rounded-2xl border border-ink-line bg-white p-4 shadow-sm transition-shadow hover:shadow-lg sm:gap-6 sm:p-6">
+              {p.originalPrice && <span data-promo class="absolute left-4 top-4 z-10 rounded bg-promo px-2 py-0.5 text-xs font-bold text-white">{promoPct}</span>}
+              <a href={`/traceurs-gps/${p.slug}/`} class="flex w-32 shrink-0 items-center justify-center rounded-xl bg-ink-soft sm:w-44">
+                <img src={p.image} alt={p.name} width="160" height="160" class="h-32 w-28 object-contain transition-transform group-hover:scale-105 sm:h-40 sm:w-36" />
+              </a>
+              <div class="flex flex-1 flex-col">
+                <span class="text-[11px] uppercase tracking-[0.15em] text-accent-dim">{p.category}</span>
+                <h3 class="mt-1 text-base font-semibold text-paper sm:text-lg"><a href={`/traceurs-gps/${p.slug}/`}>{p.name}</a></h3>
+                <p class="mt-1 line-clamp-2 text-sm text-paper-dim">{p.tagline}</p>
+                <p class="mt-auto flex items-baseline gap-2 pt-3">
+                  <span data-price-regular={p.originalPrice && formatPriceTTC(p.originalPrice)} class="text-xl font-bold text-paper">{formatPriceTTC(p.price)}</span>
+                  {p.originalPrice && <span data-promo class="text-sm text-paper-dim line-through">{formatPriceTTC(p.originalPrice)}</span>}
+                </p>
+                <button type="button" data-add-to-cart={p.slug} class="mt-3 w-fit rounded-lg bg-night px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-gold hover:text-night">
+                  Ajouter au panier
+                </button>
               </div>
-              <p class="text-[10px] uppercase tracking-[0.1em] text-mist sm:text-[11px]">{product.category}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Prochainement -->
+      <section id="nouveautes" class="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
+        <h2 class="border-l-4 border-accent pl-3 font-display text-2xl font-semibold text-paper sm:text-3xl">Prochainement</h2>
+        <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
+          {comingSoonProducts.map((p) => (
+            <div class="relative flex flex-col items-center rounded-2xl border border-ink-line bg-white p-4 text-center">
+              <span class="absolute left-3 top-3 rounded bg-night px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gold">Bientôt</span>
+              <img src={p.image} alt="" width="120" height="120" class="mt-4 h-20 w-20 object-contain opacity-30 blur-[3px] grayscale sm:h-28 sm:w-28" />
+              <p class="mt-3 text-xs font-medium text-paper sm:text-sm">{p.category}</p>
             </div>
           ))}
         </div>
-      </div>
-    )}
-  </section>
+      </section>
 
-  <section class="border-y border-ink-line bg-ink-soft">
-    <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 sm:py-20 lg:grid-cols-[1.3fr_1fr]">
-      <div class="reveal">
-        <Eyebrow label="Particuliers & professionnels" />
-        <h2 class="mt-4 max-w-xl font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
-          Autant équipé pour les entreprises que pour vous.
-        </h2>
-        <p class="mt-4 max-w-xl leading-relaxed text-paper-dim">
-          Flottes de véhicules, dotation d'équipe, collaborateurs isolés : nous accompagnons aussi les
-          entreprises, associations et collectivités, en plus des particuliers. Commandes en volume et
-          tarifs dégressifs sur devis, facturation professionnelle.
-        </p>
-        <a
-          href="/professionnels/"
-          class="mt-6 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-accent hover:text-ink"
-        >
-          En savoir plus
-        </a>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-        <div class="border border-ink-line bg-ink p-5">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true">
-            <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" />
-          </svg>
-          <p class="mt-3 text-sm text-paper">Particuliers</p>
-          <p class="mt-1 text-xs leading-relaxed text-paper-dim">Livraison rapide, paiement en ligne, SAV personnel.</p>
-        </div>
-        <div class="border border-ink-line bg-ink p-5">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true">
-            <path d="M4 8h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm4-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2H8V6ZM3 13h18" />
-          </svg>
-          <p class="mt-3 text-sm text-paper">Professionnels</p>
-          <p class="mt-1 text-xs leading-relaxed text-paper-dim">Devis sur volume, facturation pro, contact dédié.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <Eyebrow label="Actualités" />
-        <h2 class="mt-4 max-w-2xl font-display text-3xl font-medium text-paper sm:text-4xl">
-          Vols, cambriolages, suivi non consenti : nos articles de fond.
-        </h2>
-      </div>
-      <a
-        href="/actualites/"
-        class="inline-flex shrink-0 items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
-      >
-        Toutes les actualités <span aria-hidden="true">→</span>
-      </a>
-    </div>
-    <div class="reveal mt-10 overflow-hidden">
-      <div class="marquee-track flex gap-6">
-        {latestArticles.map((article) => (
-          <a
-            href={`/actualites/${article.id}/`}
-            class="group card-lift flex w-80 shrink-0 flex-col border border-ink-line bg-ink-soft p-6 transition-colors duration-200 hover:border-accent/60"
-          >
-            <span class="text-xs uppercase tracking-[0.15em] text-mist">{article.data.category}</span>
-            <h3 class="mt-3 font-display text-lg text-paper group-hover:text-accent">{article.data.title}</h3>
-            <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-paper-dim">{article.data.description}</p>
-          </a>
-        ))}
-        <div class="contents" aria-hidden="true">
-          {latestArticles.map((article) => (
-            <a
-              href={`/actualites/${article.id}/`}
-              tabindex="-1"
-              class="group card-lift flex w-80 shrink-0 flex-col border border-ink-line bg-ink-soft p-6 transition-colors duration-200 hover:border-accent/60"
-            >
-              <span class="text-xs uppercase tracking-[0.15em] text-mist">{article.data.category}</span>
-              <h3 class="mt-3 font-display text-lg text-paper group-hover:text-accent">{article.data.title}</h3>
-              <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-paper-dim">{article.data.description}</p>
+      <!-- Guides -->
+      <section class="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
+        <h2 class="font-display text-2xl font-semibold text-paper sm:text-3xl">Nos guides et conseils</h2>
+        <p class="mt-1 text-sm text-paper-dim">Bien choisir, bien s'équiper : nos articles simples et pratiques.</p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          {guides.map((g) => (
+            <a href={`/actualites/${g.id}/`} class="group flex flex-col rounded-2xl border border-ink-line bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+              <span class="text-[11px] uppercase tracking-[0.15em] text-accent-dim">{g.data.category}</span>
+              <h3 class="mt-2 text-base font-semibold text-paper">{g.data.title}</h3>
+              <p class="mt-1 line-clamp-2 text-sm text-paper-dim">{g.data.description}</p>
+              <span class="mt-auto pt-3 text-sm font-medium text-accent-dim group-hover:underline">Lire l'article →</span>
             </a>
           ))}
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
-    <Eyebrow label="Questions fréquentes" />
-    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
-      En bref
-    </h2>
-    <div class="mt-8">
-      <FAQAccordion items={homeFaqItems} />
-    </div>
-    <a
-      href="/faq/"
-      class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
-    >
-      Voir toute la FAQ <span aria-hidden="true">→</span>
-    </a>
-  </section>
+      <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+        <h2 class="font-display text-2xl font-semibold text-paper sm:text-3xl">Questions fréquentes</h2>
+        <div class="mt-6">
+          <FAQAccordion items={homeFaqItems} />
+        </div>
+        <a href="/faq/" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-dim hover:underline">
+          Voir toute la FAQ <span aria-hidden="true">→</span>
+        </a>
+      </section>
 
   <CTASection
     title="Une question avant de choisir ?"
