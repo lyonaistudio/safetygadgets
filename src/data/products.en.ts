@@ -4,72 +4,7 @@ import type { Product } from "./products";
 // English translations of the product catalogue. Same slugs/sku/price/images
 // as the French source (src/data/products.ts) — only text fields differ.
 export const REGULAR_PRODUCTS_EN: Product[] = [
-  {
-    slug: "pack-decouverte",
-    sku: "SG-PACK01",
-    badge: "Pack",
-    category: "Discovery pack",
-    name: "Safety Gadgets Discovery Pack",
-    shortName: "Discovery Pack",
-    tagline: "3 ways to protect what matters, bundled in one pack",
-    price: 64.7,
-    originalPrice: 79.7,
-    currency: "EUR",
-    image: "/images/products/pack-decouverte-1.webp",
-    shortDescription:
-      "The GF07 tracker, the Bluetooth tag and the SOS alarm bundled together to try the whole range, with €15 in savings.",
-    description:
-      "Built to try the essentials of the Safety Gadgets range without having to choose: a versatile GPS tracker for a car, a loved one or a pet, a Bluetooth tag so you never lose your keys or bag again, and a personal alarm to get help with one gesture. Three different uses, three complementary products, bundled at the lowest price in the shop.",
-    highlights: [
-      "3 flagship products bundled: GF07, Bluetooth tag, SOS alarm",
-      "€15 in savings compared to buying separately",
-      "Three complementary uses: vehicle/loved one, everyday items, emergency",
-      "Each product individually covered by a 1-year warranty",
-    ],
-    specs: [
-      { label: "GPS tracker", value: "GF07 — real-time tracking (€34.90 alone)" },
-      { label: "Bluetooth tracker", value: "Find My tag (€19.90 alone)" },
-      { label: "Personal alarm", value: "130 dB SOS button (€34.99 alone)" },
-      { label: "Pack price", value: "€64.70 incl. VAT instead of €79.70" },
-      { label: "Warranty", value: "1 year on each product" },
-    ],
-    useCases: [
-      {
-        title: "First purchase",
-        icon: "key",
-        description: "Ideal for trying the range without having to pick just one product.",
-      },
-      {
-        title: "Complete gift",
-        icon: "wallet",
-        description: "A useful gift that covers several security needs at once.",
-      },
-      {
-        title: "Family",
-        icon: "child",
-        description: "Enough to equip a loved one, a car and a set of keys in one go.",
-      },
-      {
-        title: "Best price",
-        icon: "bag",
-        description: "The cheapest way to try three Safety Gadgets products.",
-      },
-    ],
-    faq: [
-      {
-        question: "Does the pack really include 3 separate products?",
-        answer: "Yes: a GF07 tracker, a Find My Bluetooth tag and an SOS GPS keychain alarm, each with its own 1-year warranty.",
-      },
-      {
-        question: "Can I choose different products to make up my pack?",
-        answer: "This pack is offered with this fixed selection to guarantee the best price; for a different combination, order the products separately.",
-      },
-      {
-        question: "Does the discount apply on top of free shipping from €100?",
-        answer: "The pack is already at the best available price; combined with another product, it counts normally toward the free-shipping threshold of €100 incl. VAT.",
-      },
-    ],
-  },
+
   {
     slug: "gf07",
     sku: "SG-GF07",

@@ -1,6 +1,6 @@
 import { PRODUCTS, formatPriceTTC, type Product } from "../data/products";
 import { getCart, setQty, removeFromCart, addToCart } from "../lib/cart";
-import { totalQty, quantityDiscountRate, FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../lib/cart-pricing";
+import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../lib/cart-pricing";
 
 function findProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
@@ -60,24 +60,7 @@ function render() {
     .join("");
 
   const subtotal = lines.reduce((sum, { line, product }) => sum + product.price * line.qty, 0);
-  const qty = totalQty(lines.map(({ line }) => line));
-  const discountRate = quantityDiscountRate(qty);
-  const discountAmount = subtotal * discountRate;
-  const total = subtotal - discountAmount;
-
-  const discountLine =
-    discountRate > 0
-      ? `<div class="mt-2 flex items-center justify-between text-xs text-signal">
-          <span>Remise quantité (${Math.round(discountRate * 100)} %)</span>
-          <span>−${formatPriceTTC(discountAmount)}</span>
-        </div>`
-      : "";
-  const nextTierLine =
-    hasItems && discountRate < 0.2
-      ? `<p class="mt-2 text-xs text-paper-dim">Ajoutez un article de plus pour <span class="text-accent">${
-          Math.round((discountRate + 0.05) * 100)
-        } % de réduction</span> sur tout le panier.</p>`
-      : "";
+  const total = subtotal;
 
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
   const shippingFee = hasItems && remaining > 0 ? SHIPPING_FEE : 0;
@@ -98,17 +81,14 @@ function render() {
   summaryContainer.innerHTML = `
     <p class="text-xs uppercase tracking-[0.1em] text-mist">Sous-total</p>
     <p class="mt-2 font-mono text-2xl text-paper">${formatPriceTTC(subtotal)}</p>
-    ${discountLine}
     ${shippingLine}
     ${
       hasItems
         ? `<p class="mt-3 border-t border-ink-line pt-3 font-mono text-lg text-paper">Total : ${formatPriceTTC(grandTotal)}</p>`
         : ""
     }
-    ${nextTierLine}
     <p class="mt-4 text-xs leading-relaxed text-mist">
-      5&nbsp;% de réduction par article ajouté au panier (jusqu'à 20&nbsp;% dès 5 articles). Livraison
-      offerte dès 100&nbsp;€ TTC d'achat, sinon 7,99&nbsp;€ de frais de livraison.
+      Livraison offerte dès 100&nbsp;€ TTC d'achat, sinon 7,99&nbsp;€ de frais de livraison.
     </p>
   `;
 

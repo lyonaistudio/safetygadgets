@@ -4,7 +4,7 @@ import type { APIRoute } from "astro";
 import Stripe from "stripe";
 import { REGULAR_PRODUCTS } from "../../data/products";
 import { applyPromo, PROMO } from "../../lib/promo";
-import { totalQty, quantityDiscountRate, FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../../lib/cart-pricing";
+import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../../lib/cart-pricing";
 
 export const POST: APIRoute = async ({ request, url }) => {
   const secretKey = import.meta.env.STRIPE_SECRET_KEY;
@@ -57,21 +57,15 @@ export const POST: APIRoute = async ({ request, url }) => {
     validatedLines.push({ product, quantity });
   }
 
-  // Remise quantité : 5 % par article ajouté, plafonnée à 20 % — calculée
-  // ici (source unique partagée avec l'affichage panier) donc jamais
-  // manipulable depuis le client.
-  const discountRate = quantityDiscountRate(totalQty(validatedLines.map((l) => ({ qty: l.quantity }))));
-
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = validatedLines.map(({ product, quantity }) => ({
     quantity,
     price_data: {
       currency: product.currency.toLowerCase(),
-      unit_amount: Math.round(product.price * (1 - discountRate) * 100),
+      unit_amount: Math.round(product.price * 100),
       product_data: {
         name: [
           product.name,
           product.originalPrice ? `offre de lancement −${Math.round(PROMO.rate * 100)} %` : "",
-          discountRate > 0 ? `remise quantité ${Math.round(discountRate * 100)} %` : "",
         ]
           .filter(Boolean)
           .join(" · "),
@@ -79,13 +73,13 @@ export const POST: APIRoute = async ({ request, url }) => {
     },
   }));
 
-  const discountedSubtotal = validatedLines.reduce(
-    (sum, { product, quantity }) => sum + product.price * (1 - discountRate) * quantity,
+  const subtotal = validatedLines.reduce(
+    (sum, { product, quantity }) => sum + product.price * quantity,
     0
   );
   const currency = validatedLines[0].product.currency.toLowerCase();
   const shippingOption: Stripe.Checkout.SessionCreateParams.ShippingOption =
-    discountedSubtotal >= FREE_SHIPPING_THRESHOLD
+    subtotal >= FREE_SHIPPING_THRESHOLD
       ? {
           shipping_rate_data: {
             type: "fixed_amount",

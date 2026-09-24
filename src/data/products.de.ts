@@ -4,72 +4,7 @@ import type { Product } from "./products";
 // Deutsche Übersetzung des Produktkatalogs. Gleiche Slugs/SKUs/Preise/Bilder
 // wie die französische Quelle (src/data/products.ts) — nur die Texte unterscheiden sich.
 export const REGULAR_PRODUCTS_DE: Product[] = [
-  {
-    slug: "pack-decouverte",
-    sku: "SG-PACK01",
-    badge: "Paket",
-    category: "Entdecker-Paket",
-    name: "Safety Gadgets Entdecker-Paket",
-    shortName: "Entdecker-Paket",
-    tagline: "3 Wege, zu schützen, was zählt, in einem Paket vereint",
-    price: 64.7,
-    originalPrice: 79.7,
-    currency: "EUR",
-    image: "/images/products/pack-decouverte-1.webp",
-    shortDescription:
-      "Der GF07-Tracker, das Bluetooth-Tag und der SOS-Alarm vereint, um das gesamte Sortiment zu testen — mit 15 € Ersparnis.",
-    description:
-      "Konzipiert, um das Wesentliche des Safety-Gadgets-Sortiments zu entdecken, ohne wählen zu müssen: ein vielseitiger GPS-Tracker für ein Auto, eine nahestehende Person oder ein Haustier, ein Bluetooth-Tag, damit Sie nie wieder Ihre Schlüssel oder Tasche verlieren, und ein persönlicher Alarm, um mit einer Geste Hilfe zu rufen. Drei verschiedene Anwendungen, drei sich ergänzende Produkte, vereint zum günstigsten Preis im Shop.",
-    highlights: [
-      "3 Bestseller vereint: GF07, Bluetooth-Tag, SOS-Alarm",
-      "15 € Ersparnis gegenüber dem Einzelkauf",
-      "Drei sich ergänzende Anwendungen: Fahrzeug/Angehörige, Alltagsgegenstände, Notfall",
-      "Jedes Produkt einzeln mit 1 Jahr Garantie",
-    ],
-    specs: [
-      { label: "GPS-Tracker", value: "GF07 — Echtzeit-Ortung (34,90 € einzeln)" },
-      { label: "Bluetooth-Tracker", value: "Find-My-Tag (19,90 € einzeln)" },
-      { label: "Persönlicher Alarm", value: "SOS-Knopf 130 dB (34,99 € einzeln)" },
-      { label: "Paketpreis", value: "64,70 € inkl. MwSt. statt 79,70 €" },
-      { label: "Garantie", value: "1 Jahr auf jedes Produkt" },
-    ],
-    useCases: [
-      {
-        title: "Erstkauf",
-        icon: "key",
-        description: "Ideal, um das Sortiment zu entdecken, ohne sich auf ein einzelnes Produkt festlegen zu müssen.",
-      },
-      {
-        title: "Komplettes Geschenk",
-        icon: "wallet",
-        description: "Ein nützliches Geschenk, das mehrere Sicherheitsbedürfnisse auf einmal abdeckt.",
-      },
-      {
-        title: "Familie",
-        icon: "child",
-        description: "Genug, um eine nahestehende Person, ein Auto und einen Schlüsselbund auf einmal auszustatten.",
-      },
-      {
-        title: "Bester Preis",
-        icon: "bag",
-        description: "Der günstigste Weg, drei Safety-Gadgets-Produkte auszuprobieren.",
-      },
-    ],
-    faq: [
-      {
-        question: "Enthält das Paket wirklich 3 separate Produkte?",
-        answer: "Ja: einen GF07-Tracker, ein Find-My-Bluetooth-Tag und einen SOS-GPS-Schlüsselanhänger-Alarm, jeweils mit eigener 1-jähriger Garantie.",
-      },
-      {
-        question: "Kann ich andere Produkte für mein Paket wählen?",
-        answer: "Dieses Paket wird mit dieser festen Auswahl angeboten, um den besten Preis zu garantieren; für eine andere Kombination bestellen Sie die Produkte einzeln.",
-      },
-      {
-        question: "Gilt der Rabatt zusätzlich zum kostenlosen Versand ab 100 €?",
-        answer: "Das Paket hat bereits den günstigsten Preis; in Kombination mit einem weiteren Produkt zählt es normal zum Schwellenwert für kostenlosen Versand ab 100 € inkl. MwSt.",
-      },
-    ],
-  },
+
   {
     slug: "gf07",
     sku: "SG-GF07",

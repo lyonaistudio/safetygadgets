@@ -42,7 +42,6 @@ const UNIVERS = [
   { label: "Mini traceurs GPS", img: "/images/products/gf07-1.webp" },
   { label: "Balises Bluetooth", img: "/images/products/bt-tag-1.webp" },
   { label: "Détecteurs", img: "/images/products/detector-wand-1.webp" },
-  { label: "Packs", img: "/images/products/pack-decouverte-1.webp" },
 ];
 
 const REASSURANCE = [
@@ -150,7 +149,7 @@ const CATEGORIES = ["Véhicules", "Deux-roues", "Seniors", "Trajets seuls", "Jeu
       <section id="univers" class="mx-auto max-w-7xl px-4 pt-16 text-center sm:px-6">
         <h2 class="font-display text-2xl font-semibold text-paper sm:text-3xl">Nos univers</h2>
         <p class="mt-2 text-sm text-paper-dim">Localisez, alertez, protégez — pour vos proches, vos biens et vos véhicules.</p>
-        <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {UNIVERS.map((u) => (
             <a href={u.href ?? "#nouveautes"} class="group relative flex flex-col items-center rounded-xl bg-ink-soft px-3 pb-4 pt-6 transition-shadow hover:shadow-md">
               {!u.href && <span class="absolute left-2 top-2 rounded bg-white px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-accent-dim">Bientôt</span>}
