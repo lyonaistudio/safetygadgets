@@ -1,0 +1,148 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CTASection from "./CTASection.astro";
+import FAQAccordion from "./FAQAccordion.astro";
+import ProductCard from "./ProductCard.astro";
+import FlagFR from "./FlagFR.astro";
+import { PRODUCTS_EN } from "../data/products.en";
+import { PRODUCTS_DE } from "../data/products.de";
+import { formatPriceTTC } from "../data/products";
+import { faqSchema } from "../lib/schema";
+import { HOME_SWITCHER } from "../lib/i18n";
+import { PROMO } from "../lib/promo";
+
+// Accueil anglais / allemand : même structure que l'accueil français, sans
+// panier (on commande via la fiche produit puis le formulaire de contact).
+interface Props {
+  lang: "en" | "de";
+}
+const { lang } = Astro.props;
+const catalog = lang === "en" ? PRODUCTS_EN : PRODUCTS_DE;
+const obd = catalog.find((p) => p.slug === "obd")!;
+const sos = catalog.find((p) => p.slug === "alarme-sos")!;
+const available = catalog.filter((p) => !p.comingSoon);
+const comingSoon = catalog.filter((p) => p.comingSoon);
+const promoOn = Boolean(sos.originalPrice);
+const promoPct = `−${Math.round(PROMO.rate * 100)} %`;
+
+const T = {
+  en: {
+    metaTitle: "Safety Gadgets — Car GPS tracker & SOS personal alarm",
+    metaDescription: "A 4G GPS tracker that plugs into your car's OBD port in seconds, and a keychain SOS alarm that alerts your loved ones with one press.",
+    promo: `Launch offer ${promoPct} until 12 October`,
+    title: "Protect what matters", titleAccent: "most.",
+    intro: "Your vehicle located in real time, your loved ones alerted with a single press. Two essentials, ready to use and covered by a 1-year warranty.",
+    cta: "See the products", endsIn: "Ends in", view: "View product",
+    reassurance: [["Stock in France", "Ships within 24–48h"], ["Customer service in France", "Reply within 24h"], ["Secure payment", "Card payment"], ["1-year warranty", "30-day returns"]],
+    productsTitle: promoOn ? "On offer" : "Our products", soonTitle: "Coming soon", soonBadge: "Soon",
+    faqTitle: "Frequently asked questions",
+    faq: [
+      { question: "Does the OBD tracker need a SIM card?", answer: "Yes, a 4G SIM card with a little data is required (not included). A small data plan is enough." },
+      { question: "What are the shipping times?", answer: "Orders are shipped within 24 to 48 business hours, with a tracking number sent by email." },
+      { question: "Can I return a product that doesn't suit me?", answer: "Yes, within 30 days, unused and in its original packaging." },
+    ],
+    ctaTitle: "A question before choosing?", ctaDesc: "Tell us what you need, we'll point you to the right product.", ctaButton: "Contact us",
+  },
+  de: {
+    metaTitle: "Safety Gadgets — GPS-Tracker fürs Auto & SOS-Personenalarm",
+    metaDescription: "Ein 4G-GPS-Tracker, der in Sekunden in die OBD-Buchse Ihres Autos gesteckt wird, und ein SOS-Schlüsselanhänger, der Ihre Angehörigen mit einem Druck alarmiert.",
+    promo: `Einführungsangebot ${promoPct} bis 12. Oktober`,
+    title: "Schützen Sie, was Ihnen", titleAccent: "am wichtigsten ist.",
+    intro: "Ihr Fahrzeug in Echtzeit geortet, Ihre Angehörigen mit einem Druck alarmiert. Zwei Essentials, sofort einsatzbereit, mit 1 Jahr Garantie.",
+    cta: "Produkte ansehen", endsIn: "Endet in", view: "Produkt ansehen",
+    reassurance: [["Lager in Frankreich", "Versand in 24–48 Std."], ["Kundenservice in Frankreich", "Antwort innerhalb 24 Std."], ["Sichere Zahlung", "Kartenzahlung"], ["1 Jahr Garantie", "30 Tage Rückgabe"]],
+    productsTitle: promoOn ? "Im Angebot" : "Unsere Produkte", soonTitle: "Demnächst", soonBadge: "Bald",
+    faqTitle: "Häufige Fragen",
+    faq: [
+      { question: "Braucht der OBD-Tracker eine SIM-Karte?", answer: "Ja, eine 4G-SIM-Karte mit etwas Datenvolumen ist erforderlich (nicht enthalten). Ein kleiner Datentarif genügt." },
+      { question: "Wie lange dauert der Versand?", answer: "Bestellungen werden innerhalb von 24 bis 48 Werktagsstunden versandt, mit Sendungsnummer per E-Mail." },
+      { question: "Kann ich ein Produkt zurückgeben?", answer: "Ja, innerhalb von 30 Tagen, unbenutzt und in der Originalverpackung." },
+    ],
+    ctaTitle: "Eine Frage vor der Wahl?", ctaDesc: "Beschreiben Sie Ihren Bedarf, wir empfehlen Ihnen das passende Produkt.", ctaButton: "Kontakt aufnehmen",
+  },
+}[lang];
+const base = `/${lang}`;
+---
+
+<BaseLayout title={T.metaTitle} description={T.metaDescription} path={`${base}/`} lang={lang} switcherLinks={HOME_SWITCHER} jsonLd={[faqSchema(T.faq)]}>
+  <section class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 sm:pt-5">
+    <div class="hero-banner relative overflow-hidden rounded-2xl">
+      <div class="relative grid items-center gap-6 px-5 py-7 sm:px-10 sm:py-8 lg:grid-cols-[1fr_1.25fr] lg:gap-10">
+        <div class="relative z-10">
+          {promoOn && (
+            <span data-promo class="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs text-paper-dim">
+              <span class="rounded bg-promo px-1.5 py-0.5 text-[10px] font-bold text-white">{promoPct}</span>
+              {T.promo}
+            </span>
+          )}
+          <h1 class="mt-3 font-display text-3xl font-medium leading-[1.1] text-paper sm:text-4xl">
+            {T.title} <span class="whitespace-nowrap text-accent">{T.titleAccent}</span>
+          </h1>
+          <p class="mt-3 max-w-md text-sm leading-relaxed text-paper-dim sm:text-base">{T.intro}</p>
+          <div class="mt-5 flex flex-wrap items-center gap-3">
+            <a href="#products" class="inline-flex items-center gap-2 rounded-lg bg-night px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-night-soft">{T.cta}</a>
+            {promoOn && (
+              <span data-promo class="text-xs text-mist">{T.endsIn} <span data-countdown-inline class="font-mono text-paper">…</span></span>
+            )}
+          </div>
+        </div>
+        <div class="relative z-10 grid grid-cols-2 gap-3 sm:gap-4">
+          {[obd, sos].map((p) => (
+            <a href={`${base}/traceurs-gps/${p.slug}/`} class="group relative flex flex-col rounded-xl bg-white/85 p-3 shadow-[0_10px_30px_-18px_rgba(60,45,30,0.35)] sm:p-4">
+              {p.originalPrice && <span data-promo class="absolute left-3 top-3 z-10 rounded bg-promo px-1.5 py-0.5 text-[10px] font-bold text-white">{promoPct}</span>}
+              <span class="relative flex h-28 items-center justify-center sm:h-40">
+                <span class="halo" aria-hidden="true"></span>
+                <img src={p.image} alt={p.name} width="160" height="160" class="hero-product relative h-24 w-auto object-contain transition-transform group-hover:scale-105 sm:h-36" />
+              </span>
+              <span class="mt-2 text-[10px] uppercase tracking-[0.15em] text-accent">{p.category}</span>
+              <span class="text-sm font-semibold leading-snug text-paper sm:text-base">{p.name}</span>
+              <span class="mt-1 flex flex-wrap items-baseline gap-x-2">
+                <span data-price-regular={p.originalPrice && formatPriceTTC(p.originalPrice)} class="text-base font-bold text-paper sm:text-lg">{formatPriceTTC(p.price)}</span>
+                {p.originalPrice && <span data-promo class="text-xs text-mist line-through">{formatPriceTTC(p.originalPrice)}</span>}
+              </span>
+              <span class="mt-2 rounded-lg bg-gold px-3 py-2 text-center text-xs font-semibold text-night">{T.view}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+    <div class="grid grid-cols-2 gap-3 rounded-2xl border border-ink-line bg-ink-soft/60 p-3 lg:grid-cols-4">
+      {T.reassurance.map(([title, sub], i) => (
+        <div class="rounded-xl bg-white p-3 shadow-sm">
+          <span class="flex items-center gap-1.5 text-sm font-semibold text-paper">{title}{i < 2 && <FlagFR />}</span>
+          <span class="block text-xs text-paper-dim">{sub}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="products" class="mx-auto max-w-7xl scroll-mt-32 px-4 pt-14 sm:px-6">
+    <h2 class={`border-l-4 pl-3 font-display text-2xl font-semibold text-paper sm:text-3xl ${promoOn ? "border-promo" : "border-accent"}`}>{T.productsTitle}</h2>
+    <div class="mt-6 grid gap-5 sm:grid-cols-2">
+      {available.map((p) => <ProductCard product={p} lang={lang} />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+    <h2 class="border-l-4 border-accent pl-3 font-display text-2xl font-semibold text-paper sm:text-3xl">{T.soonTitle}</h2>
+    <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
+      {comingSoon.map((p) => (
+        <a href={`${base}/traceurs-gps/${p.slug}/`} class="relative flex flex-col items-center rounded-2xl border border-ink-line bg-white p-4 text-center">
+          <span class="absolute left-3 top-3 rounded bg-night px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gold">{T.soonBadge}</span>
+          <img src={p.image} alt="" width="120" height="120" class="mt-4 h-20 w-20 object-contain opacity-30 blur-[3px] grayscale sm:h-28 sm:w-28" />
+          <p class="mt-3 text-xs font-medium text-paper sm:text-sm">{p.category}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h2 class="font-display text-2xl font-semibold text-paper sm:text-3xl">{T.faqTitle}</h2>
+    <div class="mt-6"><FAQAccordion items={T.faq} /></div>
+  </section>
+
+  <CTASection title={T.ctaTitle} description={T.ctaDesc} buttonLabel={T.ctaButton} href={`${base}/contact/`} />
+</BaseLayout>
