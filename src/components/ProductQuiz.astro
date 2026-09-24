@@ -1,0 +1,142 @@
+---
+import { PRODUCTS, formatPriceTTC } from "../data/products";
+
+// Mini-quiz d'orientation en 2 questions : ce qu'on veut protéger, puis
+// pour qui. Le résultat recommande le tracker, l'alarme ou les deux.
+const obd = PRODUCTS.find((p) => p.slug === "obd")!;
+const sos = PRODUCTS.find((p) => p.slug === "alarme-sos")!;
+
+const RESULTS = {
+  obd: {
+    title: "Le Tracker OBD",
+    body: "Branché en 3 secondes sur la prise OBD, il vous indique où se trouve le véhicule en temps réel et vous alerte en cas de sortie de zone ou d'excès de vitesse.",
+    products: [obd],
+  },
+  sos: {
+    title: "L'Alarme porte-clés SOS",
+    body: "D'une pression, elle déclenche une sirène de 130 dB et prévient les proches avec la position GPS. Elle tient sur un trousseau de clés.",
+    products: [sos],
+  },
+  duo: {
+    title: "Les deux, pour une protection complète",
+    body: "Le tracker veille sur le véhicule, l'alarme sur la personne. Ensemble, la livraison est offerte.",
+    products: [obd, sos],
+  },
+  pro: {
+    title: "Une offre sur mesure",
+    body: "Pour équiper plusieurs véhicules ou une équipe, nous préparons un devis avec des tarifs adaptés au volume.",
+    products: [],
+  },
+};
+
+const STEP2 = {
+  vehicule: [
+    ["Ma voiture ou ma moto", "obd"],
+    ["La voiture d'un jeune conducteur", "obd"],
+    ["Plusieurs véhicules (entreprise)", "pro"],
+  ],
+  personne: [
+    ["Moi, lors de mes trajets", "sos"],
+    ["Un parent âgé", "sos"],
+    ["Un enfant ou un ado", "sos"],
+  ],
+  deux: [
+    ["Ma famille, au quotidien", "duo"],
+    ["Un proche qui conduit seul", "duo"],
+    ["Une équipe professionnelle", "pro"],
+  ],
+} as const;
+---
+
+<section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6" data-quiz>
+  <div class="rounded-2xl border border-ink-line bg-white p-6 shadow-sm sm:p-10">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">30 secondes</p>
+        <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Quel produit est fait pour vous ?</h2>
+      </div>
+      <button type="button" data-quiz-reset hidden class="text-sm text-paper-dim underline hover:text-accent">Recommencer</button>
+    </div>
+
+    <div data-quiz-step="1" class="mt-6">
+      <p class="text-sm font-medium text-paper">1. Que souhaitez-vous protéger ?</p>
+      <div class="mt-3 grid gap-3 sm:grid-cols-3">
+        {[["vehicule", "Un véhicule"], ["personne", "Une personne"], ["deux", "Les deux"]].map(([key, label]) => (
+          <button type="button" data-quiz-q1={key} class="rounded-xl border border-ink-line bg-ink-soft px-4 py-4 text-left text-sm font-medium text-paper transition-colors hover:border-accent">{label}</button>
+        ))}
+      </div>
+    </div>
+
+    {Object.entries(STEP2).map(([key, options]) => (
+      <div data-quiz-step="2" data-quiz-for={key} hidden class="mt-6">
+        <p class="text-sm font-medium text-paper">2. Pour qui ?</p>
+        <div class="mt-3 grid gap-3 sm:grid-cols-3">
+          {options.map(([label, result]) => (
+            <button type="button" data-quiz-q2={result} class="rounded-xl border border-ink-line bg-ink-soft px-4 py-4 text-left text-sm font-medium text-paper transition-colors hover:border-accent">{label}</button>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    {Object.entries(RESULTS).map(([key, r]) => (
+      <div data-quiz-result={key} hidden class="mt-6 rounded-xl bg-ink-soft p-5 sm:p-6">
+        <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Notre recommandation</p>
+        <p class="mt-1 font-display text-xl font-semibold text-paper">{r.title}</p>
+        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-paper-dim">{r.body}</p>
+        {r.products.length > 0 ? (
+          <div class="mt-4 flex flex-wrap items-center gap-4">
+            {r.products.map((p) => (
+              <a href={`/traceurs-gps/${p.slug}/`} class="flex items-center gap-3 rounded-lg bg-white px-3 py-2 hover:shadow-sm">
+                <img src={p.image} alt="" width="48" height="48" class="h-12 w-12 object-contain" />
+                <span class="text-sm">
+                  <span class="block font-medium text-paper">{p.name}</span>
+                  <span data-price-regular={p.originalPrice && formatPriceTTC(p.originalPrice)} class="text-paper-dim">{formatPriceTTC(p.price)}</span>
+                </span>
+              </a>
+            ))}
+            <button type="button" data-add-to-cart={r.products.map((p) => p.slug).join(",")} class="rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft">
+              {r.products.length > 1 ? "Ajouter les deux au panier" : "Ajouter au panier"}
+            </button>
+          </div>
+        ) : (
+          <a href="/professionnels/" class="mt-4 inline-block rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white hover:bg-night-soft">Demander un devis</a>
+        )}
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { trackEvent } from "../lib/analytics";
+
+  function init() {
+    document.querySelectorAll<HTMLElement>("[data-quiz]").forEach((quiz) => {
+      if (quiz.dataset.wired) return;
+      quiz.dataset.wired = "true";
+      const all = (sel: string) => Array.from(quiz.querySelectorAll<HTMLElement>(sel));
+      const reset = quiz.querySelector<HTMLElement>("[data-quiz-reset]")!;
+      const show = (sel: string | null) => {
+        all("[data-quiz-step], [data-quiz-result]").forEach((el) => (el.hidden = true));
+        if (sel) all(sel).forEach((el) => (el.hidden = false));
+      };
+      all("[data-quiz-q1]").forEach((btn) =>
+        btn.addEventListener("click", () => {
+          show(`[data-quiz-for="${btn.dataset.quizQ1}"]`);
+          reset.hidden = false;
+        })
+      );
+      all("[data-quiz-q2]").forEach((btn) =>
+        btn.addEventListener("click", () => {
+          show(`[data-quiz-result="${btn.dataset.quizQ2}"]`);
+          trackEvent("quiz_result", { result: btn.dataset.quizQ2 });
+        })
+      );
+      reset.addEventListener("click", () => {
+        show('[data-quiz-step="1"]');
+        reset.hidden = true;
+      });
+    });
+  }
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

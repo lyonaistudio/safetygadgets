@@ -44,15 +44,17 @@ export function initCartUI() {
           : null;
         const qty =
           qtyInput instanceof HTMLInputElement ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : 1;
-        addToCart(slug, qty);
-
-        const product = PRODUCTS.find((p) => p.slug === slug);
-        if (product) {
-          trackEvent("add_to_cart", {
-            currency: product.currency,
-            value: product.price * qty,
-            items: [{ item_id: product.sku, item_name: product.name, price: product.price, quantity: qty }],
-          });
+        // Plusieurs produits d'un coup possible : data-add-to-cart="obd,alarme-sos".
+        for (const one of slug.split(",")) {
+          addToCart(one, qty);
+          const product = PRODUCTS.find((p) => p.slug === one);
+          if (product) {
+            trackEvent("add_to_cart", {
+              currency: product.currency,
+              value: product.price * qty,
+              items: [{ item_id: product.sku, item_name: product.name, price: product.price, quantity: qty }],
+            });
+          }
         }
 
         const originalLabel = btn.dataset.defaultLabel ?? btn.textContent ?? "";
