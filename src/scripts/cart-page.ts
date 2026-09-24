@@ -34,24 +34,24 @@ function render() {
       const lineTotal = product.price * line.qty;
       return `
         <div class="flex gap-4 py-6">
-          <img src="${product.image}" alt="${product.name}" class="premium-photo h-24 w-24 shrink-0 border border-ink-line bg-ink-soft object-contain p-2" />
+          <img src="${product.image}" alt="${product.name}" class="h-24 w-24 shrink-0 rounded-xl bg-ink-soft object-contain p-2" />
           <div class="flex flex-1 flex-col justify-between">
             <div class="flex items-start justify-between gap-4">
               <div>
                 <p class="text-xs uppercase tracking-[0.1em] text-mist">${product.category}</p>
-                <h3 class="mt-1 font-display text-lg text-paper">${product.name}</h3>
+                <h3 class="mt-1 text-base font-semibold text-paper">${product.name}</h3>
               </div>
               <button type="button" data-remove="${product.slug}" class="shrink-0 text-xs uppercase tracking-[0.1em] text-mist transition-colors hover:text-accent" aria-label="Retirer ${product.name} du panier">
                 Retirer
               </button>
             </div>
             <div class="mt-3 flex items-center justify-between">
-              <div class="flex items-center border border-ink-line">
+              <div class="flex items-center rounded-lg border border-ink-line">
                 <button type="button" data-qty-minus="${product.slug}" class="px-3 py-1.5 text-paper-dim transition-colors hover:text-accent" aria-label="Diminuer la quantité">−</button>
                 <span class="w-8 text-center font-mono text-sm text-paper">${line.qty}</span>
                 <button type="button" data-qty-plus="${product.slug}" class="px-3 py-1.5 text-paper-dim transition-colors hover:text-accent" aria-label="Augmenter la quantité">+</button>
               </div>
-              <p class="font-mono text-sm text-accent">${formatPriceTTC(lineTotal, product.currency)}</p>
+              <p class="text-sm font-semibold text-paper">${formatPriceTTC(lineTotal, product.currency)}</p>
             </div>
           </div>
         </div>
@@ -96,17 +96,26 @@ function render() {
     const cartSlugs = new Set(lines.map(({ product }) => product.slug));
     const suggestions = PRODUCTS.filter((p) => !cartSlugs.has(p.slug) && !p.comingSoon);
     suggestionsSection.classList.toggle("hidden", suggestions.length === 0);
+    // Argument adapté à ce qui est déjà dans le panier : l'alarme pour un
+    // proche quand on a pris le tracker, le tracker pour la voiture sinon.
+    const pitch: Record<string, string> = {
+      "alarme-sos": "Et pour un proche ? L'alarme SOS le relie à vous d'une simple pression.",
+      obd: "Et pour la voiture ? Le tracker OBD la localise en temps réel.",
+    };
     suggestionsContainer.innerHTML = suggestions
       .map(
         (product) => `
-        <div class="flex items-center gap-4 border border-ink-line bg-ink-soft p-4">
-          <img src="${product.image}" alt="${product.name}" class="premium-photo h-16 w-16 shrink-0 border border-ink-line bg-ink object-contain p-2" />
+        <div class="flex items-center gap-4 rounded-2xl border border-ink-line bg-white p-4">
+          <img src="${product.image}" alt="${product.name}" class="h-20 w-20 shrink-0 rounded-xl bg-ink-soft object-contain p-2" />
           <div class="flex-1">
-            <h4 class="font-display text-base text-paper">${product.name}</h4>
-            <p class="mt-1 font-mono text-sm text-accent">${formatPriceTTC(product.price, product.currency)}</p>
+            <p class="text-sm text-paper-dim">${pitch[product.slug] ?? ""}</p>
+            <h4 class="mt-1 text-base font-semibold text-paper">${product.name}</h4>
+            <p class="mt-0.5 text-sm font-semibold text-paper">${formatPriceTTC(product.price, product.currency)}${
+              product.originalPrice ? ` <span class="font-normal text-mist line-through">${formatPriceTTC(product.originalPrice, product.currency)}</span>` : ""
+            }</p>
           </div>
-          <button type="button" data-quick-add="${product.slug}" class="flex h-9 w-9 shrink-0 items-center justify-center border border-accent text-lg leading-none text-accent transition-colors hover:bg-gold hover:text-night" aria-label="Ajouter ${product.name} au panier">
-            +
+          <button type="button" data-quick-add="${product.slug}" class="shrink-0 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-night transition-colors hover:bg-gold-soft" aria-label="Ajouter ${product.name} au panier">
+            Ajouter
           </button>
         </div>
       `

@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
-import Eyebrow from "../components/Eyebrow.astro";
 import PaymentBadges from "../components/PaymentBadges.astro";
 ---
 
@@ -21,40 +20,40 @@ import PaymentBadges from "../components/PaymentBadges.astro";
   <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
     <div class="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
       <div>
-        <div id="cart-empty" class="hidden border border-ink-line bg-ink-soft p-8 text-center">
+        <div id="cart-empty" class="hidden rounded-2xl bg-ink-soft p-8 text-center">
           <p class="text-paper-dim">Votre panier est vide.</p>
           <a
             href="/traceurs-gps/"
-            class="mt-4 inline-block border border-accent px-6 py-3 text-xs uppercase tracking-[0.15em] text-accent transition-colors hover:bg-gold hover:text-night"
+            class="mt-4 inline-block rounded-lg bg-night px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft"
           >
-            Voir les trackers
+            Voir nos produits
           </a>
         </div>
-        <div id="cart-lines" class="hidden divide-y divide-ink-line border-y border-ink-line"></div>
+        <div id="cart-lines" class="hidden divide-y divide-ink-line rounded-2xl border border-ink-line px-5"></div>
 
-        <div id="cart-suggestions-section" class="mt-16 hidden">
-          <Eyebrow label="Vous aimerez aussi" />
-          <h2 class="mt-4 font-display text-2xl font-medium text-paper">Complétez votre commande</h2>
-          <div id="cart-suggestions" class="mt-8 grid gap-4 sm:grid-cols-2"></div>
+        <div id="cart-suggestions-section" class="mt-8 hidden">
+          <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Complétez votre protection</p>
+          <div id="cart-suggestions" class="mt-3 grid gap-4"></div>
         </div>
       </div>
 
       <aside class="space-y-6">
-        <div id="cart-summary" class="border border-ink-line bg-ink-soft p-6">
+        <div id="cart-summary" class="rounded-2xl bg-ink-soft p-6">
           <p class="text-xs uppercase tracking-[0.1em] text-mist">Sous-total</p>
           <p class="mt-2 font-mono text-2xl text-paper">0,00 € TTC</p>
         </div>
         <button
           id="cart-checkout"
           type="button"
-          class="block w-full border border-gold bg-gold px-6 py-3 text-center text-xs uppercase tracking-[0.15em] text-night transition-colors hover:bg-ink hover:text-accent disabled:pointer-events-none disabled:opacity-40"
+          class="block w-full rounded-lg bg-night px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-night-soft disabled:pointer-events-none disabled:opacity-40"
         >
-          Payer par carte
+          Passer au paiement sécurisé
         </button>
-        <p id="cart-checkout-error" class="hidden text-xs leading-relaxed text-accent" role="alert"></p>
+        <p class="-mt-3 text-center text-xs text-mist">Code promo ? Vous pourrez le saisir à l'étape suivante.</p>
+        <p id="cart-checkout-error" class="hidden text-xs leading-relaxed text-promo" role="alert"></p>
         <a
           href="/contact/"
-          class="block border border-ink-line px-6 py-3 text-center text-xs uppercase tracking-[0.15em] text-paper-dim transition-colors hover:border-accent hover:text-accent"
+          class="block rounded-lg border border-ink-line px-6 py-3 text-center text-sm text-paper-dim transition-colors hover:border-accent hover:text-accent"
         >
           Une question avant d'acheter ?
         </a>
