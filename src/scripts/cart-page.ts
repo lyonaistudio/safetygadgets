@@ -88,7 +88,7 @@ function render() {
         : ""
     }
     <p class="mt-4 text-xs leading-relaxed text-mist">
-      Livraison offerte dès 100&nbsp;€ TTC d'achat, sinon 7,99&nbsp;€ de frais de livraison.
+      Livraison offerte dès 49&nbsp;€ TTC d'achat, sinon 7,99&nbsp;€ de frais de livraison.
     </p>
   `;
 

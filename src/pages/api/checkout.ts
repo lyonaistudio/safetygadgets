@@ -104,6 +104,20 @@ export const POST: APIRoute = async ({ request, url }) => {
       success_url: `${url.origin}/commande-confirmee/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${url.origin}/panier/`,
       shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "MC"] },
+      // Codes promo (ex. BIENVENUE10 offert à l'inscription newsletter).
+      allow_promotion_codes: true,
+      // Pas de relance Stripe des paniers abandonnés : elle exige
+      // consent_collection.promotions, indisponible pour un compte en France.
+      // Message cadeau facultatif, glissé dans le colis.
+      custom_fields: [
+        {
+          key: "message_cadeau",
+          label: { type: "custom", custom: "Message cadeau (facultatif)" },
+          type: "text",
+          optional: true,
+          text: { maximum_length: 200 },
+        },
+      ],
     });
 
     return new Response(JSON.stringify({ url: session.url }), {
