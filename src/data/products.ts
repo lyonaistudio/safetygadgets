@@ -117,14 +117,14 @@ export const REGULAR_PRODUCTS: Product[] = [
     currency: "EUR",
     image: "/images/products/alarme-porteclef-2.webp",
     shortDescription:
-      "Alarme personnelle 130 dB avec bouton SOS, partage de position par SMS et appel, et lampe torche LED — sans fil, sans application.",
+      "Alarme personnelle 130 dB avec bouton SOS, partage de position par SMS et appel, et lampe torche LED — sans fil, avec application mobile dédiée.",
     description:
-      "D'une pression sur le bouton SOS, elle déclenche une sirène de 130 dB avec lumière stroboscopique pour attirer l'attention immédiatement, tout en envoyant une alerte par SMS et en appelant les contacts d'urgence pré-enregistrés avec la position GPS. Sa lampe torche LED de 25 lux complète l'ensemble pour les environnements sombres. Aucune application à installer : tout fonctionne en sans-fil dès la sortie de la boîte. Compacte (94 x 30 x 13 mm) et légère (26 g), elle s'accroche à un trousseau de clés, un sac ou une ceinture grâce à son mousqueton intégré.",
+      "D'une pression sur le bouton SOS, elle déclenche une sirène de 130 dB avec lumière stroboscopique pour attirer l'attention immédiatement, tout en envoyant une alerte par SMS et en appelant les contacts d'urgence pré-enregistrés avec la position GPS. Sa lampe torche LED de 25 lux complète l'ensemble pour les environnements sombres. Elle s'accompagne d'une application mobile dédiée pour la configurer. Compacte (94 x 30 x 13 mm) et légère (26 g), elle s'accroche à un trousseau de clés, un sac ou une ceinture grâce à son mousqueton intégré.",
     highlights: [
       "Sirène 130 dB avec lumière stroboscopique SOS",
       "Alerte SMS et appel automatique aux contacts d'urgence avec position GPS",
       "Lampe torche LED 25 lux intégrée",
-      "Sans fil, sans application — batterie rechargeable, jusqu'à 2h d'autonomie continue",
+      "Sans fil, avec application mobile — batterie rechargeable, jusqu'à 2h d'autonomie continue",
     ],
     specs: [
       { label: "Type", value: "Alarme de sécurité personnelle portable" },
@@ -162,8 +162,8 @@ export const REGULAR_PRODUCTS: Product[] = [
     ],
     faq: [
       {
-        question: "L'alarme fonctionne-t-elle sans application ni SIM ?",
-        answer: "Oui, tout fonctionne en sans-fil dès la sortie de la boîte : aucune application ni carte SIM à installer.",
+        question: "Faut-il une application pour utiliser l'alarme ?",
+        answer: "Oui, l'alarme s'utilise avec son application mobile dédiée, qui sert à la configurer. La sirène et la lampe se déclenchent directement depuis l'alarme.",
       },
       {
         question: "Est-elle étanche ?",

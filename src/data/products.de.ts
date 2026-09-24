@@ -356,14 +356,14 @@ export const REGULAR_PRODUCTS_DE: Product[] = [
     price: 34.99,
     currency: "EUR",
     image: "/images/products/alarme-porteclef-2.webp",
-    shortDescription: "130-dB-Personenalarm mit SOS-Knopf, Positionsfreigabe per SMS und Anruf sowie LED-Taschenlampe — kabellos, ohne App.",
+    shortDescription: "130-dB-Personenalarm mit SOS-Knopf, Positionsfreigabe per SMS und Anruf sowie LED-Taschenlampe — kabellos, mit eigener App.",
     description:
-      "Ein Druck auf den SOS-Knopf löst eine 130-dB-Sirene mit Stroboskoplicht aus, um sofort Aufmerksamkeit zu erregen, während gleichzeitig eine SMS-Benachrichtigung gesendet und voreingestellte Notfallkontakte mit GPS-Position angerufen werden. Die 25-Lux-LED-Taschenlampe rundet das Gerät für dunkle Umgebungen ab. Keine App nötig: Alles funktioniert kabellos, direkt nach dem Auspacken. Kompakt (94 x 30 x 13 mm) und leicht (26 g), wird sie dank integriertem Karabiner an Schlüsselbund, Tasche oder Gürtel befestigt.",
+      "Ein Druck auf den SOS-Knopf löst eine 130-dB-Sirene mit Stroboskoplicht aus, um sofort Aufmerksamkeit zu erregen, während gleichzeitig eine SMS-Benachrichtigung gesendet und voreingestellte Notfallkontakte mit GPS-Position angerufen werden. Die 25-Lux-LED-Taschenlampe rundet das Gerät für dunkle Umgebungen ab. Die Einrichtung erfolgt über eine eigene Smartphone-App. Kompakt (94 x 30 x 13 mm) und leicht (26 g), wird sie dank integriertem Karabiner an Schlüsselbund, Tasche oder Gürtel befestigt.",
     highlights: [
       "130-dB-Sirene mit SOS-Stroboskoplicht",
       "Automatische SMS-Benachrichtigung und Anruf bei Notfallkontakten mit GPS-Position",
       "Integrierte 25-Lux-LED-Taschenlampe",
-      "Kabellos, ohne App — wiederaufladbarer Akku, bis zu 2 Std. Dauerbetrieb",
+      "Kabellos, mit App — wiederaufladbarer Akku, bis zu 2 Std. Dauerbetrieb",
     ],
     specs: [
       { label: "Typ", value: "Tragbarer persönlicher Sicherheitsalarm" },
@@ -401,8 +401,8 @@ export const REGULAR_PRODUCTS_DE: Product[] = [
     ],
     faq: [
       {
-        question: "Funktioniert der Alarm ohne App oder SIM-Karte?",
-        answer: "Ja, alles funktioniert kabellos, direkt nach dem Auspacken: keine App oder SIM-Karte erforderlich.",
+        question: "Brauche ich eine App für den Alarm?",
+        answer: "Ja, der Alarm wird über seine eigene Smartphone-App eingerichtet. Sirene und Taschenlampe werden direkt am Gerät ausgelöst.",
       },
       {
         question: "Ist sie wasserdicht?",

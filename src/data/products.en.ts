@@ -357,14 +357,14 @@ export const REGULAR_PRODUCTS_EN: Product[] = [
     price: 34.99,
     currency: "EUR",
     image: "/images/products/alarme-porteclef-2.webp",
-    shortDescription: "130 dB personal alarm with SOS button, SMS and call position sharing, and LED torch — wireless, no app required.",
+    shortDescription: "130 dB personal alarm with SOS button, SMS and call position sharing, and LED torch — wireless, with a dedicated mobile app.",
     description:
-      "Press the SOS button and it triggers a 130 dB siren with strobe light to draw attention immediately, while sending an SMS alert and calling pre-saved emergency contacts with your GPS position. Its 25-lux LED torch rounds out the set for dark environments. No app to install: everything works wirelessly straight out of the box. Compact (94 x 30 x 13 mm) and light (26 g), it clips onto a keyring, bag or belt with its built-in carabiner.",
+      "Press the SOS button and it triggers a 130 dB siren with strobe light to draw attention immediately, while sending an SMS alert and calling pre-saved emergency contacts with your GPS position. Its 25-lux LED torch rounds out the set for dark environments. It comes with a dedicated mobile app for setup. Compact (94 x 30 x 13 mm) and light (26 g), it clips onto a keyring, bag or belt with its built-in carabiner.",
     highlights: [
       "130 dB siren with SOS strobe light",
       "Automatic SMS alert and call to emergency contacts with GPS position",
       "Built-in 25-lux LED torch",
-      "Wireless, no app — rechargeable battery, up to 2h continuous use",
+      "Wireless, with mobile app — rechargeable battery, up to 2h continuous use",
     ],
     specs: [
       { label: "Type", value: "Portable personal safety alarm" },
@@ -402,8 +402,8 @@ export const REGULAR_PRODUCTS_EN: Product[] = [
     ],
     faq: [
       {
-        question: "Does the alarm work without an app or SIM card?",
-        answer: "Yes, everything works wirelessly straight out of the box: no app or SIM card to set up.",
+        question: "Do I need an app to use the alarm?",
+        answer: "Yes, the alarm works with its dedicated mobile app, used to set it up. The siren and torch are triggered directly from the alarm.",
       },
       {
         question: "Is it water-resistant?",

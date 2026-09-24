@@ -14,26 +14,29 @@
   /* Identité "quiet luxury" : noir chaud (espresso) + or/laiton en accent
      dominant + émeraude sombre réservée aux micro-indicateurs de statut.
      Un seul accent fort (l'or) porte la marque, pas un duo néon. */
-  /* Thème clair premium : fond blanc, texte et bannières bleu nuit,
-     or champagne en accent (plus doux qu'un jaune, s'accorde au logo).
-     Les noms historiques sont conservés (ink = fond, paper = texte) pour
-     ne pas réécrire chaque page ; "night"/"gold" servent aux bannières. */
+  /* Palette "Ivoire & Champagne" (par défaut) : fonds ivoire chauds qui
+     font ressortir le blanc brillant des produits, or champagne repris du
+     logo, texte brun-noir plutôt que noir pur. Noms historiques conservés
+     (ink = fond, paper = texte) ; sand = surfaces de bannière, gold =
+     remplissage des boutons, night = couleur de marque foncée. */
   --color-ink: #ffffff;
-  --color-ink-soft: #f4f6f9;
-  --color-ink-line: #e2e6ee;
-  --color-paper: #0f1b2d;
-  --color-paper-dim: #4b5567;
-  --color-mist: #6b7488;
-  --color-accent: #8f6b3a;
-  --color-accent-soft: #b8925a;
-  --color-accent-dim: #7a5a2e;
-  --color-signal: #2f6b55;
-  --color-signal-dim: #d3e6de;
-  --color-night: #0f1e33;
-  --color-night-soft: #172a45;
-  --color-gold: #c6a26b;
-  --color-gold-soft: #d8bb8c;
-  --color-promo: #b83a2e;
+  --color-ink-soft: #f8f5f0;
+  --color-ink-line: #e9e2d6;
+  --color-sand: #f2ebe1;
+  --color-sand-deep: #e5dac9;
+  --color-paper: #2a2520;
+  --color-paper-dim: #6b6258;
+  --color-mist: #857c70;
+  --color-accent: #8a6a3d;
+  --color-accent-soft: #b89668;
+  --color-accent-dim: #75593a;
+  --color-signal: #4f7a5f;
+  --color-signal-dim: #dce8df;
+  --color-night: #2a2520;
+  --color-night-soft: #3a332c;
+  --color-gold: #d8c3a0;
+  --color-gold-soft: #e5d5ba;
+  --color-promo: #b4543a;
 
   --font-display: "Fraunces", "Iowan Old Style", ui-serif, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -309,7 +312,7 @@ body {
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse closest-side,
-    rgba(15, 30, 51, 0.18) 0%,
+    rgba(60, 45, 30, 0.18) 0%,
     transparent 75%
   );
   filter: blur(2px);
@@ -346,7 +349,7 @@ body {
 .card-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 18px 34px -20px color-mix(in srgb, var(--color-accent) 35%, transparent),
-    0 10px 20px -14px rgba(15, 30, 51, 0.18);
+    0 10px 20px -14px rgba(60, 45, 30, 0.18);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -734,18 +737,17 @@ body {
   }
 }
 
-/* Bannière sombre (espresso + or) posée en carte sur le fond blanc :
-   le produit phare y est mis en scène avec un halo et des ondes. */
+/* Bannière claire : surface sable avec une lumière douce derrière le
+   produit, comme un plateau de studio photo. */
 .hero-banner {
   background:
-    radial-gradient(ellipse 60% 80% at 75% 50%, rgba(198, 162, 107, 0.22), transparent 70%),
-    radial-gradient(ellipse 40% 60% at 10% 0%, rgba(198, 162, 107, 0.08), transparent 70%),
-    linear-gradient(135deg, #1a2e4c 0%, #0f1e33 55%, #0a1526 100%);
+    radial-gradient(ellipse 55% 75% at 75% 50%, rgba(255, 255, 255, 0.9), transparent 70%),
+    linear-gradient(135deg, var(--color-sand) 0%, var(--color-sand-deep) 100%);
 }
 .hero-banner .halo {
   position: absolute;
   inset: 10% 15%;
-  background: radial-gradient(circle, rgba(236, 226, 206, 0.30), transparent 65%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 65%);
   filter: blur(10px);
 }
 .hero-banner .rings {
@@ -757,7 +759,7 @@ body {
 .hero-banner .rings span {
   grid-area: 1 / 1;
   border-radius: 9999px;
-  border: 1px solid rgba(198, 162, 107, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-accent-soft) 45%, transparent);
   width: 16rem;
   height: 16rem;
   animation: banner-ring 3.6s var(--ease-signature) infinite;
@@ -779,6 +781,59 @@ body {
   }
 }
 .hero-product {
-  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 28px 32px rgba(60, 45, 30, 0.22));
   transform: rotate(-8deg);
+}
+
+/* Palettes alternatives (comparaison en direct via le sélecteur de dev). */
+:root[data-palette="sauge"] {
+  --color-ink-soft: #f4f6f2;
+  --color-ink-line: #e0e6dd;
+  --color-sand: #e9eee6;
+  --color-sand-deep: #d6dfd2;
+  --color-paper: #1f2a25;
+  --color-paper-dim: #56625b;
+  --color-mist: #78837c;
+  --color-accent: #54695b;
+  --color-accent-soft: #8fa597;
+  --color-accent-dim: #45574b;
+  --color-night: #1f2a25;
+  --color-night-soft: #2e3b34;
+  --color-gold: #cdb78c;
+  --color-gold-soft: #ddcca9;
+  --color-promo: #b4543a;
+}
+:root[data-palette="brume"] {
+  --color-ink-soft: #f5f6f8;
+  --color-ink-line: #e2e5ea;
+  --color-sand: #edf0f3;
+  --color-sand-deep: #dce1e8;
+  --color-paper: #1c222b;
+  --color-paper-dim: #555e6b;
+  --color-mist: #78808d;
+  --color-accent: #7f6440;
+  --color-accent-soft: #ab8f66;
+  --color-accent-dim: #6a5335;
+  --color-night: #1c222b;
+  --color-night-soft: #2b333f;
+  --color-gold: #d3be98;
+  --color-gold-soft: #e1d1b3;
+  --color-promo: #b04a3c;
+}
+:root[data-palette="poudre"] {
+  --color-ink-soft: #faf5f3;
+  --color-ink-line: #efe3de;
+  --color-sand: #f5ebe6;
+  --color-sand-deep: #ead8cf;
+  --color-paper: #2e2427;
+  --color-paper-dim: #6c5d60;
+  --color-mist: #8a7b7e;
+  --color-accent: #8d6547;
+  --color-accent-soft: #bd9476;
+  --color-accent-dim: #74523a;
+  --color-night: #2e2427;
+  --color-night-soft: #3e3235;
+  --color-gold: #dcc2a6;
+  --color-gold-soft: #e8d6c2;
+  --color-promo: #a8483f;
 }

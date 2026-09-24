@@ -1,0 +1,56 @@
+---
+// Outil de comparaison des palettes, affiché uniquement en développement
+// (jamais dans le build de production). À retirer une fois la palette choisie.
+const PALETTES = [
+  { id: "ivoire", label: "Ivoire & Champagne", swatch: ["#f2ebe1", "#d8c3a0", "#2a2520"] },
+  { id: "sauge", label: "Sauge & Laiton", swatch: ["#e9eee6", "#cdb78c", "#1f2a25"] },
+  { id: "brume", label: "Brume & Laiton", swatch: ["#edf0f3", "#d3be98", "#1c222b"] },
+  { id: "poudre", label: "Poudre & Cuivre", swatch: ["#f5ebe6", "#dcc2a6", "#2e2427"] },
+];
+---
+
+<div id="palette-switcher" class="fixed bottom-4 left-4 z-[60] w-56 rounded-xl border border-ink-line bg-white/95 p-3 text-xs text-paper shadow-xl backdrop-blur" transition:persist>
+  <p class="mb-2 font-semibold">Palette (aperçu local)</p>
+  {PALETTES.map((p) => (
+    <button type="button" data-palette-choice={p.id} class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left hover:bg-ink-soft">
+      <span class="flex">
+        {p.swatch.map((c) => <span class="-ml-1 h-4 w-4 rounded-full border border-white first:ml-0" style={`background:${c}`}></span>)}
+      </span>
+      {p.label}
+    </button>
+  ))}
+</div>
+
+<script>
+  const KEY = "sg-palette";
+  const apply = (id: string) => {
+    if (id === "ivoire") delete document.documentElement.dataset.palette;
+    else document.documentElement.dataset.palette = id;
+    document.querySelectorAll<HTMLElement>("[data-palette-choice]").forEach((b) => {
+      b.style.fontWeight = b.dataset.paletteChoice === id ? "700" : "400";
+    });
+  };
+  const saved = (() => {
+    const fromUrl = new URLSearchParams(location.search).get("palette");
+    if (fromUrl) return fromUrl;
+    try {
+      return localStorage.getItem(KEY) ?? "ivoire";
+    } catch {
+      return "ivoire";
+    }
+  })();
+  apply(saved);
+  document.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-palette-choice]");
+    if (!btn?.dataset.paletteChoice) return;
+    try {
+      localStorage.setItem(KEY, btn.dataset.paletteChoice);
+    } catch {}
+    apply(btn.dataset.paletteChoice);
+  });
+  document.addEventListener("astro:after-swap", () => {
+    try {
+      apply(localStorage.getItem(KEY) ?? "ivoire");
+    } catch {}
+  });
+</script>

@@ -1,0 +1,11 @@
+---
+// Mini drapeau français en SVG (les emojis drapeaux ne s'affichent pas
+// sous Windows, qui montre "FR" en lettres à la place).
+const { class: className = "" } = Astro.props;
+---
+
+<svg viewBox="0 0 3 2" width="16" height="11" class={`inline-block shrink-0 rounded-[2px] align-[-1px] ring-1 ring-black/10 ${className}`} role="img" aria-label="France">
+  <rect width="1" height="2" fill="#002654" />
+  <rect x="1" width="1" height="2" fill="#ffffff" />
+  <rect x="2" width="1" height="2" fill="#ce1126" />
+</svg>

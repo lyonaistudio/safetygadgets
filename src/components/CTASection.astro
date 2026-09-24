@@ -9,13 +9,13 @@ interface Props {
 const { title, description, buttonLabel = "Faire une demande de renseignements", href = "/contact/" } = Astro.props;
 ---
 
-<section class="relative overflow-hidden bg-night text-white">
+<section class="relative overflow-hidden bg-sand text-paper">
   <div class="reveal relative mx-auto max-w-3xl px-6 py-20 text-center">
-    <h2 class="font-display text-3xl font-medium text-white sm:text-4xl">{title}</h2>
-    <p class="mt-4 text-base leading-relaxed text-white/70">{description}</p>
+    <h2 class="font-display text-3xl font-medium text-paper sm:text-4xl">{title}</h2>
+    <p class="mt-4 text-base leading-relaxed text-paper-dim">{description}</p>
     <a
       href={href}
-      class="mt-8 inline-block rounded-lg bg-gold px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-night transition-colors hover:bg-gold-soft"
+      class="mt-8 inline-block rounded-lg bg-night px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:bg-night-soft"
     >
       {buttonLabel}
     </a>
