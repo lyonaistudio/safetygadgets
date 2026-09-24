@@ -4,6 +4,7 @@ import PageHero from "../components/PageHero.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
 import Eyebrow from "../components/Eyebrow.astro";
 import CTASection from "../components/CTASection.astro";
+import FlagFR from "../components/FlagFR.astro";
 import FAQAccordion from "../components/FAQAccordion.astro";
 import { faqSchema } from "../lib/schema";
 
@@ -32,6 +33,22 @@ const schema = faqSchema(faqItems);
 >
   <Breadcrumb items={[{ name: "À propos", url: "/a-propos/" }]} />
   <PageHero eyebrow="À PROPOS" title="Des trackers choisis, pas empilés" />
+
+  <section class="mx-auto max-w-5xl px-4 pt-10 sm:px-6">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        ["Entreprise française", "Basée à Lyon", true],
+        ["Stock en France", "Expédition sous 24/48h", true],
+        ["SAV en France", "Une réponse personnelle sous 24h", true],
+        ["Garantie 1 an", "Retour sous 30 jours", false],
+      ].map(([title, sub, flag]) => (
+        <div class="rounded-2xl bg-ink-soft p-5">
+          <p class="flex items-center gap-2 text-sm font-semibold text-paper">{title}{flag && <FlagFR />}</p>
+          <p class="mt-1 text-xs text-paper-dim">{sub}</p>
+        </div>
+      ))}
+    </div>
+  </section>
 
   <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
     <p class="text-lg leading-relaxed text-paper-dim">
