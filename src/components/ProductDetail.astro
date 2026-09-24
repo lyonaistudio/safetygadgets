@@ -1,0 +1,317 @@
+---
+import type { Product } from "../data/products";
+import type { Locale } from "../lib/i18n";
+import { formatPriceTTC } from "../data/products";
+import { PROMO } from "../lib/promo";
+import { ratingSummary } from "../data/reviews";
+import CTASection from "./CTASection.astro";
+import UseCaseCard from "./UseCaseCard.astro";
+import FAQAccordion from "./FAQAccordion.astro";
+import FlagFR from "./FlagFR.astro";
+import SimGuide from "./SimGuide.astro";
+import ProductReviews from "./ProductReviews.astro";
+
+// Corps de fiche produit commun aux trois langues. Le français a un panier
+// (paiement Stripe) ; l'anglais et l'allemand commandent via le formulaire
+// de contact, comme avant.
+interface Props {
+  product: Product;
+  catalog: Product[];
+  lang?: Locale;
+}
+const { product, catalog, lang = "fr" } = Astro.props;
+const base = lang === "fr" ? "" : `/${lang}`;
+const hasCart = lang === "fr";
+
+const t = {
+  fr: {
+    prev: "Photo précédente", next: "Photo suivante", photo: "Photo", comingSoon: "Prochainement", reviews: "avis",
+    firstReview: "Soyez le premier à donner votre avis", promoLabel: PROMO.label, youSave: "vous économisez", endsIn: "fin dans",
+    stock: "En stock en France", shipped: "expédié sous 24/48h", decrease: "Diminuer la quantité", increase: "Augmenter la quantité", qty: "Quantité",
+    addToCart: "Ajouter au panier", order: "Commander", view: "Voir le produit",
+    r1: "Livraison offerte dès 49 €", r2: "SAV en France", r3: "Retour sous 30 jours", r4: "Paiement sécurisé",
+    unavailable: "Bientôt disponible", simNeeded: "Carte SIM 4G nécessaire", simBody: "(non fournie) — un forfait à 2 €/mois suffit.", simLink: "Lequel choisir ?",
+    question: "Une question avant d'acheter ? Nous répondons sous 24h",
+    specsEyebrow: "Caractéristiques", specsTitle: "Fiche technique", usesEyebrow: "Cas d'usage", usesTitle: "Pour qui est fait ce produit ?",
+    crossEyebrow: "Complétez votre protection", crossBundle: "les deux ensemble : livraison offerte",
+    faqEyebrow: "Questions fréquentes", faqTitle: "Sur ce produit précisément", seeFaq: "Voir toute la FAQ",
+    ctaTitle: "Une question avant de commander ?", ctaDesc: "Écrivez-nous : nous vous répondons sous 24h et vous orientons vers le bon produit.", ctaButton: "Nous contacter",
+  },
+  en: {
+    prev: "Previous photo", next: "Next photo", photo: "Photo", comingSoon: "Coming soon", reviews: "reviews",
+    firstReview: "Be the first to leave a review", promoLabel: "Launch offer", youSave: "you save", endsIn: "ends in",
+    stock: "In stock in France", shipped: "ships within 24–48h", decrease: "Decrease quantity", increase: "Increase quantity", qty: "Quantity",
+    addToCart: "Add to cart", order: "Order now", view: "View product",
+    r1: "Free shipping from €49", r2: "Customer service in France", r3: "30-day returns", r4: "Secure payment",
+    unavailable: "Coming soon", simNeeded: "4G SIM card required", simBody: "(not included) — a small data plan is enough.", simLink: "Which one?",
+    question: "A question before buying? We reply within 24h",
+    specsEyebrow: "Specifications", specsTitle: "Technical details", usesEyebrow: "Use cases", usesTitle: "Who is this product for?",
+    crossEyebrow: "Complete your protection", crossBundle: "both together: free shipping",
+    faqEyebrow: "Frequently asked questions", faqTitle: "About this product", seeFaq: "See the full FAQ",
+    ctaTitle: "A question before ordering?", ctaDesc: "Write to us: we reply within 24h and help you pick the right product.", ctaButton: "Contact us",
+  },
+  de: {
+    prev: "Vorheriges Foto", next: "Nächstes Foto", photo: "Foto", comingSoon: "Demnächst", reviews: "Bewertungen",
+    firstReview: "Schreiben Sie die erste Bewertung", promoLabel: "Einführungsangebot", youSave: "Sie sparen", endsIn: "endet in",
+    stock: "Auf Lager in Frankreich", shipped: "Versand in 24–48 Std.", decrease: "Menge verringern", increase: "Menge erhöhen", qty: "Menge",
+    addToCart: "In den Warenkorb", order: "Jetzt bestellen", view: "Produkt ansehen",
+    r1: "Kostenloser Versand ab 49 €", r2: "Kundenservice in Frankreich", r3: "30 Tage Rückgabe", r4: "Sichere Zahlung",
+    unavailable: "Demnächst erhältlich", simNeeded: "4G-SIM-Karte erforderlich", simBody: "(nicht enthalten) — ein kleiner Datentarif genügt.", simLink: "Welcher?",
+    question: "Eine Frage vor dem Kauf? Wir antworten innerhalb von 24 Std.",
+    specsEyebrow: "Eigenschaften", specsTitle: "Technische Daten", usesEyebrow: "Einsatzbereiche", usesTitle: "Für wen ist dieses Produkt?",
+    crossEyebrow: "Ergänzen Sie Ihren Schutz", crossBundle: "beide zusammen: kostenloser Versand",
+    faqEyebrow: "Häufige Fragen", faqTitle: "Zu diesem Produkt", seeFaq: "Alle FAQ ansehen",
+    ctaTitle: "Eine Frage vor der Bestellung?", ctaDesc: "Schreiben Sie uns: Wir antworten innerhalb von 24 Std. und beraten Sie gern.", ctaButton: "Kontakt aufnehmen",
+  },
+}[lang];
+
+const rating = ratingSummary(product.slug);
+const formattedPrice = formatPriceTTC(product.price, product.currency);
+const qtyInputId = `qty-${product.slug}`;
+const promoPct = `−${Math.round(PROMO.rate * 100)} %`;
+const savings = product.originalPrice ? formatPriceTTC(product.originalPrice - product.price, product.currency) : null;
+const needsSim = product.slug === "obd";
+const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
+---
+
+  <section class="mx-auto max-w-6xl px-4 pb-6 pt-6 sm:px-6 sm:pt-8">
+    <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+      <div data-product-gallery data-gallery-images={JSON.stringify(product.gallery ?? [product.image])} class="lg:sticky lg:top-36">
+        <div class="hero-banner product-stage relative flex min-h-80 items-center justify-center overflow-hidden rounded-2xl p-8 sm:min-h-[28rem]">
+          <span class="halo" aria-hidden="true"></span>
+          {product.originalPrice && !product.comingSoon && (
+            <span data-promo class="absolute left-4 top-4 z-10 rounded bg-promo px-2 py-1 text-xs font-bold text-white">{promoPct}</span>
+          )}
+          <img
+            src={product.image}
+            alt={product.name}
+            width="400"
+            height="400"
+            data-gallery-main
+            class:list={["product-shot relative z-[1] h-64 w-auto object-contain sm:h-80", product.comingSoon && "blur-sm opacity-40"]}
+          />
+          {product.comingSoon && (
+            <span class="absolute inset-0 z-10 flex items-center justify-center">
+              <span class="rounded-full bg-night px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-gold">{t.comingSoon}</span>
+            </span>
+          )}
+          {product.gallery && product.gallery.length > 1 && (
+            <>
+              <button type="button" data-gallery-prev class="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-paper shadow-sm transition-colors hover:text-accent" aria-label={t.prev}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+              </button>
+              <button type="button" data-gallery-next class="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-paper shadow-sm transition-colors hover:text-accent" aria-label={t.next}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+              </button>
+            </>
+          )}
+        </div>
+        {product.gallery && product.gallery.length > 1 && (
+          <div class="mt-3 flex gap-3">
+            {product.gallery.map((src, i) => (
+              <button
+                type="button"
+                data-gallery-thumb={src}
+                class={`h-20 w-20 shrink-0 rounded-xl border-2 bg-ink-soft p-2 transition-colors ${i === 0 ? "border-accent" : "border-ink-line"}`}
+                aria-label={`${t.photo} ${i + 1} — ${product.name}`}
+              >
+                <img src={src} alt="" width="80" height="80" class="h-full w-full object-contain" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{product.category}</p>
+        <h1 class="mt-2 font-display text-3xl font-semibold leading-tight text-paper sm:text-4xl">{product.name}</h1>
+        <p class="mt-2 text-base text-paper-dim">{product.tagline}</p>
+        {!product.comingSoon && (
+          <a href="#avis" class="mt-3 inline-flex items-center gap-2 text-sm text-paper-dim hover:text-accent">
+            {rating ? (
+              <><span class="tracking-wider text-accent-soft" aria-hidden="true">{"★".repeat(Math.round(rating.average))}</span> {rating.average.toLocaleString(lang)} / 5 · {rating.count} {t.reviews}</>
+            ) : (
+              <>{t.firstReview} <span aria-hidden="true">→</span></>
+            )}
+          </a>
+        )}
+
+        {!product.comingSoon && (
+          <div class="mt-5 rounded-2xl border border-ink-line p-5">
+            <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="font-display text-4xl font-semibold text-paper">{formattedPrice}</span>
+              {product.originalPrice && (
+                <>
+                  <span data-promo class="text-lg text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+                  <span data-promo class="rounded bg-promo px-2 py-0.5 text-xs font-bold text-white">{promoPct}</span>
+                </>
+              )}
+            </p>
+            {product.originalPrice && (
+              <p data-promo class="mt-2 text-sm text-promo">
+                {t.promoLabel} : {t.youSave} {savings} · {t.endsIn} <span data-countdown-inline class="font-mono">…</span>
+              </p>
+            )}
+            <p class="mt-3 flex items-center gap-2 text-sm text-paper-dim">
+              <span class="live-dot" aria-hidden="true"></span>
+              {t.stock} <FlagFR /> · {t.shipped}
+            </p>
+
+            {hasCart ? (
+            <div class="mt-5 flex flex-wrap items-stretch gap-3">
+              <div class="flex items-center rounded-lg border border-ink-line">
+                <button type="button" data-qty-target={qtyInputId} data-qty-step="-1" class="px-4 py-3 text-paper-dim transition-colors hover:text-accent" aria-label={t.decrease}>−</button>
+                <input
+                  id={qtyInputId}
+                  type="number"
+                  min="1"
+                  value="1"
+                  aria-label={t.qty}
+                  class="w-10 bg-transparent text-center font-mono text-sm text-paper [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
+                <button type="button" data-qty-target={qtyInputId} data-qty-step="1" class="px-4 py-3 text-paper-dim transition-colors hover:text-accent" aria-label={t.increase}>+</button>
+              </div>
+              <button
+                type="button"
+                data-add-to-cart={product.slug}
+                data-qty-input={qtyInputId}
+                class="flex-1 rounded-lg bg-night px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft"
+              >
+                {t.addToCart}
+              </button>
+            </div>
+            ) : (
+              <a href={`${base}/contact/`} class="mt-5 flex w-full items-center justify-center rounded-lg bg-night px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft">{t.order}</a>
+            )}
+
+            <ul class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-ink-line pt-4 text-xs text-paper-dim">
+              <li class="flex items-center gap-2">✓ {t.r1}</li>
+              <li class="flex items-center gap-2">✓ {t.r2} <FlagFR /></li>
+              <li class="flex items-center gap-2">✓ {t.r3}</li>
+              <li class="flex items-center gap-2">✓ {t.r4}</li>
+            </ul>
+          </div>
+        )}
+
+        {product.comingSoon && (
+          <button type="button" disabled class="mt-6 cursor-not-allowed rounded-lg border border-ink-line px-6 py-3 text-sm text-mist">
+            {t.unavailable}
+          </button>
+        )}
+
+        {needsSim && (
+          <a href="#carte-sim" class="mt-4 flex items-center gap-3 rounded-xl bg-ink-soft px-4 py-3 text-sm text-paper hover:bg-sand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Zm3 9h5v5h-5v-5Z" /></svg>
+            <span><strong class="font-semibold">{t.simNeeded}</strong> {t.simBody} <span class="text-accent underline">{t.simLink}</span></span>
+          </a>
+        )}
+
+        <p class="mt-6 leading-relaxed text-paper-dim">{product.description}</p>
+        <ul class="mt-5 space-y-2.5">
+          {product.highlights.map((point) => (
+            <li class="flex gap-3 text-sm text-paper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-accent" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+              {point}
+            </li>
+          ))}
+        </ul>
+        <a href={`${base}/contact/`} class="mt-6 inline-flex items-center gap-2 text-sm text-paper-dim transition-colors hover:text-accent">
+          {t.question} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {needsSim && <SimGuide lang={lang} />}
+
+  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <div class="rounded-2xl bg-ink-soft p-6 sm:p-10">
+      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.specsEyebrow}</p>
+      <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{t.specsTitle}</h2>
+      <dl class="mt-6 grid gap-x-10 sm:grid-cols-2">
+        {product.specs.map((spec) => (
+          <div class="flex justify-between gap-4 border-b border-ink-line py-3">
+            <dt class="text-sm text-mist">{spec.label}</dt>
+            <dd class="text-right text-sm text-paper">{spec.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.usesEyebrow}</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{t.usesTitle}</h2>
+    <div class="mt-6 grid gap-x-8 sm:grid-cols-2 sm:divide-x sm:divide-ink-line lg:grid-cols-4">
+      {product.useCases.map((useCase) => (
+        <UseCaseCard {...useCase} />
+      ))}
+    </div>
+  </section>
+
+  {crossSell && !product.comingSoon && (
+    <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+      <div class="grid items-center gap-6 rounded-2xl border border-ink-line p-5 sm:grid-cols-[auto_1fr_auto] sm:p-7">
+        <a href={`${base}/traceurs-gps/${crossSell.slug}/`} class="flex h-32 w-32 items-center justify-center rounded-xl bg-ink-soft">
+          <img src={crossSell.image} alt={crossSell.name} width="112" height="112" class="h-24 w-24 object-contain" />
+        </a>
+        <div>
+          <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.crossEyebrow}</p>
+          <h2 class="mt-1 font-display text-xl font-semibold text-paper">{crossSell.name}</h2>
+          <p class="mt-1 text-sm text-paper-dim">{crossSell.tagline}</p>
+          <p class="mt-2 flex items-baseline gap-2">
+            <span data-price-regular={crossSell.originalPrice && formatPriceTTC(crossSell.originalPrice)} class="text-lg font-bold text-paper">{formatPriceTTC(crossSell.price)}</span>
+            {crossSell.originalPrice && <span data-promo class="text-sm text-mist line-through">{formatPriceTTC(crossSell.originalPrice)}</span>}
+            <span class="text-xs text-signal">· {t.crossBundle}</span>
+          </p>
+        </div>
+        {hasCart ? (
+          <button type="button" data-add-to-cart={crossSell.slug} class="rounded-lg bg-gold px-5 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">{t.addToCart}</button>
+        ) : (
+          <a href={`${base}/traceurs-gps/${crossSell.slug}/`} class="rounded-lg bg-gold px-5 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">{t.view}</a>
+        )}
+      </div>
+    </section>
+  )}
+
+  {!product.comingSoon && <ProductReviews slug={product.slug} productName={product.name} lang={lang} />}
+
+  {product.faq && product.faq.length > 0 && (
+    <section class="mx-auto max-w-3xl px-4 pb-16 pt-4 sm:px-6">
+      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.faqEyebrow}</p>
+      <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{t.faqTitle}</h2>
+      <div class="mt-6">
+        <FAQAccordion items={product.faq} />
+      </div>
+      <a href={`${base}/faq/`} class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-dim hover:underline">
+          {t.seeFaq} <span aria-hidden="true">→</span>
+      </a>
+    </section>
+  )}
+
+  <CTASection
+    title={t.ctaTitle}
+    description={t.ctaDesc}
+    buttonLabel={t.ctaButton}
+    href={`${base}/contact/`}
+  />
+
+  {!product.comingSoon && (
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-ink-line bg-white/95 px-4 py-3 backdrop-blur lg:hidden">
+      <div class="flex items-center gap-3">
+        <div class="min-w-0 flex-1">
+          <p class="truncate text-xs text-paper-dim">{product.name}</p>
+          <p class="flex items-baseline gap-2">
+            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="text-lg font-bold text-paper">{formattedPrice}</span>
+            {product.originalPrice && <span data-promo class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>}
+          </p>
+        </div>
+        {hasCart ? (
+          <button type="button" data-add-to-cart={product.slug} class="rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white">{t.addToCart}</button>
+        ) : (
+          <a href={`${base}/contact/`} class="rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white">{t.order}</a>
+        )}
+      </div>
+    </div>
+    <div class="h-20 lg:hidden" aria-hidden="true"></div>
+  )}
