@@ -8,6 +8,7 @@ export const REGULAR_PRODUCTS_EN: Product[] = [
   {
     slug: "gf07",
     sku: "SG-GF07",
+    comingSoon: true,
     badge: "New",
     category: "GPS Tracker",
     name: "GF07 Tracker",
@@ -75,6 +76,7 @@ export const REGULAR_PRODUCTS_EN: Product[] = [
   {
     slug: "tag-bluetooth",
     sku: "SG-BT01",
+    comingSoon: true,
     badge: "New",
     category: "Bluetooth Tracker",
     name: "Bluetooth Find My Tracker",
@@ -146,6 +148,7 @@ export const REGULAR_PRODUCTS_EN: Product[] = [
   {
     slug: "detecteur-anti-espion",
     sku: "SG-RK021",
+    comingSoon: true,
     badge: "New",
     category: "Anti-spy detector",
     name: "Hidden camera, GPS and microphone detector",

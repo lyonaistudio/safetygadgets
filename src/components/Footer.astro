@@ -17,7 +17,7 @@ const legalHref = lang === "fr" ? "/mentions-legales/" : "/mentions-legales/";
 
 <footer class="relative border-t border-ink-line bg-ink-soft">
   <div class="gold-rule pointer-events-none absolute inset-x-0 top-0" aria-hidden="true"></div>
-  <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-4">
+  <div class={`mx-auto grid max-w-6xl gap-10 px-6 py-16 ${lang === "fr" ? "md:grid-cols-5" : "md:grid-cols-4"}`}>
     <div class="md:col-span-2">
       <div class="flex items-center gap-3">
         <img src="/logo/seal.png" alt="" width="44" height="44" class="h-11 w-11 object-contain" aria-hidden="true" />
