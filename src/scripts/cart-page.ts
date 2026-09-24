@@ -161,17 +161,17 @@ function render() {
     suggestionsContainer.innerHTML = suggestions
       .map(
         (product) => `
-        <div class="flex items-center gap-4 rounded-2xl border border-ink-line bg-white p-4">
-          <img src="${product.image}" alt="${product.name}" class="h-20 w-20 shrink-0 rounded-xl bg-ink-soft object-contain p-2" />
-          <div class="flex-1">
-            <p class="text-sm text-paper-dim">${pitch[product.slug] ?? ""}</p>
-            <h4 class="mt-1 text-base font-semibold text-paper">${product.name}</h4>
-            <p class="mt-0.5 text-sm font-semibold text-paper">${formatPriceTTC(product.price, product.currency)}${
-              product.originalPrice ? ` <span class="font-normal text-mist line-through">${formatPriceTTC(product.originalPrice, product.currency)}</span>` : ""
+        <div class="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2 rounded-2xl border border-ink-line bg-white p-3 sm:grid-cols-[auto_1fr_auto] sm:gap-4 sm:p-4">
+          <img src="${product.image}" alt="${product.name}" class="h-16 w-16 shrink-0 rounded-xl bg-ink-soft object-contain p-2 sm:h-20 sm:w-20" />
+          <div class="min-w-0">
+            <p class="text-xs text-paper-dim sm:text-sm">${pitch[product.slug] ?? ""}</p>
+            <h4 class="mt-0.5 text-sm font-semibold text-paper sm:mt-1 sm:text-base">${product.name}</h4>
+            <p class="mt-0.5 whitespace-nowrap text-sm font-semibold text-paper">${formatPriceTTC(product.price, product.currency)}${
+              product.originalPrice ? ` <span class="text-xs font-normal text-mist line-through">${formatPriceTTC(product.originalPrice, product.currency)}</span>` : ""
             }</p>
           </div>
-          <button type="button" data-quick-add="${product.slug}" class="shrink-0 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-night transition-colors hover:bg-gold-soft" aria-label="Ajouter ${product.name} au panier">
-            Ajouter
+          <button type="button" data-quick-add="${product.slug}" class="col-span-2 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-night transition-colors hover:bg-gold-soft sm:col-span-1" aria-label="Ajouter ${product.name} au panier">
+            Ajouter au panier
           </button>
         </div>
       `

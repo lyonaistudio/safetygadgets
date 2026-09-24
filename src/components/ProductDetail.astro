@@ -25,7 +25,7 @@ const hasCart = lang === "fr";
 
 const t = {
   fr: {
-    prev: "Photo précédente", next: "Photo suivante", photo: "Photo", comingSoon: "Prochainement", reviews: "avis",
+    details: "Description détaillée", prev: "Photo précédente", next: "Photo suivante", photo: "Photo", comingSoon: "Prochainement", reviews: "avis",
     firstReview: "Soyez le premier à donner votre avis", promoLabel: PROMO.label, youSave: "vous économisez", endsIn: "fin dans",
     stock: "En stock en France", shipped: "expédié sous 24/48h", decrease: "Diminuer la quantité", increase: "Augmenter la quantité", qty: "Quantité",
     addToCart: "Ajouter au panier", order: "Commander", view: "Voir le produit",
@@ -38,7 +38,7 @@ const t = {
     ctaTitle: "Une question avant de commander ?", ctaDesc: "Écrivez-nous : nous vous répondons sous 24h et vous orientons vers le bon produit.", ctaButton: "Nous contacter",
   },
   en: {
-    prev: "Previous photo", next: "Next photo", photo: "Photo", comingSoon: "Coming soon", reviews: "reviews",
+    details: "Full description", prev: "Previous photo", next: "Next photo", photo: "Photo", comingSoon: "Coming soon", reviews: "reviews",
     firstReview: "Be the first to leave a review", promoLabel: "Launch offer", youSave: "you save", endsIn: "ends in",
     stock: "In stock in France", shipped: "ships within 24–48h", decrease: "Decrease quantity", increase: "Increase quantity", qty: "Quantity",
     addToCart: "Add to cart", order: "Order now", view: "View product",
@@ -51,7 +51,7 @@ const t = {
     ctaTitle: "A question before ordering?", ctaDesc: "Write to us: we reply within 24h and help you pick the right product.", ctaButton: "Contact us",
   },
   de: {
-    prev: "Vorheriges Foto", next: "Nächstes Foto", photo: "Foto", comingSoon: "Demnächst", reviews: "Bewertungen",
+    details: "Ausführliche Beschreibung", prev: "Vorheriges Foto", next: "Nächstes Foto", photo: "Foto", comingSoon: "Demnächst", reviews: "Bewertungen",
     firstReview: "Schreiben Sie die erste Bewertung", promoLabel: "Einführungsangebot", youSave: "Sie sparen", endsIn: "endet in",
     stock: "Auf Lager in Frankreich", shipped: "Versand in 24–48 Std.", decrease: "Menge verringern", increase: "Menge erhöhen", qty: "Menge",
     addToCart: "In den Warenkorb", order: "Jetzt bestellen", view: "Produkt ansehen",
@@ -77,7 +77,7 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
   <section class="mx-auto max-w-6xl px-4 pb-6 pt-6 sm:px-6 sm:pt-8">
     <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
       <div data-product-gallery data-gallery-images={JSON.stringify(product.gallery ?? [product.image])} class="lg:sticky lg:top-36">
-        <div class="hero-banner product-stage relative flex min-h-80 items-center justify-center overflow-hidden rounded-2xl p-8 sm:min-h-[28rem]">
+        <div class="hero-banner product-stage relative flex h-60 items-center justify-center overflow-hidden rounded-2xl p-6 sm:h-auto sm:min-h-[28rem] sm:p-8">
           <span class="halo" aria-hidden="true"></span>
           {product.originalPrice && !product.comingSoon && (
             <span data-promo class="absolute left-4 top-4 z-10 rounded bg-promo px-2 py-1 text-xs font-bold text-white">{promoPct}</span>
@@ -88,7 +88,7 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
             width="400"
             height="400"
             data-gallery-main
-            class:list={["product-shot relative z-[1] h-64 w-auto object-contain sm:h-80", product.comingSoon && "blur-sm opacity-40"]}
+            class:list={["product-shot relative z-[1] h-44 w-auto object-contain sm:h-80", product.comingSoon && "blur-sm opacity-40"]}
           />
           {product.comingSoon && (
             <span class="absolute inset-0 z-10 flex items-center justify-center">
@@ -107,12 +107,12 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
           )}
         </div>
         {product.gallery && product.gallery.length > 1 && (
-          <div class="mt-3 flex gap-3">
+          <div class="mt-2 flex gap-2 sm:mt-3 sm:gap-3">
             {product.gallery.map((src, i) => (
               <button
                 type="button"
                 data-gallery-thumb={src}
-                class={`h-20 w-20 shrink-0 rounded-xl border-2 bg-ink-soft p-2 transition-colors ${i === 0 ? "border-accent" : "border-ink-line"}`}
+                class={`h-12 w-12 shrink-0 rounded-lg border-2 bg-ink-soft p-1 sm:h-20 sm:w-20 sm:rounded-xl sm:p-2 transition-colors ${i === 0 ? "border-accent" : "border-ink-line"}`}
                 aria-label={`${t.photo} ${i + 1} — ${product.name}`}
               >
                 <img src={src} alt="" width="80" height="80" class="h-full w-full object-contain" aria-hidden="true" />
@@ -124,8 +124,8 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
 
       <div>
         <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{product.category}</p>
-        <h1 class="mt-2 font-display text-3xl font-semibold leading-tight text-paper sm:text-4xl">{product.name}</h1>
-        <p class="mt-2 text-base text-paper-dim">{product.tagline}</p>
+        <h1 class="mt-1 font-display text-2xl font-semibold leading-tight text-paper sm:mt-2 sm:text-4xl">{product.name}</h1>
+        <p class="mt-1 text-sm text-paper-dim sm:mt-2 sm:text-base">{product.tagline}</p>
         {!product.comingSoon && (
           <a href="#avis" class="mt-3 inline-flex items-center gap-2 text-sm text-paper-dim hover:text-accent">
             {rating ? (
@@ -137,24 +137,23 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
         )}
 
         {!product.comingSoon && (
-          <div class="mt-5 rounded-2xl border border-ink-line p-5">
+          <div class="mt-3 rounded-2xl border border-ink-line p-4 sm:mt-5 sm:p-5">
             <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="font-display text-4xl font-semibold text-paper">{formattedPrice}</span>
+              <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="whitespace-nowrap font-display text-3xl font-semibold text-paper sm:text-4xl">{formattedPrice}</span>
               {product.originalPrice && (
                 <>
-                  <span data-promo class="text-lg text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+                  <span data-promo class="whitespace-nowrap text-base text-mist line-through sm:text-lg">{formatPriceTTC(product.originalPrice, product.currency)}</span>
                   <span data-promo class="rounded bg-promo px-2 py-0.5 text-xs font-bold text-white">{promoPct}</span>
                 </>
               )}
             </p>
             {product.originalPrice && (
-              <p data-promo class="mt-2 text-sm text-promo">
+              <p data-promo class="mt-1.5 text-xs text-promo sm:mt-2 sm:text-sm">
                 {t.promoLabel} : {t.youSave} {savings} · {t.endsIn} <span data-countdown-inline class="font-mono">…</span>
               </p>
             )}
-            <p class="mt-3 flex items-center gap-2 text-sm text-paper-dim">
-              <span class="live-dot" aria-hidden="true"></span>
-              {t.stock} <FlagFR /> · {t.shipped}
+            <p class="mt-2 text-xs text-paper-dim sm:mt-3 sm:text-sm">
+              <span class="live-dot mr-1.5 inline-block align-middle" aria-hidden="true"></span>{t.stock} <FlagFR /> · {t.shipped}
             </p>
 
             {hasCart ? (
@@ -184,7 +183,7 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
               <a href={`${base}/contact/`} class="mt-5 flex w-full items-center justify-center rounded-lg bg-night px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft">{t.order}</a>
             )}
 
-            <ul class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-ink-line pt-4 text-xs text-paper-dim">
+            <ul class="mt-4 grid grid-cols-2 gap-x-3 gap-y-1.5 border-t border-ink-line pt-3 text-[11px] text-paper-dim sm:mt-5 sm:gap-x-4 sm:gap-y-2 sm:pt-4 sm:text-xs">
               <li class="flex items-center gap-2">✓ {t.r1}</li>
               <li class="flex items-center gap-2">✓ {t.r2} <FlagFR /></li>
               <li class="flex items-center gap-2">✓ {t.r3}</li>
@@ -206,8 +205,7 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
           </a>
         )}
 
-        <p class="mt-6 leading-relaxed text-paper-dim">{product.description}</p>
-        <ul class="mt-5 space-y-2.5">
+        <ul class="mt-4 space-y-2 sm:mt-6 sm:space-y-2.5">
           {product.highlights.map((point) => (
             <li class="flex gap-3 text-sm text-paper">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-accent" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
@@ -215,7 +213,14 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
             </li>
           ))}
         </ul>
-        <a href={`${base}/contact/`} class="mt-6 inline-flex items-center gap-2 text-sm text-paper-dim transition-colors hover:text-accent">
+        <details data-open-desktop class="group mt-3 sm:mt-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl bg-ink-soft px-4 py-3 text-sm font-medium text-paper marker:content-none sm:hidden">
+            {t.details}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent transition-transform group-open:rotate-180 sm:hidden" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </summary>
+          <p class="mt-3 text-sm leading-relaxed text-paper-dim sm:mt-0 sm:text-base">{product.description}</p>
+        </details>
+        <a href={`${base}/contact/`} class="mt-4 inline-flex text-xs sm:mt-6 sm:text-sm items-center gap-2 text-sm text-paper-dim transition-colors hover:text-accent">
           {t.question} <span aria-hidden="true">→</span>
         </a>
       </div>
@@ -224,51 +229,58 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
 
   {needsSim && <SimGuide lang={lang} />}
 
-  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
-    <div class="rounded-2xl bg-ink-soft p-6 sm:p-10">
-      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.specsEyebrow}</p>
-      <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{t.specsTitle}</h2>
-      <dl class="mt-6 grid gap-x-10 sm:grid-cols-2">
+  <section class="mx-auto max-w-6xl px-4 pt-6 sm:px-6 sm:pt-14">
+    <details data-open-desktop class="group rounded-2xl bg-ink-soft p-4 sm:p-10">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-3 marker:content-none sm:cursor-default">
+        <span>
+          <span class="hidden text-[11px] font-medium uppercase tracking-[0.3em] text-accent sm:block">{t.specsEyebrow}</span>
+          <span class="block font-display text-lg font-semibold text-paper sm:mt-2 sm:text-3xl">{t.specsTitle}</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent transition-transform group-open:rotate-180 sm:hidden" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+      </summary>
+      <dl class="mt-3 grid gap-x-10 sm:mt-6 sm:grid-cols-2">
         {product.specs.map((spec) => (
-          <div class="flex justify-between gap-4 border-b border-ink-line py-3">
-            <dt class="text-sm text-mist">{spec.label}</dt>
-            <dd class="text-right text-sm text-paper">{spec.value}</dd>
+          <div class="flex justify-between gap-4 border-b border-ink-line py-2 sm:py-3">
+            <dt class="text-xs text-mist sm:text-sm">{spec.label}</dt>
+            <dd class="text-right text-xs text-paper sm:text-sm">{spec.value}</dd>
           </div>
         ))}
       </dl>
-    </div>
+    </details>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
-    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.usesEyebrow}</p>
-    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{t.usesTitle}</h2>
-    <div class="mt-6 grid gap-x-8 sm:grid-cols-2 sm:divide-x sm:divide-ink-line lg:grid-cols-4">
+  <section class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-14">
+    <p class="hidden text-[11px] font-medium uppercase tracking-[0.3em] text-accent sm:block">{t.usesEyebrow}</p>
+    <h2 class="font-display text-lg font-semibold text-paper sm:mt-2 sm:text-3xl">{t.usesTitle}</h2>
+    <div class="scroll-row -mx-4 mt-3 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 sm:mx-0 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-0 sm:divide-x sm:divide-ink-line sm:overflow-visible sm:px-0 lg:grid-cols-4">
       {product.useCases.map((useCase) => (
-        <UseCaseCard {...useCase} />
+        <div class="w-64 shrink-0 snap-start rounded-2xl bg-ink-soft px-4 sm:w-auto sm:rounded-none sm:bg-transparent sm:px-0">
+          <UseCaseCard {...useCase} />
+        </div>
       ))}
     </div>
   </section>
 
   {crossSell && !product.comingSoon && (
-    <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
-      <div class="grid items-center gap-6 rounded-2xl border border-ink-line p-5 sm:grid-cols-[auto_1fr_auto] sm:p-7">
-        <a href={`${base}/traceurs-gps/${crossSell.slug}/`} class="flex h-32 w-32 items-center justify-center rounded-xl bg-ink-soft">
-          <img src={crossSell.image} alt={crossSell.name} width="112" height="112" class="h-24 w-24 object-contain" />
+    <section class="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-14">
+      <div class="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-3 rounded-2xl border border-ink-line p-4 sm:grid-cols-[auto_1fr_auto] sm:gap-6 sm:p-7">
+        <a href={`${base}/traceurs-gps/${crossSell.slug}/`} class="flex h-20 w-20 items-center justify-center rounded-xl bg-ink-soft sm:h-32 sm:w-32">
+          <img src={crossSell.image} alt={crossSell.name} width="112" height="112" class="h-16 w-16 object-contain sm:h-24 sm:w-24" />
         </a>
         <div>
-          <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.crossEyebrow}</p>
-          <h2 class="mt-1 font-display text-xl font-semibold text-paper">{crossSell.name}</h2>
-          <p class="mt-1 text-sm text-paper-dim">{crossSell.tagline}</p>
-          <p class="mt-2 flex items-baseline gap-2">
-            <span data-price-regular={crossSell.originalPrice && formatPriceTTC(crossSell.originalPrice)} class="text-lg font-bold text-paper">{formatPriceTTC(crossSell.price)}</span>
+          <p class="text-[10px] font-medium uppercase tracking-[0.2em] text-accent sm:text-[11px] sm:tracking-[0.3em]">{t.crossEyebrow}</p>
+          <h2 class="mt-0.5 font-display text-base font-semibold leading-snug text-paper sm:mt-1 sm:text-xl">{crossSell.name}</h2>
+          <p class="mt-1 hidden text-sm text-paper-dim sm:block">{crossSell.tagline}</p>
+          <p class="mt-1 flex flex-wrap items-baseline gap-x-2 sm:mt-2">
+            <span data-price-regular={crossSell.originalPrice && formatPriceTTC(crossSell.originalPrice)} class="whitespace-nowrap text-base font-bold text-paper sm:text-lg">{formatPriceTTC(crossSell.price)}</span>
             {crossSell.originalPrice && <span data-promo class="text-sm text-mist line-through">{formatPriceTTC(crossSell.originalPrice)}</span>}
-            <span class="text-xs text-signal">· {t.crossBundle}</span>
+            <span class="w-full text-[11px] text-signal sm:w-auto sm:text-xs">{t.crossBundle}</span>
           </p>
         </div>
         {hasCart ? (
-          <button type="button" data-add-to-cart={crossSell.slug} class="rounded-lg bg-gold px-5 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">{t.addToCart}</button>
+          <button type="button" data-add-to-cart={crossSell.slug} class="col-span-2 rounded-lg bg-gold px-5 py-2.5 sm:col-span-1 sm:py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">{t.addToCart}</button>
         ) : (
-          <a href={`${base}/traceurs-gps/${crossSell.slug}/`} class="rounded-lg bg-gold px-5 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">{t.view}</a>
+          <a href={`${base}/traceurs-gps/${crossSell.slug}/`} class="col-span-2 rounded-lg bg-gold px-5 py-2.5 text-center sm:col-span-1 sm:py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">{t.view}</a>
         )}
       </div>
     </section>
@@ -277,10 +289,10 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
   {!product.comingSoon && <ProductReviews slug={product.slug} productName={product.name} lang={lang} />}
 
   {product.faq && product.faq.length > 0 && (
-    <section class="mx-auto max-w-3xl px-4 pb-16 pt-4 sm:px-6">
-      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.faqEyebrow}</p>
-      <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{t.faqTitle}</h2>
-      <div class="mt-6">
+    <section class="mx-auto max-w-3xl px-4 pb-10 pt-2 sm:px-6 sm:pb-16 sm:pt-4">
+      <p class="hidden text-[11px] font-medium uppercase tracking-[0.3em] text-accent sm:block">{t.faqEyebrow}</p>
+      <h2 class="font-display text-lg font-semibold text-paper sm:mt-2 sm:text-3xl">{t.faqTitle}</h2>
+      <div class="mt-3 sm:mt-6">
         <FAQAccordion items={product.faq} />
       </div>
       <a href={`${base}/faq/`} class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-dim hover:underline">
@@ -302,8 +314,8 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
         <div class="min-w-0 flex-1">
           <p class="truncate text-xs text-paper-dim">{product.name}</p>
           <p class="flex items-baseline gap-2">
-            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="text-lg font-bold text-paper">{formattedPrice}</span>
-            {product.originalPrice && <span data-promo class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>}
+            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="whitespace-nowrap text-base font-bold text-paper">{formattedPrice}</span>
+            {product.originalPrice && <span data-promo class="whitespace-nowrap text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>}
           </p>
         </div>
         {hasCart ? (
@@ -315,3 +327,14 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
     </div>
     <div class="h-20 lg:hidden" aria-hidden="true"></div>
   )}
+
+<script>
+  // Sections repliables sur mobile (description, fiche technique, avis) :
+  // ouvertes d'office sur ordinateur.
+  function openOnDesktop() {
+    if (!window.matchMedia("(min-width: 640px)").matches) return;
+    document.querySelectorAll<HTMLDetailsElement>("details[data-open-desktop]").forEach((d) => (d.open = true));
+  }
+  openOnDesktop();
+  document.addEventListener("astro:page-load", openOnDesktop);
+</script>

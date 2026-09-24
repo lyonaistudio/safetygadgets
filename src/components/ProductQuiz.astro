@@ -48,38 +48,38 @@ const STEP2 = {
 } as const;
 ---
 
-<section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6" data-quiz>
-  <div class="rounded-2xl border border-ink-line bg-white p-6 shadow-sm sm:p-10">
+<section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-14" data-quiz>
+  <div class="rounded-2xl border border-ink-line bg-white p-4 shadow-sm sm:p-10">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">30 secondes</p>
-        <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Quel produit est fait pour vous ?</h2>
+        <p class="hidden text-[11px] font-medium uppercase tracking-[0.3em] text-accent sm:block">30 secondes</p>
+        <h2 class="font-display text-lg font-semibold text-paper sm:mt-2 sm:text-3xl">Quel produit est fait pour vous ?</h2>
       </div>
       <button type="button" data-quiz-reset hidden class="text-sm text-paper-dim underline hover:text-accent">Recommencer</button>
     </div>
 
-    <div data-quiz-step="1" class="mt-6">
-      <p class="text-sm font-medium text-paper">1. Que souhaitez-vous protéger ?</p>
-      <div class="mt-3 grid gap-3 sm:grid-cols-3">
+    <div data-quiz-step="1" class="mt-3 sm:mt-6">
+      <p class="text-xs font-medium text-paper-dim sm:text-sm sm:text-paper">1. Que souhaitez-vous protéger ?</p>
+      <div class="mt-2 grid grid-cols-3 gap-2 sm:mt-3 sm:gap-3">
         {[["vehicule", "Un véhicule"], ["personne", "Une personne"], ["deux", "Les deux"]].map(([key, label]) => (
-          <button type="button" data-quiz-q1={key} class="rounded-xl border border-ink-line bg-ink-soft px-4 py-4 text-left text-sm font-medium text-paper transition-colors hover:border-accent">{label}</button>
+          <button type="button" data-quiz-q1={key} class="flex min-h-12 items-center justify-center rounded-xl border border-ink-line bg-ink-soft px-2 py-2.5 text-center text-xs font-medium leading-tight text-paper transition-colors hover:border-accent sm:justify-start sm:px-4 sm:py-4 sm:text-left sm:text-sm">{label}</button>
         ))}
       </div>
     </div>
 
     {Object.entries(STEP2).map(([key, options]) => (
-      <div data-quiz-step="2" data-quiz-for={key} hidden class="mt-6">
-        <p class="text-sm font-medium text-paper">2. Pour qui ?</p>
-        <div class="mt-3 grid gap-3 sm:grid-cols-3">
+      <div data-quiz-step="2" data-quiz-for={key} hidden class="mt-3 sm:mt-6">
+        <p class="text-xs font-medium text-paper-dim sm:text-sm sm:text-paper">2. Pour qui ?</p>
+        <div class="mt-2 grid grid-cols-3 gap-2 sm:mt-3 sm:gap-3">
           {options.map(([label, result]) => (
-            <button type="button" data-quiz-q2={result} class="rounded-xl border border-ink-line bg-ink-soft px-4 py-4 text-left text-sm font-medium text-paper transition-colors hover:border-accent">{label}</button>
+            <button type="button" data-quiz-q2={result} class="flex min-h-12 items-center justify-center rounded-xl border border-ink-line bg-ink-soft px-2 py-2.5 text-center text-xs font-medium leading-tight text-paper transition-colors hover:border-accent sm:justify-start sm:px-4 sm:py-4 sm:text-left sm:text-sm">{label}</button>
           ))}
         </div>
       </div>
     ))}
 
     {Object.entries(RESULTS).map(([key, r]) => (
-      <div data-quiz-result={key} hidden class="mt-6 rounded-xl bg-ink-soft p-5 sm:p-6">
+      <div data-quiz-result={key} hidden class="mt-3 rounded-xl bg-ink-soft p-4 sm:mt-6 sm:p-6">
         <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Notre recommandation</p>
         <p class="mt-1 font-display text-xl font-semibold text-paper">{r.title}</p>
         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-paper-dim">{r.body}</p>

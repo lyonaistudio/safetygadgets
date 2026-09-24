@@ -17,20 +17,20 @@ const legalHref = lang === "fr" ? "/mentions-legales/" : "/mentions-legales/";
 
 <footer class="relative border-t border-ink-line bg-ink-soft">
   <div class="gold-rule pointer-events-none absolute inset-x-0 top-0" aria-hidden="true"></div>
-  <div class={`mx-auto grid max-w-6xl gap-10 px-6 py-16 ${lang === "fr" ? "md:grid-cols-5" : "md:grid-cols-4"}`}>
-    <div class="md:col-span-2">
+  <div class={`mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-7 px-6 py-9 sm:py-16 md:gap-10 ${lang === "fr" ? "md:grid-cols-5" : "md:grid-cols-4"}`}>
+    <div class="col-span-2">
       <div class="flex items-center gap-3">
         <img src="/logo/seal.png" alt="" width="44" height="44" class="h-11 w-11 object-contain" aria-hidden="true" />
         <p class="font-display text-lg text-paper">Safety Gadgets</p>
       </div>
-      <p class="mt-4 max-w-sm text-sm leading-relaxed text-mist">
+      <p class="mt-3 max-w-sm text-sm leading-relaxed text-mist sm:mt-4">
         {t.siteDescription}
       </p>
     </div>
 
     <div>
       <p class="text-xs uppercase tracking-[0.15em] text-mist">{t.footerNav}</p>
-      <ul class="mt-4 space-y-2">
+      <ul class="mt-3 space-y-1.5 sm:mt-4 sm:space-y-2">
         {navLinks.map((link) => (
           <li>
             <a href={link.href} class="text-sm text-paper-dim transition-colors hover:text-accent">
@@ -44,7 +44,7 @@ const legalHref = lang === "fr" ? "/mentions-legales/" : "/mentions-legales/";
     {lang === "fr" && (
       <div>
         <p class="text-xs uppercase tracking-[0.15em] text-mist">Solutions</p>
-        <ul class="mt-4 space-y-2">
+        <ul class="mt-3 space-y-1.5 sm:mt-4 sm:space-y-2">
           {AUDIENCES.map((a) => (
             <li>
               <a href={a.path} class="text-sm text-paper-dim transition-colors hover:text-accent">{a.navLabel}</a>
@@ -54,9 +54,9 @@ const legalHref = lang === "fr" ? "/mentions-legales/" : "/mentions-legales/";
       </div>
     )}
 
-    <div>
+    <div class={lang === "fr" ? "col-span-2 md:col-span-1" : ""}>
       <p class="text-xs uppercase tracking-[0.15em] text-mist">{t.footerContact}</p>
-      <ul class="mt-4 space-y-2 text-sm text-paper-dim">
+      <ul class="mt-3 space-y-1.5 text-sm text-paper-dim sm:mt-4 sm:space-y-2">
         <li>
           <a href={`mailto:${SITE.email}`} class="transition-colors hover:text-accent">{SITE.email}</a>
         </li>
@@ -67,7 +67,7 @@ const legalHref = lang === "fr" ? "/mentions-legales/" : "/mentions-legales/";
   </div>
 
   <div class="border-t border-ink-line">
-    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-mist sm:flex-row sm:items-center sm:justify-between">
+    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-5 text-xs text-mist sm:py-6 sm:flex-row sm:items-center sm:justify-between">
       <p>&copy; {year} {SITE.name}. {t.footerRights}</p>
       <div class="flex gap-4">
         <a href={cgvHref} class="transition-colors hover:text-accent">{t.footerCgv}</a>

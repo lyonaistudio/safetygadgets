@@ -843,3 +843,13 @@ body {
 .product-shot {
   filter: drop-shadow(0 24px 28px rgba(60, 45, 30, 0.2));
 }
+
+/* Rangées défilables horizontalement sur mobile (univers, guides...) :
+   pas de barre de défilement visible, le geste de glisser suffit. */
+.scroll-row {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}

@@ -8,18 +8,17 @@ const { items } = Astro.props;
 
 <div class="divide-y divide-ink-line border-y border-ink-line">
   {items.map((item) => (
-    <details class="group reveal border-l-2 border-transparent px-4 py-6 transition-colors open:border-accent open:bg-ink-soft/40 hover:bg-ink-soft/30">
-      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium text-paper marker:content-none transition-colors group-hover:text-accent">
+    <details class="group reveal border-l-2 border-transparent px-2 py-3.5 transition-colors sm:px-4 sm:py-6 open:border-accent open:bg-ink-soft/40 hover:bg-ink-soft/30">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-[15px] font-medium leading-snug text-paper marker:content-none sm:text-lg transition-colors group-hover:text-accent">
         {item.question}
         <span
-          class="flex h-7 w-9 shrink-0 items-center justify-center border border-ink-line font-mono text-xs text-accent transition-all group-hover:border-accent"
+          class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink-line text-accent transition-all group-open:rotate-45 group-hover:border-accent"
           aria-hidden="true"
         >
-          <span class="group-open:hidden">[+]</span>
-          <span class="hidden group-open:inline">[–]</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
         </span>
       </summary>
-      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-paper-dim">{item.answer}</p>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-paper-dim sm:mt-4">{item.answer}</p>
       {item.link && (
         <a
           href={item.link.href}

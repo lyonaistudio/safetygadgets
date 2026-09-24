@@ -6,16 +6,18 @@ interface Props {
   href?: string;
 }
 
-const { title, description, buttonLabel = "Faire une demande de renseignements", href = "/contact/" } = Astro.props;
+const { title: rawTitle, description, buttonLabel = "Faire une demande de renseignements", href = "/contact/" } = Astro.props;
+// Espace insécable avant ? ! : ; (typographie française, évite un « ? » seul à la ligne).
+const title = rawTitle.replace(/ ([?!:;])/g, "\u00a0$1");
 ---
 
 <section class="relative overflow-hidden bg-sand text-paper">
-  <div class="reveal relative mx-auto max-w-3xl px-6 py-20 text-center">
-    <h2 class="font-display text-3xl font-medium text-paper sm:text-4xl">{title}</h2>
-    <p class="mt-4 text-base leading-relaxed text-paper-dim">{description}</p>
+  <div class="reveal relative mx-auto max-w-3xl px-6 py-10 text-center sm:py-20">
+    <h2 class="font-display text-2xl font-medium text-paper sm:text-4xl">{title}</h2>
+    <p class="mt-2 text-sm leading-relaxed text-paper-dim sm:mt-4 sm:text-base">{description}</p>
     <a
       href={href}
-      class="mt-8 inline-block rounded-lg bg-night px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:bg-night-soft"
+      class="mt-5 inline-block rounded-lg bg-night sm:mt-8 px-6 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:bg-night-soft"
     >
       {buttonLabel}
     </a>
