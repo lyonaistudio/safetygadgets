@@ -79,8 +79,19 @@ export function productSchema(options: {
   price: number;
   currency: string;
   sku: string;
+  rating?: { average: number; count: number } | null;
 }) {
   return {
+    // Note moyenne uniquement si de vrais avis existent (jamais inventée).
+    ...(options.rating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: options.rating.average,
+            reviewCount: options.rating.count,
+          },
+        }
+      : {}),
     "@context": "https://schema.org",
     "@type": "Product",
     name: options.name,

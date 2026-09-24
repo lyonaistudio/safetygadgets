@@ -268,7 +268,7 @@ export const REGULAR_PRODUCTS_DE: Product[] = [
     faq: [
       {
         question: "Benötigt dieser Tracker eine SIM-Karte?",
-        answer: "Ja, eine 4G-SIM-Karte mit aktivem Datentarif ist erforderlich (nicht im Lieferumfang enthalten) für die Echtzeit-Positionsübertragung.",
+        answer: "Ja, eine 4G-SIM-Karte mit etwas Datenvolumen ist erforderlich (nicht im Lieferumfang enthalten). Ein kleiner Tarif genügt. Deaktivieren Sie vor dem Einlegen den PIN-Code der SIM.",
       },
       {
         question: "Ist er mit meinem Auto kompatibel?",

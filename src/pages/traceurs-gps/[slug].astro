@@ -1,12 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
-import Eyebrow from "../../components/Eyebrow.astro";
 import CTASection from "../../components/CTASection.astro";
 import UseCaseCard from "../../components/UseCaseCard.astro";
 import FAQAccordion from "../../components/FAQAccordion.astro";
 import { PRODUCTS, formatPriceTTC } from "../../data/products";
 import { productSchema, faqSchema } from "../../lib/schema";
+import { PROMO } from "../../lib/promo";
+import { ratingSummary } from "../../data/reviews";
+import FlagFR from "../../components/FlagFR.astro";
+import SimGuide from "../../components/SimGuide.astro";
+import ProductReviews from "../../components/ProductReviews.astro";
 
 export function getStaticPaths() {
   return PRODUCTS.map((product) => ({
@@ -17,6 +21,7 @@ export function getStaticPaths() {
 
 const { product } = Astro.props;
 
+const rating = ratingSummary(product.slug);
 const schema = productSchema({
   name: product.name,
   description: product.shortDescription,
@@ -25,10 +30,15 @@ const schema = productSchema({
   price: product.price,
   currency: product.currency,
   sku: product.sku,
+  rating,
 });
 
 const formattedPrice = formatPriceTTC(product.price, product.currency);
 const qtyInputId = `qty-${product.slug}`;
+const promoPct = `−${Math.round(PROMO.rate * 100)} %`;
+const savings = product.originalPrice ? formatPriceTTC(product.originalPrice - product.price, product.currency) : null;
+const needsSim = product.slug === "obd";
+const crossSell = PRODUCTS.find((p) => !p.comingSoon && p.slug !== product.slug);
 const schemas = product.faq && product.faq.length > 0 ? [schema, faqSchema(product.faq)] : [schema];
 ---
 
@@ -45,216 +55,234 @@ const schemas = product.faq && product.faq.length > 0 ? [schema, faqSchema(produ
     ]}
   />
 
-  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <div class="grid gap-12 lg:grid-cols-2 lg:items-start">
-      <div class="reveal flex justify-center">
-        <div
-          class="w-full max-w-sm"
-          data-product-gallery
-          data-gallery-images={JSON.stringify(product.gallery ?? [product.image])}
-        >
-          <div class="product-stage relative border border-ink-line bg-ink-soft p-10">
-            <img
-              src={product.image}
-              alt={product.name}
-              width="360"
-              height="360"
-              data-gallery-main
-              class:list={["premium-photo mx-auto h-64 w-auto object-contain sm:h-72", product.comingSoon && "blur-sm opacity-40"]}
-            />
-            {product.comingSoon && (
-              <span class="absolute inset-0 flex items-center justify-center">
-                <span class="border border-accent bg-ink/90 px-4 py-1.5 text-xs uppercase tracking-[0.15em] text-accent">
-                  À venir
-                </span>
-              </span>
-            )}
-            {product.gallery && product.gallery.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  data-gallery-prev
-                  class="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
-                  aria-label="Photo précédente"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
-                </button>
-                <button
-                  type="button"
-                  data-gallery-next
-                  class="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-ink-line bg-ink/80 text-paper-dim transition-colors hover:border-accent hover:text-accent"
-                  aria-label="Photo suivante"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-                </button>
-              </>
-            )}
-          </div>
-          {product.gallery && product.gallery.length > 1 && (
-            <div class="mt-4 flex justify-center gap-3">
-              {product.gallery.map((src, i) => (
-                <button
-                  type="button"
-                  data-gallery-thumb={src}
-                  class={`h-16 w-16 shrink-0 border bg-ink-soft p-2 transition-colors ${
-                    i === 0 ? "border-accent" : "border-ink-line"
-                  }`}
-                  aria-label={`Voir la photo ${i + 1} de ${product.name}`}
-                >
-                  <img src={src} alt="" width="64" height="64" class="h-full w-full object-contain" aria-hidden="true" />
-                </button>
-              ))}
-            </div>
+  <section class="mx-auto max-w-6xl px-4 pb-6 pt-6 sm:px-6 sm:pt-8">
+    <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+      <div data-product-gallery data-gallery-images={JSON.stringify(product.gallery ?? [product.image])} class="lg:sticky lg:top-36">
+        <div class="hero-banner product-stage relative flex min-h-80 items-center justify-center overflow-hidden rounded-2xl p-8 sm:min-h-[28rem]">
+          <span class="halo" aria-hidden="true"></span>
+          {product.originalPrice && !product.comingSoon && (
+            <span data-promo class="absolute left-4 top-4 z-10 rounded bg-promo px-2 py-1 text-xs font-bold text-white">{promoPct}</span>
           )}
-        </div>
-      </div>
-      <div class="reveal">
-        <Eyebrow label={product.category} />
-        <h1 class="mt-4 font-display text-3xl font-medium text-paper sm:text-4xl">{product.name}</h1>
-        {!product.comingSoon && (
-          <p class="mt-3 flex flex-wrap items-baseline gap-3 font-mono text-2xl text-accent">
-            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)}>{formattedPrice}</span>
-            {product.originalPrice && (
-              <>
-                <span data-promo class="text-base text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
-                <span data-promo class="text-xs uppercase tracking-[0.1em] text-signal">
-                  −{formatPriceTTC(product.originalPrice - product.price, product.currency)}
-                </span>
-              </>
-            )}
-          </p>
-        )}
-        <p class="mt-2 flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist">
-          {product.comingSoon ? (
-            <>Bientôt disponible</>
-          ) : (
+          <img
+            src={product.image}
+            alt={product.name}
+            width="400"
+            height="400"
+            data-gallery-main
+            class:list={["product-shot relative z-[1] h-64 w-auto object-contain sm:h-80", product.comingSoon && "blur-sm opacity-40"]}
+          />
+          {product.comingSoon && (
+            <span class="absolute inset-0 z-10 flex items-center justify-center">
+              <span class="rounded-full bg-night px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-gold">Prochainement</span>
+            </span>
+          )}
+          {product.gallery && product.gallery.length > 1 && (
             <>
-              <span class="live-dot" aria-hidden="true"></span> En stock — expédition sous 24 à 48h
+              <button type="button" data-gallery-prev class="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-paper shadow-sm transition-colors hover:text-accent" aria-label="Photo précédente">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+              </button>
+              <button type="button" data-gallery-next class="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-paper shadow-sm transition-colors hover:text-accent" aria-label="Photo suivante">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+              </button>
             </>
           )}
-        </p>
-        <p class="mt-5 max-w-xl leading-relaxed text-paper-dim">{product.description}</p>
+        </div>
+        {product.gallery && product.gallery.length > 1 && (
+          <div class="mt-3 flex gap-3">
+            {product.gallery.map((src, i) => (
+              <button
+                type="button"
+                data-gallery-thumb={src}
+                class={`h-20 w-20 shrink-0 rounded-xl border-2 bg-ink-soft p-2 transition-colors ${i === 0 ? "border-accent" : "border-ink-line"}`}
+                aria-label={`Voir la photo ${i + 1} de ${product.name}`}
+              >
+                <img src={src} alt="" width="80" height="80" class="h-full w-full object-contain" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
-        <ul class="mt-6 space-y-2 border-t border-ink-line pt-6">
-          {product.highlights.map((point) => (
-            <li class="flex gap-3 text-sm text-paper-dim">
-              <span class="mt-1 h-1 w-1 shrink-0 bg-gold" aria-hidden="true"></span>
-              {point}
-            </li>
-          ))}
-        </ul>
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{product.category}</p>
+        <h1 class="mt-2 font-display text-3xl font-semibold leading-tight text-paper sm:text-4xl">{product.name}</h1>
+        <p class="mt-2 text-base text-paper-dim">{product.tagline}</p>
+        {!product.comingSoon && (
+          <a href="#avis" class="mt-3 inline-flex items-center gap-2 text-sm text-paper-dim hover:text-accent">
+            {rating ? (
+              <><span class="tracking-wider text-accent-soft" aria-hidden="true">{"★".repeat(Math.round(rating.average))}</span> {rating.average.toLocaleString("fr")} / 5 · {rating.count} avis</>
+            ) : (
+              <>Soyez le premier à donner votre avis <span aria-hidden="true">→</span></>
+            )}
+          </a>
+        )}
 
-        <div class="mt-8 flex flex-wrap items-center gap-4">
-          {product.comingSoon ? (
-            <button
-              type="button"
-              disabled
-              class="cursor-not-allowed border border-ink-line bg-transparent px-6 py-3 text-xs uppercase tracking-[0.15em] text-mist"
-            >
-              Bientôt disponible
-            </button>
-          ) : (
-            <>
-              <div class="flex items-center border border-ink-line">
-                <button
-                  type="button"
-                  data-qty-target={qtyInputId}
-                  data-qty-step="-1"
-                  class="px-3 py-2.5 text-paper-dim transition-colors hover:text-accent"
-                  aria-label="Diminuer la quantité"
-                >
-                  −
-                </button>
+        {!product.comingSoon && (
+          <div class="mt-5 rounded-2xl border border-ink-line p-5">
+            <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="font-display text-4xl font-semibold text-paper">{formattedPrice}</span>
+              {product.originalPrice && (
+                <>
+                  <span data-promo class="text-lg text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>
+                  <span data-promo class="rounded bg-promo px-2 py-0.5 text-xs font-bold text-white">{promoPct}</span>
+                </>
+              )}
+            </p>
+            {product.originalPrice && (
+              <p data-promo class="mt-2 text-sm text-promo">
+                {PROMO.label} : vous économisez {savings} · fin dans <span data-countdown-inline class="font-mono">…</span>
+              </p>
+            )}
+            <p class="mt-3 flex items-center gap-2 text-sm text-paper-dim">
+              <span class="live-dot" aria-hidden="true"></span>
+              En stock en France <FlagFR /> · expédié sous 24/48h
+            </p>
+
+            <div class="mt-5 flex flex-wrap items-stretch gap-3">
+              <div class="flex items-center rounded-lg border border-ink-line">
+                <button type="button" data-qty-target={qtyInputId} data-qty-step="-1" class="px-4 py-3 text-paper-dim transition-colors hover:text-accent" aria-label="Diminuer la quantité">−</button>
                 <input
                   id={qtyInputId}
                   type="number"
                   min="1"
                   value="1"
-                  class="w-12 border-x border-ink-line bg-transparent py-2.5 text-center font-mono text-sm text-paper [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  aria-label="Quantité"
+                  class="w-10 bg-transparent text-center font-mono text-sm text-paper [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 />
-                <button
-                  type="button"
-                  data-qty-target={qtyInputId}
-                  data-qty-step="1"
-                  class="px-3 py-2.5 text-paper-dim transition-colors hover:text-accent"
-                  aria-label="Augmenter la quantité"
-                >
-                  +
-                </button>
+                <button type="button" data-qty-target={qtyInputId} data-qty-step="1" class="px-4 py-3 text-paper-dim transition-colors hover:text-accent" aria-label="Augmenter la quantité">+</button>
               </div>
               <button
                 type="button"
                 data-add-to-cart={product.slug}
                 data-qty-input={qtyInputId}
-                class="border border-gold bg-gold px-6 py-3 text-xs uppercase tracking-[0.15em] text-night transition-colors hover:bg-ink hover:text-accent"
+                class="flex-1 rounded-lg bg-night px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft"
               >
                 Ajouter au panier
               </button>
-            </>
-          )}
-        </div>
-        <a
-          href="/contact/"
-          class="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
-        >
-          Une question avant d'acheter ? <span aria-hidden="true">→</span>
+            </div>
+
+            <ul class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-ink-line pt-4 text-xs text-paper-dim">
+              <li class="flex items-center gap-2">✓ Livraison offerte dès 49 €</li>
+              <li class="flex items-center gap-2">✓ SAV en France <FlagFR /></li>
+              <li class="flex items-center gap-2">✓ Retour sous 30 jours</li>
+              <li class="flex items-center gap-2">✓ Paiement sécurisé</li>
+            </ul>
+          </div>
+        )}
+
+        {product.comingSoon && (
+          <button type="button" disabled class="mt-6 cursor-not-allowed rounded-lg border border-ink-line px-6 py-3 text-sm text-mist">
+            Bientôt disponible
+          </button>
+        )}
+
+        {needsSim && (
+          <a href="#carte-sim" class="mt-4 flex items-center gap-3 rounded-xl bg-ink-soft px-4 py-3 text-sm text-paper hover:bg-sand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Zm3 9h5v5h-5v-5Z" /></svg>
+            <span><strong class="font-semibold">Carte SIM 4G nécessaire</strong> (non fournie) — un forfait à 2 €/mois suffit. <span class="text-accent underline">Lequel choisir ?</span></span>
+          </a>
+        )}
+
+        <p class="mt-6 leading-relaxed text-paper-dim">{product.description}</p>
+        <ul class="mt-5 space-y-2.5">
+          {product.highlights.map((point) => (
+            <li class="flex gap-3 text-sm text-paper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-accent" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+              {point}
+            </li>
+          ))}
+        </ul>
+        <a href="/contact/" class="mt-6 inline-flex items-center gap-2 text-sm text-paper-dim transition-colors hover:text-accent">
+          Une question avant d'acheter ? Nous répondons sous 24h <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
   </section>
 
-  <section class="border-y border-ink-line bg-ink-soft">
-    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-      <Eyebrow label="Caractéristiques" />
-      <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
-        Fiche technique
-      </h2>
-      <dl class="mt-8 grid gap-x-8 gap-y-4 border-t border-ink-line pt-6 sm:grid-cols-2">
+  {needsSim && <SimGuide />}
+
+  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <div class="rounded-2xl bg-ink-soft p-6 sm:p-10">
+      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Caractéristiques</p>
+      <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Fiche technique</h2>
+      <dl class="mt-6 grid gap-x-10 sm:grid-cols-2">
         {product.specs.map((spec) => (
-          <div class="flex justify-between gap-4 border-b border-ink-line pb-3">
-            <dt class="text-xs uppercase tracking-[0.1em] text-mist">{spec.label}</dt>
-            <dd class="text-right font-mono text-sm text-paper-dim">{spec.value}</dd>
+          <div class="flex justify-between gap-4 border-b border-ink-line py-3">
+            <dt class="text-sm text-mist">{spec.label}</dt>
+            <dd class="text-right text-sm text-paper">{spec.value}</dd>
           </div>
         ))}
       </dl>
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <Eyebrow label="Cas d'usage" />
-    <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
-      Pour qui est fait ce produit ?
-    </h2>
-    <div class="mt-8 grid gap-x-8 sm:grid-cols-2 sm:divide-x sm:divide-ink-line lg:grid-cols-4">
+  <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Cas d'usage</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Pour qui est fait ce produit ?</h2>
+    <div class="mt-6 grid gap-x-8 sm:grid-cols-2 sm:divide-x sm:divide-ink-line lg:grid-cols-4">
       {product.useCases.map((useCase) => (
         <UseCaseCard {...useCase} />
       ))}
     </div>
   </section>
 
-  {product.faq && product.faq.length > 0 && (
-    <section class="border-t border-ink-line bg-ink-soft">
-      <div class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
-        <Eyebrow label="Questions fréquentes" />
-        <h2 class="mt-4 max-w-2xl font-display text-2xl font-medium text-paper sm:text-3xl">
-          Sur ce produit précisément.
-        </h2>
-        <div class="mt-8">
-          <FAQAccordion items={product.faq} />
-        </div>
-        <a
-          href="/faq/"
-          class="mt-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-mist transition-colors hover:text-accent"
-        >
-          Voir toute la FAQ <span aria-hidden="true">→</span>
+  {crossSell && !product.comingSoon && (
+    <section class="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+      <div class="grid items-center gap-6 rounded-2xl border border-ink-line p-5 sm:grid-cols-[auto_1fr_auto] sm:p-7">
+        <a href={`/traceurs-gps/${crossSell.slug}/`} class="flex h-32 w-32 items-center justify-center rounded-xl bg-ink-soft">
+          <img src={crossSell.image} alt={crossSell.name} width="112" height="112" class="h-24 w-24 object-contain" />
         </a>
+        <div>
+          <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Complétez votre protection</p>
+          <h2 class="mt-1 font-display text-xl font-semibold text-paper">{crossSell.name}</h2>
+          <p class="mt-1 text-sm text-paper-dim">{crossSell.tagline}</p>
+          <p class="mt-2 flex items-baseline gap-2">
+            <span data-price-regular={crossSell.originalPrice && formatPriceTTC(crossSell.originalPrice)} class="text-lg font-bold text-paper">{formatPriceTTC(crossSell.price)}</span>
+            {crossSell.originalPrice && <span data-promo class="text-sm text-mist line-through">{formatPriceTTC(crossSell.originalPrice)}</span>}
+            <span class="text-xs text-signal">· les deux ensemble : livraison offerte</span>
+          </p>
+        </div>
+        <button type="button" data-add-to-cart={crossSell.slug} class="rounded-lg bg-gold px-5 py-3 text-sm font-semibold text-night transition-colors hover:bg-gold-soft">
+          Ajouter au panier
+        </button>
       </div>
     </section>
   )}
 
+  {!product.comingSoon && <ProductReviews slug={product.slug} productName={product.name} />}
+
+  {product.faq && product.faq.length > 0 && (
+    <section class="mx-auto max-w-3xl px-4 pb-16 pt-4 sm:px-6">
+      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Questions fréquentes</p>
+      <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Sur ce produit précisément</h2>
+      <div class="mt-6">
+        <FAQAccordion items={product.faq} />
+      </div>
+      <a href="/faq/" class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-dim hover:underline">
+        Voir toute la FAQ <span aria-hidden="true">→</span>
+      </a>
+    </section>
+  )}
+
   <CTASection
-    title="Prêt à commander ?"
-    description="Contactez-nous pour finaliser votre commande ou pour toute question avant achat."
+    title="Une question avant de commander ?"
+    description="Écrivez-nous : nous vous répondons sous 24h et vous orientons vers le bon produit."
     buttonLabel="Nous contacter"
   />
+
+  {!product.comingSoon && (
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-ink-line bg-white/95 px-4 py-3 backdrop-blur lg:hidden">
+      <div class="flex items-center gap-3">
+        <div class="min-w-0 flex-1">
+          <p class="truncate text-xs text-paper-dim">{product.name}</p>
+          <p class="flex items-baseline gap-2">
+            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)} class="text-lg font-bold text-paper">{formattedPrice}</span>
+            {product.originalPrice && <span data-promo class="text-xs text-mist line-through">{formatPriceTTC(product.originalPrice, product.currency)}</span>}
+          </p>
+        </div>
+        <button type="button" data-add-to-cart={product.slug} class="rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white">Ajouter au panier</button>
+      </div>
+    </div>
+    <div class="h-20 lg:hidden" aria-hidden="true"></div>
+  )}
 </BaseLayout>

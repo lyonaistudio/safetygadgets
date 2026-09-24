@@ -837,3 +837,9 @@ body {
   --color-gold-soft: #e8d6c2;
   --color-promo: #a8483f;
 }
+
+/* Photo produit posée sur la bannière claire de la fiche : ombre douce,
+   sans rotation (contrairement au visuel d'accroche de l'accueil). */
+.product-shot {
+  filter: drop-shadow(0 24px 28px rgba(60, 45, 30, 0.2));
+}

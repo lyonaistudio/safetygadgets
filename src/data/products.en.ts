@@ -269,7 +269,7 @@ export const REGULAR_PRODUCTS_EN: Product[] = [
     faq: [
       {
         question: "Does this tracker need a SIM card?",
-        answer: "Yes, a 4G SIM card with an active data plan is required (not included) for real-time position transmission.",
+        answer: "Yes, a 4G SIM card with a little data is required (not included). A small plan is enough. Remember to disable the SIM's PIN code before inserting it.",
       },
       {
         question: "Is it compatible with my car?",

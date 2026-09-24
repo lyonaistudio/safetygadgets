@@ -92,7 +92,7 @@ export const REGULAR_PRODUCTS: Product[] = [
     faq: [
       {
         question: "Faut-il une carte SIM pour ce tracker ?",
-        answer: "Oui, une carte SIM 4G avec forfait data actif est nécessaire (non fournie) pour la transmission de position en temps réel.",
+        answer: "Oui, une carte SIM 4G avec un peu de data est nécessaire (non fournie). Un petit forfait suffit, par exemple le forfait Free à 2 €/mois (1 Go inclus, sans engagement). Pensez à désactiver le code PIN de la SIM avant de l'insérer.",
       },
       {
         question: "Est-il compatible avec ma voiture ?",

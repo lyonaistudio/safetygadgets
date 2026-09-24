@@ -1,0 +1,172 @@
+---
+import type { Locale } from "../lib/i18n";
+import { FORMSPREE_ENDPOINT } from "../lib/site";
+
+// Fenêtre d'inscription newsletter : -10 % sur la première commande avec le
+// code BIENVENUE10 (code promo Stripe, à créer aussi en mode live). S'ouvre
+// une seule fois après 20 s de visite, jamais sur le panier ni pendant que
+// le bandeau cookies est affiché ; refermée, elle ne revient pas avant 30 j.
+interface Props {
+  lang?: Locale;
+}
+const { lang = "fr" } = Astro.props;
+
+const TEXT: Record<Locale, Record<string, string>> = {
+  fr: {
+    eyebrow: "Bienvenue",
+    title: "−10 % sur votre première commande",
+    body: "Inscrivez-vous pour recevoir votre code et être prévenu en avant-première des nouveaux produits.",
+    placeholder: "Votre adresse email",
+    submit: "Recevoir mon code",
+    legal: "Un email de temps en temps, désinscription en un clic. Vos données ne sont jamais revendues.",
+    done: "Merci ! Voici votre code, à saisir au moment du paiement :",
+    copy: "Copier",
+    copied: "Copié",
+    error: "Une erreur est survenue, réessayez.",
+    close: "Fermer",
+  },
+  en: {
+    eyebrow: "Welcome",
+    title: "10% off your first order",
+    body: "Sign up to get your code and be the first to hear about new products.",
+    placeholder: "Your email address",
+    submit: "Get my code",
+    legal: "An email now and then, one-click unsubscribe. Your data is never sold.",
+    done: "Thank you! Here is your code, to enter at checkout:",
+    copy: "Copy",
+    copied: "Copied",
+    error: "Something went wrong, please try again.",
+    close: "Close",
+  },
+  de: {
+    eyebrow: "Willkommen",
+    title: "10 % Rabatt auf Ihre erste Bestellung",
+    body: "Melden Sie sich an, um Ihren Code zu erhalten und als Erste(r) von neuen Produkten zu erfahren.",
+    placeholder: "Ihre E-Mail-Adresse",
+    submit: "Code erhalten",
+    legal: "Ab und zu eine E-Mail, Abmeldung mit einem Klick. Ihre Daten werden nie verkauft.",
+    done: "Danke! Hier ist Ihr Code, einzugeben beim Bezahlen:",
+    copy: "Kopieren",
+    copied: "Kopiert",
+    error: "Ein Fehler ist aufgetreten, bitte erneut versuchen.",
+    close: "Schließen",
+  },
+};
+const t = TEXT[lang];
+---
+
+<div id="newsletter-popup" hidden class="fixed inset-0 z-[70] flex items-end justify-center bg-night/30 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-labelledby="newsletter-title">
+  <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <div class="hero-banner px-6 pb-5 pt-7">
+      <button type="button" data-newsletter-close class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-paper-dim hover:bg-white/70" aria-label={t.close}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+      <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{t.eyebrow}</p>
+      <h2 id="newsletter-title" class="mt-2 font-display text-2xl font-semibold leading-tight text-paper">{t.title}</h2>
+      <p class="mt-2 text-sm leading-relaxed text-paper-dim">{t.body}</p>
+    </div>
+    <div class="px-6 pb-6 pt-5">
+      <form data-newsletter-form action={FORMSPREE_ENDPOINT} method="POST" class="flex flex-col gap-3">
+        <input type="hidden" name="_subject" value="Inscription newsletter Safety Gadgets" />
+        <input type="hidden" name="source" value={`newsletter-popup-${lang}`} />
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+        <input type="email" name="email" required placeholder={t.placeholder} autocomplete="email" class="w-full rounded-lg border border-ink-line bg-white px-4 py-3 text-sm text-paper outline-none focus:border-accent" />
+        <button type="submit" class="rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-night-soft">{t.submit}</button>
+        <p data-newsletter-error hidden class="text-xs text-promo">{t.error}</p>
+        <p class="text-[11px] leading-snug text-mist">{t.legal}</p>
+      </form>
+      <div data-newsletter-done hidden class="text-center">
+        <p class="text-sm text-paper-dim">{t.done}</p>
+        <div class="mt-3 flex items-center justify-center gap-2">
+          <span class="rounded-lg border border-dashed border-accent px-4 py-2 font-mono text-lg font-semibold tracking-wider text-paper">BIENVENUE10</span>
+          <button type="button" data-newsletter-copy data-label-copied={t.copied} class="rounded-lg bg-gold px-3 py-2 text-xs font-semibold text-night hover:bg-gold-soft">{t.copy}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { trackEvent } from "../lib/analytics";
+
+  const KEY = "sg-newsletter";
+  const DELAY_MS = 20000;
+  const SNOOZE_DAYS = 30;
+
+  function read(): string | null {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  }
+  function write(value: string) {
+    try {
+      localStorage.setItem(KEY, value);
+    } catch {}
+  }
+
+  function shouldShow() {
+    const state = read();
+    if (state === "subscribed") return false;
+    if (state && Date.now() - Number(state) < SNOOZE_DAYS * 864e5) return false;
+    if (location.pathname.includes("panier") || location.pathname.includes("commande")) return false;
+    return true;
+  }
+
+  let timer: number | undefined;
+
+  function init() {
+    const popup = document.getElementById("newsletter-popup");
+    if (!popup || popup.dataset.wired) return;
+    popup.dataset.wired = "true";
+
+    const close = () => {
+      popup.hidden = true;
+      if (read() !== "subscribed") write(String(Date.now()));
+    };
+    popup.querySelectorAll("[data-newsletter-close]").forEach((b) => b.addEventListener("click", close));
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !popup.hidden) close();
+    });
+
+    const form = popup.querySelector<HTMLFormElement>("[data-newsletter-form]");
+    const done = popup.querySelector<HTMLElement>("[data-newsletter-done]");
+    const error = popup.querySelector<HTMLElement>("[data-newsletter-error]");
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (error) error.hidden = true;
+      try {
+        const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(String(res.status));
+        write("subscribed");
+        form.hidden = true;
+        if (done) done.hidden = false;
+        trackEvent("sign_up", { method: "newsletter_popup" });
+      } catch {
+        if (error) error.hidden = false;
+      }
+    });
+
+    popup.querySelector<HTMLButtonElement>("[data-newsletter-copy]")?.addEventListener("click", (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      navigator.clipboard?.writeText("BIENVENUE10").then(() => {
+        btn.textContent = btn.dataset.labelCopied ?? "OK";
+      });
+    });
+
+    window.clearTimeout(timer);
+    if (!shouldShow()) return;
+    timer = window.setTimeout(() => {
+      const cookieBanner = document.getElementById("cookie-consent");
+      if (cookieBanner && !cookieBanner.hidden) return;
+      if (shouldShow()) popup.hidden = false;
+    }, DELAY_MS);
+  }
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>
