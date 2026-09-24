@@ -1,0 +1,39 @@
+---
+import type { Product } from "../data/products";
+import type { Locale } from "../lib/i18n";
+import { formatPriceTTC } from "../data/products";
+import { PROMO } from "../lib/promo";
+
+// Carte produit horizontale (accueil, liste des produits). En français le
+// bouton ajoute au panier ; en anglais/allemand il mène à la fiche.
+interface Props {
+  product: Product;
+  lang?: Locale;
+}
+const { product: p, lang = "fr" } = Astro.props;
+const base = lang === "fr" ? "" : `/${lang}`;
+const href = `${base}/traceurs-gps/${p.slug}/`;
+const promoPct = `−${Math.round(PROMO.rate * 100)} %`;
+const label = { fr: "Ajouter au panier", en: "View product", de: "Produkt ansehen" }[lang];
+---
+
+<article class="group relative flex gap-4 rounded-2xl border border-ink-line bg-white p-4 shadow-sm transition-shadow hover:shadow-lg sm:gap-6 sm:p-6">
+  {p.originalPrice && <span data-promo class="absolute left-4 top-4 z-10 rounded bg-promo px-2 py-0.5 text-xs font-bold text-white">{promoPct}</span>}
+  <a href={href} class="flex w-32 shrink-0 items-center justify-center rounded-xl bg-ink-soft sm:w-44">
+    <img src={p.image} alt={p.name} width="160" height="160" class="h-32 w-28 object-contain transition-transform group-hover:scale-105 sm:h-40 sm:w-36" />
+  </a>
+  <div class="flex flex-1 flex-col">
+    <span class="text-[11px] uppercase tracking-[0.15em] text-accent-dim">{p.category}</span>
+    <h3 class="mt-1 text-base font-semibold text-paper sm:text-lg"><a href={href}>{p.name}</a></h3>
+    <p class="mt-1 line-clamp-2 text-sm text-paper-dim">{p.tagline}</p>
+    <p class="mt-auto flex items-baseline gap-2 pt-3">
+      <span data-price-regular={p.originalPrice && formatPriceTTC(p.originalPrice)} class="text-xl font-bold text-paper">{formatPriceTTC(p.price)}</span>
+      {p.originalPrice && <span data-promo class="text-sm text-paper-dim line-through">{formatPriceTTC(p.originalPrice)}</span>}
+    </p>
+    {lang === "fr" ? (
+      <button type="button" data-add-to-cart={p.slug} class="mt-3 w-fit rounded-lg bg-night px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-gold hover:text-night">{label}</button>
+    ) : (
+      <a href={href} class="mt-3 w-fit rounded-lg bg-night px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-gold hover:text-night">{label}</a>
+    )}
+  </div>
+</article>

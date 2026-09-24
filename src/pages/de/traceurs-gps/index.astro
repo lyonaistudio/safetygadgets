@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ProductCard from "../../../components/ProductCard.astro";
 import PageHero from "../../../components/PageHero.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import CTASection from "../../../components/CTASection.astro";
@@ -42,43 +43,22 @@ const schema = faqSchema(faqItems);
     description="Eine sorgfältig ausgewählte Reihe von Trackern und kompakten Detektoren, getestet für zuverlässigen Alltagseinsatz."
   />
 
-  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-      {PRODUCTS_DE.map((product) => (
-        <div class="reveal group card-lift relative flex flex-col border border-ink-line bg-ink p-4 transition-colors duration-200 hover:border-accent/60 sm:p-6">
-          {product.badge && (
-            <span class="mb-2 inline-block w-fit border border-accent bg-ink px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-accent">
-              {product.badge}
-            </span>
-          )}
-          <a href={`/de/traceurs-gps/${product.slug}/`} class="flex flex-1 flex-col">
-            <div class="product-stage h-32 border border-ink-line bg-ink-soft p-4 sm:h-40">
-              <img
-                src={product.image}
-                alt={product.name}
-                width="200"
-                height="200"
-                class="premium-photo mx-auto h-full w-full object-contain"
-              />
-            </div>
-            <h2 class="mt-3 font-display text-base text-paper group-hover:text-accent sm:mt-6 sm:text-xl">
-              {product.name}
-            </h2>
-            <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-paper-dim sm:mt-2 sm:text-sm">{product.shortDescription}</p>
-          </a>
-          <p class="mt-2 flex flex-wrap items-baseline gap-2 font-mono text-base text-accent sm:mt-4 sm:text-lg">
-            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)}>{formatPriceTTC(product.price, product.currency)}</span>
-            {product.originalPrice && (
-              <span data-promo class="text-xs text-mist line-through sm:text-sm">{formatPriceTTC(product.originalPrice, product.currency)}</span>
-            )}
-          </p>
-          <a
-            href={`/de/traceurs-gps/${product.slug}/`}
-            class="mt-3 border border-accent px-3 py-1.5 text-center text-[10px] uppercase tracking-[0.1em] text-accent transition-colors hover:bg-gold hover:text-night sm:mt-4 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.15em]"
-          >
-            Produkt ansehen
-          </a>
-        </div>
+  <section class="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+    <div class="grid gap-5 sm:grid-cols-2">
+      {PRODUCTS_DE.filter((p) => !p.comingSoon).map((product) => <ProductCard product={product} lang="de" />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Demnächst</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Weitere Produkte folgen in Kürze.</h2>
+    <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
+      {PRODUCTS_DE.filter((p) => p.comingSoon).map((p) => (
+        <a href={`/de/traceurs-gps/${p.slug}/`} class="relative flex flex-col items-center rounded-2xl border border-ink-line bg-white p-4 text-center">
+          <span class="absolute left-3 top-3 rounded bg-night px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gold">Demnächst</span>
+          <img src={p.image} alt="" width="120" height="120" class="mt-4 h-20 w-20 object-contain opacity-30 blur-[3px] grayscale sm:h-28 sm:w-28" />
+          <p class="mt-3 text-xs font-medium text-paper sm:text-sm">{p.category}</p>
+        </a>
       ))}
     </div>
   </section>

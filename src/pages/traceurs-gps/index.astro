@@ -1,11 +1,12 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCard from "../../components/ProductCard.astro";
 import PageHero from "../../components/PageHero.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
 import CTASection from "../../components/CTASection.astro";
 import Eyebrow from "../../components/Eyebrow.astro";
 import FAQAccordion from "../../components/FAQAccordion.astro";
-import { PRODUCTS, formatPriceTTC } from "../../data/products";
+import { PRODUCTS } from "../../data/products";
 import { faqSchema } from "../../lib/schema";
 
 const faqItems = [
@@ -24,11 +25,6 @@ const faqItems = [
 ];
 const schema = faqSchema(faqItems);
 
-// Mêmes deux groupes que sur la page d'accueil : les 2 produits phares
-// disponibles en grand format, et le reste — pas encore arrivé — en
-// retrait et flouté pour le suspense.
-const heroProducts = PRODUCTS.filter((p) => p.slug === "obd" || p.slug === "alarme-sos");
-const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
 ---
 
 <BaseLayout
@@ -44,88 +40,24 @@ const comingSoonProducts = PRODUCTS.filter((p) => p.comingSoon);
     description="Un tracker GPS pour votre véhicule, une alarme SOS pour vous — deux produits essentiels, testés pour leur fiabilité au quotidien."
   />
 
-  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-    <div class="grid grid-cols-2 gap-2.5 sm:gap-6">
-      {heroProducts.map((product) => (
-        <div class="reveal group card-lift relative flex flex-col overflow-hidden border border-accent/60 bg-ink-soft p-2.5 shadow-[0_0_0_1px_rgba(201,162,39,0.2)] sm:p-6">
-          <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/[0.08] via-transparent to-transparent" aria-hidden="true"></div>
-          <div class="relative flex items-center justify-between gap-2">
-            {product.badge && (
-              <span class="inline-block w-fit border border-accent bg-ink px-1.5 py-0.5 text-[8px] uppercase tracking-[0.1em] text-accent sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.15em]">
-                {product.badge}
-              </span>
-            )}
-            <span class="hidden text-[10px] uppercase tracking-[0.15em] text-mist sm:inline">{product.category}</span>
-          </div>
-          <a href={`/traceurs-gps/${product.slug}/`} class="relative flex flex-1 flex-col">
-            <div class="product-stage relative my-2 h-24 sm:my-3 sm:h-44">
-              <img
-                src={product.image}
-                alt={product.name}
-                width="200"
-                height="200"
-                class="premium-photo mx-auto h-24 w-24 object-contain sm:h-44 sm:w-44"
-              />
-            </div>
-            <h2 class="font-display text-sm text-paper group-hover:text-accent sm:text-xl">
-              {product.name}
-            </h2>
-            <p class="mt-1 line-clamp-2 text-[11px] leading-snug text-paper-dim sm:mt-1.5 sm:text-sm sm:leading-relaxed">{product.tagline}</p>
-          </a>
-          <p class="relative mt-2 flex flex-wrap items-baseline gap-1.5 font-mono text-sm text-accent sm:mt-3 sm:gap-2 sm:text-lg">
-            <span data-price-regular={product.originalPrice && formatPriceTTC(product.originalPrice, product.currency)}>{formatPriceTTC(product.price, product.currency)}</span>
-            {product.originalPrice && (
-              <span data-promo class="text-[10px] text-mist line-through sm:text-xs">{formatPriceTTC(product.originalPrice, product.currency)}</span>
-            )}
-          </p>
-          <div class="relative mt-3 flex flex-col items-start gap-2 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-            <button
-              type="button"
-              data-add-to-cart={product.slug}
-              class="w-full border border-gold bg-gold px-2 py-1.5 text-center text-[9px] uppercase tracking-normal text-night transition-colors hover:bg-ink hover:text-accent sm:w-auto sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.15em]"
-            >
-              Ajouter au panier
-            </button>
-            <a
-              href={`/traceurs-gps/${product.slug}/`}
-              class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-mist transition-colors hover:text-accent sm:text-xs sm:tracking-[0.15em]"
-            >
-              Voir la fiche <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        </div>
+  <section class="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+    <div class="grid gap-5 sm:grid-cols-2">
+      {PRODUCTS.filter((p) => !p.comingSoon).map((product) => <ProductCard product={product} lang="fr" />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Prochainement</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">D'autres protections arrivent bientôt.</h2>
+    <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
+      {PRODUCTS.filter((p) => p.comingSoon).map((p) => (
+        <a href={`/traceurs-gps/${p.slug}/`} class="relative flex flex-col items-center rounded-2xl border border-ink-line bg-white p-4 text-center">
+          <span class="absolute left-3 top-3 rounded bg-night px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gold">Prochainement</span>
+          <img src={p.image} alt="" width="120" height="120" class="mt-4 h-20 w-20 object-contain opacity-30 blur-[3px] grayscale sm:h-28 sm:w-28" />
+          <p class="mt-3 text-xs font-medium text-paper sm:text-sm">{p.category}</p>
+        </a>
       ))}
     </div>
-
-    {comingSoonProducts.length > 0 && (
-      <div class="mt-16 border-t border-ink-line pt-10 sm:mt-20">
-        <Eyebrow label="Bientôt disponible" />
-        <h2 class="mt-3 max-w-xl font-display text-lg font-medium text-paper sm:text-xl">
-          D'autres protections arrivent bientôt.
-        </h2>
-        <div class="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
-          {comingSoonProducts.map((product) => (
-            <div class="reveal relative flex flex-col items-center border border-ink-line/60 bg-ink-soft/50 p-3 text-center sm:p-5">
-              <div class="product-stage relative my-2 h-20 w-20 sm:h-28 sm:w-28">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  width="140"
-                  height="140"
-                  class="premium-photo h-20 w-20 object-contain opacity-20 blur-md grayscale sm:h-28 sm:w-28"
-                />
-                <span class="absolute inset-0 flex items-center justify-center">
-                  <span class="border border-accent/70 bg-ink/90 px-2 py-1 text-[9px] uppercase tracking-[0.15em] text-accent sm:px-2.5 sm:text-[10px]">
-                    Prochainement
-                  </span>
-                </span>
-              </div>
-              <p class="text-[10px] uppercase tracking-[0.1em] text-mist sm:text-[11px]">{product.category}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
   </section>
 
   <section class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
