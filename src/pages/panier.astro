@@ -42,6 +42,18 @@ import PaymentBadges from "../components/PaymentBadges.astro";
           <p class="text-xs uppercase tracking-[0.1em] text-mist">Sous-total</p>
           <p class="mt-2 font-mono text-2xl text-paper">0,00 € TTC</p>
         </div>
+        <div id="cart-promo" class="hidden rounded-2xl border border-ink-line p-5">
+          <form data-promo-form class="flex gap-2">
+            <label for="promo-code" class="sr-only">Code promo</label>
+            <input id="promo-code" name="code" autocomplete="off" placeholder="Code promo" class="min-w-0 flex-1 rounded-lg border border-ink-line bg-white px-3 py-2.5 text-sm uppercase text-paper outline-none placeholder:normal-case focus:border-accent" />
+            <button type="submit" class="shrink-0 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-night transition-colors hover:bg-gold-soft disabled:opacity-50">Appliquer</button>
+          </form>
+          <div data-promo-applied hidden class="flex items-center justify-between gap-3 text-sm">
+            <span class="text-paper">Code <strong data-promo-label class="font-mono"></strong> appliqué</span>
+            <button type="button" data-promo-remove class="text-xs text-paper-dim underline hover:text-promo">Retirer</button>
+          </div>
+          <p data-promo-message hidden></p>
+        </div>
         <button
           id="cart-checkout"
           type="button"
@@ -49,7 +61,6 @@ import PaymentBadges from "../components/PaymentBadges.astro";
         >
           Passer au paiement sécurisé
         </button>
-        <p class="-mt-3 text-center text-xs text-mist">Code promo ? Vous pourrez le saisir à l'étape suivante.</p>
         <p id="cart-checkout-error" class="hidden text-xs leading-relaxed text-promo" role="alert"></p>
         <a
           href="/contact/"

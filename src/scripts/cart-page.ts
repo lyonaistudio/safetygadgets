@@ -3,6 +3,39 @@ import { PRODUCTS, formatPriceTTC, type Product } from "../data/products";
 import { getCart, setQty, removeFromCart, addToCart } from "../lib/cart";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../lib/cart-pricing";
 
+// Code promo choisi dans le panier (vérifié par /api/promo-code), gardé
+// dans le navigateur jusqu'au paiement.
+interface AppliedPromo {
+  code: string;
+  percentOff: number | null;
+  amountOff: number | null;
+  minimumAmount: number | null;
+  firstOrderOnly: boolean;
+}
+const PROMO_KEY = "sg-promo-code";
+
+function getPromo(): AppliedPromo | null {
+  try {
+    return JSON.parse(localStorage.getItem(PROMO_KEY) ?? "null");
+  } catch {
+    return null;
+  }
+}
+function setPromo(promo: AppliedPromo | null) {
+  try {
+    if (promo) localStorage.setItem(PROMO_KEY, JSON.stringify(promo));
+    else localStorage.removeItem(PROMO_KEY);
+  } catch {}
+}
+
+function promoDiscount(promo: AppliedPromo | null, subtotal: number): number {
+  if (!promo || subtotal <= 0) return 0;
+  if (promo.minimumAmount && subtotal < promo.minimumAmount) return 0;
+  if (promo.percentOff) return Math.round(subtotal * promo.percentOff) / 100;
+  if (promo.amountOff) return Math.min(promo.amountOff, subtotal);
+  return 0;
+}
+
 function findProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
 }
@@ -61,37 +94,59 @@ function render() {
     .join("");
 
   const subtotal = lines.reduce((sum, { line, product }) => sum + product.price * line.qty, 0);
-  const total = subtotal;
+  const promo = getPromo();
+  const discount = promoDiscount(promo, subtotal);
 
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
+  // Seuil de livraison offerte calculé avant code promo (même règle que
+  // côté serveur dans /api/checkout).
+  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const shippingFee = hasItems && remaining > 0 ? SHIPPING_FEE : 0;
-  const grandTotal = total + shippingFee;
+  const grandTotal = subtotal - discount + shippingFee;
+
+  const discountLine =
+    hasItems && promo
+      ? discount > 0
+        ? `<div class="mt-2 flex items-center justify-between text-sm text-signal">
+            <span>Code ${promo.code}${promo.percentOff ? ` (−${promo.percentOff} %)` : ""}</span>
+            <span>−${formatPriceTTC(discount)}</span>
+          </div>`
+        : `<p class="mt-2 text-xs text-paper-dim">Code ${promo.code} : valable dès ${formatPriceTTC(promo.minimumAmount ?? 0)} d'achat.</p>`
+      : "";
 
   const shippingLine = !hasItems
     ? ""
     : remaining > 0
-      ? `<div class="mt-2 flex items-center justify-between text-xs text-paper-dim">
-          <span>Frais de livraison</span>
+      ? `<div class="mt-2 flex items-center justify-between text-sm text-paper-dim">
+          <span>Livraison</span>
           <span>${formatPriceTTC(shippingFee)}</span>
         </div>
-        <p class="mt-2 text-xs text-paper-dim">Plus que <span class="text-accent">${remaining
+        <p class="mt-2 text-xs text-paper-dim">Plus que <span class="font-semibold text-accent">${remaining
           .toFixed(2)
           .replace(".", ",")} €</span> d'achat pour la livraison offerte.</p>`
-      : `<p class="mt-3 text-xs text-accent">Livraison offerte 🎉</p>`;
+      : `<div class="mt-2 flex items-center justify-between text-sm text-paper-dim"><span>Livraison</span><span class="text-signal">Offerte</span></div>`;
 
   summaryContainer.innerHTML = `
-    <p class="text-xs uppercase tracking-[0.1em] text-mist">Sous-total</p>
-    <p class="mt-2 font-mono text-2xl text-paper">${formatPriceTTC(subtotal)}</p>
+    <div class="flex items-center justify-between text-sm text-paper-dim">
+      <span>Sous-total</span>
+      <span class="text-paper">${formatPriceTTC(subtotal)}</span>
+    </div>
+    ${discountLine}
     ${shippingLine}
     ${
       hasItems
-        ? `<p class="mt-3 border-t border-ink-line pt-3 font-mono text-lg text-paper">Total : ${formatPriceTTC(grandTotal)}</p>`
+        ? `<div class="mt-4 flex items-baseline justify-between border-t border-ink-line pt-4">
+            <span class="text-sm font-semibold text-paper">Total</span>
+            <span class="font-display text-2xl font-semibold text-paper">${formatPriceTTC(grandTotal)}</span>
+          </div>
+          ${promo?.firstOrderOnly ? `<p class="mt-2 text-xs text-mist">Code valable sur une première commande.</p>` : ""}`
         : ""
     }
     <p class="mt-4 text-xs leading-relaxed text-mist">
       Livraison offerte dès 49&nbsp;€ TTC d'achat, sinon 7,99&nbsp;€ de frais de livraison.
     </p>
   `;
+
+  renderPromoForm(hasItems);
 
   if (suggestionsContainer && suggestionsSection) {
     const cartSlugs = new Set(lines.map(({ product }) => product.slug));
@@ -162,6 +217,74 @@ function wireLineEvents() {
   });
 }
 
+function renderPromoForm(hasItems: boolean) {
+  const box = document.getElementById("cart-promo");
+  if (!box) return;
+  box.classList.toggle("hidden", !hasItems);
+  const promo = getPromo();
+  const form = box.querySelector<HTMLFormElement>("[data-promo-form]");
+  const applied = box.querySelector<HTMLElement>("[data-promo-applied]");
+  if (form) form.hidden = Boolean(promo);
+  if (applied) {
+    applied.hidden = !promo;
+    const label = applied.querySelector("[data-promo-label]");
+    if (label && promo) label.textContent = promo.code;
+  }
+}
+
+function setPromoMessage(text: string, tone: "error" | "ok" = "error") {
+  const msg = document.querySelector<HTMLElement>("[data-promo-message]");
+  if (!msg) return;
+  msg.textContent = text;
+  msg.className = `mt-2 text-xs ${tone === "error" ? "text-promo" : "text-signal"}`;
+  msg.hidden = !text;
+}
+
+function wirePromoForm() {
+  const box = document.getElementById("cart-promo");
+  if (!box || box.dataset.wired) return;
+  box.dataset.wired = "true";
+  const form = box.querySelector<HTMLFormElement>("[data-promo-form]");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = form.querySelector<HTMLInputElement>("input[name=code]");
+    const button = form.querySelector<HTMLButtonElement>("button");
+    const code = input?.value.trim() ?? "";
+    if (!code) return;
+    if (button) button.disabled = true;
+    setPromoMessage("");
+    try {
+      const res = await fetch("/api/promo-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Ce code promo n'est pas valide.");
+      setPromo({
+        code: data.code,
+        percentOff: data.percentOff,
+        amountOff: data.amountOff,
+        minimumAmount: data.minimumAmount,
+        firstOrderOnly: data.firstOrderOnly,
+      });
+      if (input) input.value = "";
+      setPromoMessage("Code appliqué.", "ok");
+      trackEvent("select_promotion", { promotion_name: data.code });
+      render();
+    } catch (err) {
+      setPromoMessage(err instanceof Error ? err.message : "Ce code promo n'est pas valide.");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
+  box.querySelector("[data-promo-remove]")?.addEventListener("click", () => {
+    setPromo(null);
+    setPromoMessage("");
+    render();
+  });
+}
+
 async function handleCheckout() {
   const button = document.getElementById("cart-checkout") as HTMLButtonElement | null;
   const errorEl = document.getElementById("cart-checkout-error");
@@ -180,9 +303,18 @@ async function handleCheckout() {
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lines: getCart() }),
+      body: JSON.stringify({ lines: getCart(), promoCode: getPromo()?.code ?? null }),
     });
     const data = await res.json();
+    if (data.invalidPromo) {
+      // Code expiré entre-temps : on le retire et on laisse le client décider.
+      setPromo(null);
+      render();
+      setPromoMessage(data.error);
+      button.disabled = false;
+      button.textContent = originalLabel;
+      return;
+    }
     if (!res.ok || !data.url) throw new Error(data.error ?? "Erreur inconnue");
     window.location.href = data.url;
   } catch {
@@ -199,5 +331,6 @@ async function handleCheckout() {
 export function initCartPage() {
   if (!document.getElementById("cart-lines")) return;
   document.getElementById("cart-checkout")?.addEventListener("click", handleCheckout);
+  wirePromoForm();
   render();
 }

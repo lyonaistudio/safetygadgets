@@ -4,6 +4,7 @@ import type { APIRoute } from "astro";
 import Stripe from "stripe";
 import { REGULAR_PRODUCTS } from "../../data/products";
 import { applyPromo, PROMO } from "../../lib/promo";
+import { lookupPromoCode } from "../../lib/promo-code";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../../lib/cart-pricing";
 
 export const POST: APIRoute = async ({ request, url }) => {
@@ -97,6 +98,17 @@ export const POST: APIRoute = async ({ request, url }) => {
 
   try {
     const stripe = new Stripe(secretKey);
+
+    // Code promo choisi dans le panier : appliqué directement à la session.
+    // Sans code, le client peut encore en saisir un sur la page Stripe.
+    const promoCode = typeof body?.promoCode === "string" && body.promoCode.trim() ? body.promoCode : null;
+    const promo = promoCode ? await lookupPromoCode(stripe, promoCode) : null;
+    if (promoCode && !promo) {
+      return new Response(JSON.stringify({ error: "Ce code promo n'est plus valide.", invalidPromo: true }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items,
@@ -104,8 +116,9 @@ export const POST: APIRoute = async ({ request, url }) => {
       success_url: `${url.origin}/commande-confirmee/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${url.origin}/panier/`,
       shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "MC"] },
-      // Codes promo (ex. BIENVENUE10 offert à l'inscription newsletter).
-      allow_promotion_codes: true,
+      // Codes promo (ex. BIENVENUE10 offert à l'inscription newsletter) :
+      // Stripe interdit de combiner "discounts" et "allow_promotion_codes".
+      ...(promo ? { discounts: [{ promotion_code: promo.id }] } : { allow_promotion_codes: true }),
       // Pas de relance Stripe des paniers abandonnés : elle exige
       // consent_collection.promotions, indisponible pour un compte en France.
       // Message cadeau facultatif, glissé dans le colis.
