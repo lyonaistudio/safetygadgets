@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumb from "./Breadcrumb.astro";
+import ProductCard from "./ProductCard.astro";
+import FAQAccordion from "./FAQAccordion.astro";
+import CTASection from "./CTASection.astro";
+import { PRODUCTS } from "../data/products";
+import { faqSchema } from "../lib/schema";
+import type { Audience } from "../data/audiences";
+
+interface Props {
+  audience: Audience;
+}
+const { audience: a } = Astro.props;
+const products = a.products.map((slug) => PRODUCTS.find((p) => p.slug === slug)).filter((p) => p && !p.comingSoon);
+---
+
+<BaseLayout title={a.metaTitle} description={a.metaDescription} path={a.path} jsonLd={[faqSchema(a.faq)]}>
+  <Breadcrumb items={[{ name: a.navLabel, url: a.path }]} />
+
+  <section class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 sm:pt-5">
+    <div class="hero-banner grid items-center gap-8 overflow-hidden rounded-2xl px-6 py-10 sm:px-12 sm:py-12 lg:grid-cols-[1.2fr_1fr]">
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">{a.eyebrow}</p>
+        <h1 class="mt-3 font-display text-3xl font-semibold leading-tight text-paper sm:text-5xl">{a.title}</h1>
+        <p class="mt-4 max-w-xl text-base leading-relaxed text-paper-dim sm:text-lg">{a.intro}</p>
+        <a href="#produits" class="mt-6 inline-flex rounded-lg bg-night px-5 py-3 text-sm font-semibold text-white hover:bg-night-soft">Voir {products.length > 1 ? "les produits" : "le produit"}</a>
+      </div>
+      <div class="relative flex min-h-56 items-end justify-center gap-8">
+        <span class="halo" aria-hidden="true"></span>
+        {products.map((p) => (
+          <img src={p!.image} alt="" width="160" height="200" class="product-shot relative h-44 w-auto object-contain sm:h-56" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+    <div class="grid gap-4 sm:grid-cols-3">
+      {a.benefits.map((b) => (
+        <div class="rounded-2xl bg-ink-soft p-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg>
+          <h2 class="mt-3 text-base font-semibold text-paper">{b.title}</h2>
+          <p class="mt-1 text-sm leading-relaxed text-paper-dim">{b.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="produits" class="mx-auto max-w-7xl scroll-mt-32 px-4 pt-14 sm:px-6">
+    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Notre recommandation</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">{products.length > 1 ? "Les produits adaptés" : "Le produit adapté"}</h2>
+    <div class="mt-6 grid gap-5 sm:grid-cols-2">
+      {products.map((p) => <ProductCard product={p!} />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+    <p class="text-[11px] font-medium uppercase tracking-[0.3em] text-accent">Au quotidien</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold text-paper sm:text-3xl">Dans quelles situations ?</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {a.scenarios.map((s) => (
+        <div class="rounded-2xl border border-ink-line bg-white p-6">
+          <h3 class="text-base font-semibold text-paper">{s.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-paper-dim">{s.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <h2 class="font-display text-2xl font-semibold text-paper sm:text-3xl">Questions fréquentes</h2>
+    <div class="mt-6"><FAQAccordion items={a.faq} /></div>
+  </section>
+
+  <CTASection title="Une question avant de choisir ?" description="Écrivez-nous : nous vous répondons sous 24h." buttonLabel="Nous contacter" />
+</BaseLayout>

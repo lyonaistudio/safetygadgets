@@ -1,0 +1,15 @@
+---
+import AudiencePage from "../../components/AudiencePage.astro";
+import { AUDIENCES, type Audience } from "../../data/audiences";
+
+export function getStaticPaths() {
+  return AUDIENCES.filter((a) => a.path.startsWith("/solutions/")).map((a) => ({
+    params: { slug: a.slug },
+    props: { audience: a },
+  }));
+}
+
+const { audience } = Astro.props as { audience: Audience };
+---
+
+<AudiencePage audience={audience} />

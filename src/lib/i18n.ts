@@ -13,6 +13,7 @@ export const NAV_LINKS_BY_LOCALE: Record<Locale, { href: string; label: string }
   fr: [
     { href: "/", label: "Accueil" },
     { href: "/traceurs-gps/", label: "Nos produits" },
+    { href: "/idees-cadeaux/", label: "Idées cadeaux" },
     { href: "/actualites/", label: "Actualités" },
     { href: "/a-propos/", label: "À propos" },
     { href: "/faq/", label: "FAQ" },

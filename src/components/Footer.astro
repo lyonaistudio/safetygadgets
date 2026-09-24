@@ -1,6 +1,7 @@
 ---
 import { SITE } from "../lib/site";
 import { NAV_LINKS_BY_LOCALE, UI, type Locale } from "../lib/i18n";
+import { AUDIENCES } from "../data/audiences";
 
 interface Props {
   lang?: Locale;
@@ -39,6 +40,19 @@ const legalHref = lang === "fr" ? "/mentions-legales/" : "/mentions-legales/";
         ))}
       </ul>
     </div>
+
+    {lang === "fr" && (
+      <div>
+        <p class="text-xs uppercase tracking-[0.15em] text-mist">Solutions</p>
+        <ul class="mt-4 space-y-2">
+          {AUDIENCES.map((a) => (
+            <li>
+              <a href={a.path} class="text-sm text-paper-dim transition-colors hover:text-accent">{a.navLabel}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
     <div>
       <p class="text-xs uppercase tracking-[0.15em] text-mist">{t.footerContact}</p>

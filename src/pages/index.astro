@@ -53,7 +53,14 @@ const REASSURANCE = [
   ["Garantie 1 an", "Retour sous 30 jours", "M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Zm-3 9 2 2 4-4"],
 ];
 
-const CATEGORIES = ["Véhicules", "Deux-roues", "Seniors", "Trajets seuls", "Jeunes conducteurs", "Flottes pro"];
+const CATEGORIES: [string, string][] = [
+  ["Seniors", "/solutions/seniors/"],
+  ["Trajets seuls", "/solutions/trajets-seuls/"],
+  ["Jeunes conducteurs", "/solutions/jeunes-conducteurs/"],
+  ["Idées cadeaux", "/idees-cadeaux/"],
+  ["Véhicules", "/traceurs-gps/obd/"],
+  ["Flottes pro", "/professionnels/"],
+];
 ---
 
 <BaseLayout
@@ -170,8 +177,8 @@ const CATEGORIES = ["Véhicules", "Deux-roues", "Seniors", "Trajets seuls", "Jeu
           <h2 class="font-display text-xl font-semibold text-paper sm:text-2xl">Des gadgets de sécurité pour particuliers et professionnels</h2>
           <p class="mx-auto mt-2 max-w-2xl text-sm text-paper-dim">Un vol a lieu toutes les 20 secondes en France — 1,6 million en 2024 (SSMSI). Stock en France, expédition rapide, SAV en France réactif — des produits testés et garantis 1 an.</p>
           <div class="mt-5 flex flex-wrap justify-center gap-2">
-            {CATEGORIES.map((c) => (
-              <span class="rounded-full border border-ink-line px-4 py-1.5 text-xs font-medium text-paper">{c}</span>
+            {CATEGORIES.map(([label, href]) => (
+              <a href={href} class="rounded-full border border-ink-line px-4 py-1.5 text-xs font-medium text-paper transition-colors hover:border-accent hover:text-accent">{label}</a>
             ))}
           </div>
         </div>
