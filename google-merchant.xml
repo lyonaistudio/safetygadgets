@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>Safety Gadgets</title>
+    <link>https://safety-gadgets.fr</link>
+    <description>Safety Gadgets — catalogue produits</description>
+    <item>
+      <g:id>SG-OBD</g:id>
+      <g:title>Tracker OBD</g:title>
+      <g:description>Tracker GPS 4G qui se branche directement sur la prise OBD du véhicule, sans câblage ni installation.</g:description>
+      <g:link>https://safety-gadgets.fr/traceurs-gps/obd/</g:link>
+      <g:image_link>https://safety-gadgets.fr/images/products/obd-1.webp</g:image_link>
+      <g:additional_image_link>https://safety-gadgets.fr/images/products/obd-2.webp</g:additional_image_link>
+      <g:additional_image_link>https://safety-gadgets.fr/images/products/obd-3.webp</g:additional_image_link>
+      <g:availability>in_stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>29.99 EUR</g:price>
+      <g:sale_price>23.99 EUR</g:sale_price>
+      <g:sale_price_effective_date>2026-09-24T00:00:00+02:00/2026-10-12T23:59:59+02:00</g:sale_price_effective_date>
+      <g:brand>Safety Gadgets</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:product_type>Tracker GPS OBD</g:product_type>
+    </item>
+    <item>
+      <g:id>SG-SOS253</g:id>
+      <g:title>Alarme Porte-clés SOS GPS</g:title>
+      <g:description>Alarme personnelle 130 dB avec bouton SOS, partage de position par SMS et appel, et lampe torche LED — sans fil, avec application mobile dédiée.</g:description>
+      <g:link>https://safety-gadgets.fr/traceurs-gps/alarme-sos/</g:link>
+      <g:image_link>https://safety-gadgets.fr/images/products/alarme-porteclef-2.webp</g:image_link>
+
+      <g:availability>in_stock</g:availability>
+      <g:condition>new</g:condition>
+      <g:price>34.99 EUR</g:price>
+      <g:sale_price>27.99 EUR</g:sale_price>
+      <g:sale_price_effective_date>2026-09-24T00:00:00+02:00/2026-10-12T23:59:59+02:00</g:sale_price_effective_date>
+      <g:brand>Safety Gadgets</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:product_type>Alarme personnelle</g:product_type>
+    </item>
+  </channel>
+</rss>

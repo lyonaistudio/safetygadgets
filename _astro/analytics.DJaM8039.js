@@ -1,0 +1,1 @@
+var e={add_to_cart:`AddToCart`,purchase:`Purchase`,sign_up:`Lead`,begin_checkout:`InitiateCheckout`};function t(t,n){let r=window;r.gtag?.(`event`,t,n);let i=e[t];i&&r.fbq&&r.fbq(`track`,i,n&&`value`in n?{value:n.value,currency:n.currency??`EUR`}:{})}export{t};

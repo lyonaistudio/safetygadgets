@@ -1,0 +1,1 @@
+import{t as e}from"./contact-form.ilTD5V28.js";document.addEventListener(`astro:page-load`,e);
