@@ -13,7 +13,7 @@ const onCloudflare = process.env.DEPLOY_TARGET === 'cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://safety-gadgets.fr',
+  site: 'https://safety-gadgets.com',
   vite: {
     plugins: [tailwindcss()],
     server: {

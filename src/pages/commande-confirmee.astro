@@ -70,7 +70,7 @@ import { SITE } from "../lib/site";
       const btn = document.querySelector<HTMLButtonElement>("[data-share]");
       btn?.addEventListener("click", async () => {
         const text = "Je viens de m'équiper chez Safety Gadgets. Avec le code BIENVENUE10, tu as -10 % sur ta première commande :";
-        const url = "https://safety-gadgets.fr/";
+        const url = "https://safety-gadgets.com/";
         if (navigator.share) {
           await navigator.share({ text, url }).catch(() => {});
         } else {

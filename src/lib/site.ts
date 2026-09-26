@@ -1,6 +1,9 @@
 export const SITE = {
   name: "Safety Gadgets",
-  url: "https://safety-gadgets.fr",
+  url: "https://safety-gadgets.com",
+  // false : boutique en vitrine, le panier affiche « Paiement bientôt
+  // disponible » (pas de Stripe). Passer à true à l'ouverture des ventes.
+  shopOpen: false,
   email: "contact@safety-gadgets.com",
   city: "Lyon",
   region: "Auvergne-Rhône-Alpes",

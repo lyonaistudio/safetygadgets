@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://safety-gadgets.fr/sitemap-index.xml
+Sitemap: https://safety-gadgets.com/sitemap-index.xml

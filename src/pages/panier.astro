@@ -1,4 +1,5 @@
 ---
+import { SITE } from "../lib/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
@@ -42,7 +43,7 @@ import PaymentBadges from "../components/PaymentBadges.astro";
           <p class="text-xs uppercase tracking-[0.1em] text-mist">Sous-total</p>
           <p class="mt-2 font-mono text-2xl text-paper">0,00 € TTC</p>
         </div>
-        <div id="cart-promo" class="hidden rounded-2xl border border-ink-line p-5">
+        {SITE.shopOpen && (<div id="cart-promo" class="hidden rounded-2xl border border-ink-line p-5">
           <form data-promo-form class="flex gap-2">
             <label for="promo-code" class="sr-only">Code promo</label>
             <input id="promo-code" name="code" autocomplete="off" placeholder="Code promo" class="min-w-0 flex-1 rounded-lg border border-ink-line bg-white px-3 py-2.5 text-sm uppercase text-paper outline-none placeholder:normal-case focus:border-accent" />
@@ -53,14 +54,21 @@ import PaymentBadges from "../components/PaymentBadges.astro";
             <button type="button" data-promo-remove class="text-xs text-paper-dim underline hover:text-promo">Retirer</button>
           </div>
           <p data-promo-message hidden></p>
-        </div>
-        <button
-          id="cart-checkout"
-          type="button"
-          class="block w-full rounded-lg bg-night px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-night-soft disabled:pointer-events-none disabled:opacity-40"
-        >
-          Passer au paiement sécurisé
-        </button>
+        </div>)}
+        {SITE.shopOpen ? (
+          <button
+            id="cart-checkout"
+            type="button"
+            class="block w-full rounded-lg bg-night px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-night-soft disabled:pointer-events-none disabled:opacity-40"
+          >
+            Passer au paiement sécurisé
+          </button>
+        ) : (
+          <div class="rounded-2xl border border-ink-line p-5 text-center">
+            <p class="text-sm font-semibold text-paper">Paiement en ligne bientôt disponible</p>
+            <p class="mt-1 text-xs leading-relaxed text-paper-dim">Les commandes ouvrent très prochainement. Votre panier est conservé.</p>
+          </div>
+        )}
         <p id="cart-checkout-error" class="hidden text-xs leading-relaxed text-promo" role="alert"></p>
         <a
           href="/contact/"

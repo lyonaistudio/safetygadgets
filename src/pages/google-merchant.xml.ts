@@ -5,7 +5,7 @@ import { SITE } from "../lib/site";
 
 // Flux produits pour Google Merchant Center (fiches gratuites Google
 // Shopping). À déclarer dans Merchant Center : Produits > Flux > URL
-// https://safety-gadgets.fr/google-merchant.xml (récupération quotidienne).
+// https://safety-gadgets.com/google-merchant.xml (récupération quotidienne).
 // Prix normal + prix promo avec sa période, pour que Google retire la promo
 // tout seul à la date de fin.
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
