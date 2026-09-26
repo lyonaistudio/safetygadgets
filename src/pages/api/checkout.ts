@@ -2,13 +2,14 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
+import { getSecret } from "astro:env/server";
 import { REGULAR_PRODUCTS } from "../../data/products";
 import { applyPromo, PROMO } from "../../lib/promo";
 import { lookupPromoCode } from "../../lib/promo-code";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "../../lib/cart-pricing";
 
 export const POST: APIRoute = async ({ request, url }) => {
-  const secretKey = import.meta.env.STRIPE_SECRET_KEY;
+  const secretKey = getSecret("STRIPE_SECRET_KEY");
   if (!secretKey || secretKey.includes("REPLACE_ME")) {
     return new Response(JSON.stringify({ error: "Paiement en ligne pas encore configuré." }), {
       status: 503,

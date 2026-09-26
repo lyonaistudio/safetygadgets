@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
+import { getSecret } from "astro:env/server";
 import { lookupPromoCode } from "../../lib/promo-code";
 
 const json = (body: unknown, status = 200) =>
@@ -10,7 +11,7 @@ const json = (body: unknown, status = 200) =>
 // Vérifie un code promo saisi dans le panier et renvoie la réduction à
 // afficher. Le montant final reste recalculé par Stripe au paiement.
 export const POST: APIRoute = async ({ request }) => {
-  const secretKey = import.meta.env.STRIPE_SECRET_KEY;
+  const secretKey = getSecret("STRIPE_SECRET_KEY");
   if (!secretKey || secretKey.includes("REPLACE_ME")) return json({ ok: false, error: "Codes promo indisponibles pour le moment." }, 503);
 
   const body = await request.json().catch(() => null);
