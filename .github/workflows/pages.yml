@@ -1,4 +1,4 @@
-# Publie le site sur GitHub Pages (domaine safety-gadgets.com) à chaque push
+# Publie le site sur GitHub Pages à chaque push
 # sur main, et le reconstruit chaque nuit pour que les promos datées (fin de
 # l'offre de lancement) s'appliquent sans intervention.
 name: Publication GitHub Pages
@@ -29,8 +29,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx astro build
-      - run: echo "safety-gadgets.com" > dist/CNAME
+      # Tant que safety-gadgets.com pointe vers Squarespace, le site est servi
+      # sur lyonaistudio.github.io/safetygadgets/. Une fois le DNS du domaine
+      # pointé vers GitHub : vider BASE et remettre le domaine personnalisé.
+      - run: npx astro build --base "$BASE"
+        env:
+          BASE: /safetygadgets
+      - run: python3 scripts/prefix-base.py dist /safetygadgets
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
