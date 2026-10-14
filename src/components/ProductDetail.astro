@@ -9,6 +9,7 @@ import UseCaseCard from "./UseCaseCard.astro";
 import FAQAccordion from "./FAQAccordion.astro";
 import FlagFR from "./FlagFR.astro";
 import SimGuide from "./SimGuide.astro";
+import ObdTutorial from "./ObdTutorial.astro";
 import ProductReviews from "./ProductReviews.astro";
 
 // Corps de fiche produit commun aux trois langues. Le français a un panier
@@ -226,6 +227,8 @@ const crossSell = catalog.find((p) => !p.comingSoon && p.slug !== product.slug);
       </div>
     </div>
   </section>
+
+  {product.slug === "obd" && <ObdTutorial lang={lang} />}
 
   {needsSim && <SimGuide lang={lang} />}
 

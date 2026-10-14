@@ -1,0 +1,178 @@
+---
+import type { Locale } from "../lib/i18n";
+
+// Tutoriel vidéo du Tracker OBD (28 s, sans son), placé sous la fiche
+// produit. Chaque étape renvoie au bon moment de la vidéo ; l'étape en
+// cours est mise en avant pendant la lecture. Les temps correspondent à
+// public/videos/tuto-obd.mp4 — à revoir si la vidéo est remplacée.
+interface Props {
+  lang?: Locale;
+}
+const { lang = "fr" } = Astro.props;
+
+type Step = { title: string; body: string; start?: number };
+
+const TEXT: Record<Locale, { eyebrow: string; title: string; intro: string; duration: string; play: string; videoLabel: string; steps: Step[]; tip: string; simLink: string }> = {
+  fr: {
+    eyebrow: "Mise en service",
+    title: "Comment l'utiliser ?",
+    intro: "Ni garage, ni outil, ni câblage : le Tracker OBD s'installe en trois gestes. Regardez la démonstration, puis suivez les étapes.",
+    duration: "Vidéo · 28 s",
+    play: "Revoir l'étape",
+    videoLabel: "Vidéo : installer le Tracker OBD en trois étapes",
+    steps: [
+      { title: "Insérez la carte SIM", body: "Ouvrez la trappe marquée « SIM » sur le boîtier et glissez-y une carte SIM 4G, code PIN désactivé.", start: 3 },
+      { title: "Repérez la prise OBD", body: "Elle se trouve sous le tableau de bord, côté conducteur, le plus souvent près du volant. Toutes les voitures essence depuis 2001 et diesel depuis 2004 en sont équipées.", start: 10 },
+      { title: "Branchez le traceur", body: "Enfoncez-le dans la prise, contact coupé. Il s'allume seul et se connecte au réseau 4G.", start: 18 },
+      { title: "Suivez votre véhicule", body: "Ajoutez le traceur dans l'application (Android, iOS ou PC) : position en temps réel, trajets et alertes, où que vous soyez." },
+    ],
+    tip: "Pas encore de carte SIM ?",
+    simLink: "Voir laquelle choisir",
+  },
+  en: {
+    eyebrow: "Getting started",
+    title: "How to use it",
+    intro: "No garage, no tools, no wiring: the OBD Tracker is set up in three simple moves. Watch the demo, then follow the steps.",
+    duration: "Video · 28 s",
+    play: "Replay this step",
+    videoLabel: "Video: setting up the OBD Tracker in three steps",
+    steps: [
+      { title: "Insert the SIM card", body: "Open the flap marked “SIM” on the unit and slide in a 4G SIM card with its PIN code turned off.", start: 3 },
+      { title: "Find the OBD port", body: "It sits under the dashboard on the driver's side, usually close to the steering wheel. Every petrol car since 2001 and diesel since 2004 has one.", start: 10 },
+      { title: "Plug in the tracker", body: "Push it into the port with the ignition off. It switches on by itself and connects to the 4G network.", start: 18 },
+      { title: "Follow your vehicle", body: "Add the tracker in the app (Android, iOS or PC): real-time position, trips and alerts, wherever you are." },
+    ],
+    tip: "No SIM card yet?",
+    simLink: "See which one to choose",
+  },
+  de: {
+    eyebrow: "Inbetriebnahme",
+    title: "So funktioniert es",
+    intro: "Keine Werkstatt, kein Werkzeug, keine Verkabelung: Der OBD-Tracker ist mit drei Handgriffen eingerichtet. Sehen Sie sich die Demo an und folgen Sie den Schritten.",
+    duration: "Video · 28 Sek.",
+    play: "Schritt erneut ansehen",
+    videoLabel: "Video: den OBD-Tracker in drei Schritten einrichten",
+    steps: [
+      { title: "SIM-Karte einlegen", body: "Öffnen Sie die mit „SIM“ markierte Klappe am Gehäuse und legen Sie eine 4G-SIM-Karte ohne PIN-Code ein.", start: 3 },
+      { title: "OBD-Buchse finden", body: "Sie befindet sich unter dem Armaturenbrett auf der Fahrerseite, meist in der Nähe des Lenkrads. Alle Benziner seit 2001 und Diesel seit 2004 haben eine.", start: 10 },
+      { title: "Tracker einstecken", body: "Bei ausgeschalteter Zündung in die Buchse stecken. Er schaltet sich selbst ein und verbindet sich mit dem 4G-Netz.", start: 18 },
+      { title: "Fahrzeug verfolgen", body: "Fügen Sie den Tracker in der App hinzu (Android, iOS oder PC): Echtzeit-Position, Fahrten und Alarme, wo immer Sie sind." },
+    ],
+    tip: "Noch keine SIM-Karte?",
+    simLink: "Welche passt?",
+  },
+};
+const t = TEXT[lang];
+const timed = t.steps.filter((s) => s.start !== undefined);
+const fmt = (s: number) => `0:${String(s).padStart(2, "0")}`;
+---
+
+<section id="comment-l-utiliser" class="mx-auto max-w-6xl scroll-mt-32 px-4 pt-8 sm:px-6 sm:pt-14">
+  <div class="rounded-2xl border border-ink-line p-4 sm:p-10">
+    <div class="flex flex-wrap items-end justify-between gap-2">
+      <div>
+        <p class="hidden text-[11px] font-medium uppercase tracking-[0.3em] text-accent sm:block">{t.eyebrow}</p>
+        <h2 class="font-display text-lg font-semibold text-paper sm:mt-2 sm:text-3xl">{t.title}</h2>
+      </div>
+      <span class="rounded-full bg-ink-soft px-3 py-1 font-mono text-[11px] text-paper-dim">{t.duration}</span>
+    </div>
+    <p class="mt-1.5 max-w-2xl text-xs leading-relaxed text-paper-dim sm:mt-3 sm:text-base">{t.intro}</p>
+
+    <div class="mt-4 grid gap-5 sm:mt-8 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-10" data-obd-tutorial>
+      <div class="overflow-hidden rounded-xl bg-ink-soft shadow-sm ring-1 ring-ink-line">
+        <video
+          class="block aspect-video w-full"
+          src="/videos/tuto-obd.mp4"
+          poster="/videos/tuto-obd-apercu.webp"
+          width="1920"
+          height="1080"
+          muted
+          loop
+          playsinline
+          controls
+          preload="none"
+          aria-label={t.videoLabel}
+          data-tutorial-video
+        ></video>
+      </div>
+
+      <ol class="grid gap-2 sm:gap-3">
+        {t.steps.map((step, i) => (
+          <li>
+            {step.start !== undefined ? (
+              <button
+                type="button"
+                data-tutorial-step={step.start}
+                data-tutorial-end={timed[timed.indexOf(step) + 1]?.start ?? 24}
+                class="group flex w-full gap-3 rounded-xl border border-transparent bg-ink-soft p-3 text-left transition-colors hover:border-accent sm:p-4 data-[active]:border-accent data-[active]:bg-white"
+                title={t.play}
+              >
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-night text-xs font-semibold text-white sm:h-7 sm:w-7 sm:text-sm">{i + 1}</span>
+                <span class="block min-w-0 flex-1">
+                  <span class="flex items-baseline justify-between gap-2">
+                    <span class="text-sm font-semibold text-paper">{step.title}</span>
+                    <span class="font-mono text-[11px] text-mist group-hover:text-accent">▶ {fmt(step.start)}</span>
+                  </span>
+                  <span class="mt-0.5 block text-xs leading-relaxed text-paper-dim sm:text-sm">{step.body}</span>
+                </span>
+              </button>
+            ) : (
+              <div class="flex gap-3 rounded-xl bg-ink-soft p-3 sm:p-4">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-white sm:h-7 sm:w-7 sm:text-sm">{i + 1}</span>
+                <span class="block">
+                  <span class="block text-sm font-semibold text-paper">{step.title}</span>
+                  <span class="mt-0.5 block text-xs leading-relaxed text-paper-dim sm:text-sm">{step.body}</span>
+                </span>
+              </div>
+            )}
+          </li>
+        ))}
+        <li class="px-1 text-xs text-paper-dim sm:text-sm">
+          {t.tip} <a href="#carte-sim" class="text-accent underline">{t.simLink}</a>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Lecture automatique (sans son) quand la vidéo est à l'écran, pause en
+  // dehors ; rien d'automatique si l'utilisateur a réduit les animations.
+  // Les étapes renvoient au bon moment et s'allument pendant la lecture.
+  function initTutorial() {
+    document.querySelectorAll<HTMLElement>("[data-obd-tutorial]").forEach((root) => {
+      if (root.dataset.ready) return;
+      root.dataset.ready = "1";
+      const video = root.querySelector<HTMLVideoElement>("[data-tutorial-video]");
+      if (!video) return;
+      const steps = [...root.querySelectorAll<HTMLButtonElement>("[data-tutorial-step]")];
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce && "IntersectionObserver" in window) {
+        new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) video.play().catch(() => {});
+            else video.pause();
+          },
+          { threshold: 0.5 },
+        ).observe(video);
+      }
+
+      video.addEventListener("timeupdate", () => {
+        steps.forEach((s) => {
+          const on = video.currentTime >= Number(s.dataset.tutorialStep) && video.currentTime < Number(s.dataset.tutorialEnd);
+          s.toggleAttribute("data-active", on);
+        });
+      });
+
+      steps.forEach((s) =>
+        s.addEventListener("click", () => {
+          video.currentTime = Number(s.dataset.tutorialStep);
+          video.play().catch(() => {});
+        }),
+      );
+    });
+  }
+  initTutorial();
+  document.addEventListener("astro:page-load", initTutorial);
+</script>
